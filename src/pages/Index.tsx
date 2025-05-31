@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -52,6 +52,26 @@ Yours Faithfully,
 
 Citizen of Kenya`);
 
+  // Counter state - will be connected to database later
+  const [userCount, setUserCount] = useState({ viewers: 0, emailsSent: 0 });
+  const [showFullCount, setShowFullCount] = useState(false);
+
+  // Track page view on component mount
+  useEffect(() => {
+    // TODO: When Supabase is connected, increment viewer count here
+    console.log('Page viewed - will increment viewer count in database');
+  }, []);
+
+  // Auto-update counter every 5 minutes
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // TODO: When Supabase is connected, fetch latest counts from database
+      console.log('Fetching updated counts from database');
+    }, 5 * 60 * 1000); // 5 minutes
+
+    return () => clearInterval(interval);
+  }, []);
+
   const recipients = {
     clerk: {
       name: "Clerk of the National Assembly",
@@ -75,6 +95,10 @@ Citizen of Kenya`);
     if (selectedRecipients.clerk) emails.push(recipients.clerk.email);
     if (selectedRecipients.financeCommittee) emails.push(recipients.financeCommittee.email);
     return emails;
+  };
+
+  const isDesktop = () => {
+    return !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   };
 
   const handleSendEmail = () => {
@@ -102,16 +126,43 @@ Citizen of Kenya`);
     const personalizedMessage = messageBody.replace('[USER_NAME_PLACEHOLDER]', userName.trim());
     const encodedBody = encodeURIComponent(personalizedMessage);
     
-    const mailtoLink = `mailto:${to}?subject=${encodedSubject}&body=${encodedBody}`;
+    // Enhanced desktop support
+    if (isDesktop()) {
+      // Try Gmail web interface first, then fallback to standard mailto
+      const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&su=${encodedSubject}&body=${encodedBody}`;
+      const outlookUrl = `https://outlook.live.com/mail/0/deeplink/compose?to=${encodeURIComponent(to)}&subject=${encodedSubject}&body=${encodedBody}`;
+      
+      // Try to detect email preference or provide options
+      const userAgent = navigator.userAgent.toLowerCase();
+      
+      if (userAgent.includes('chrome') || userAgent.includes('edge')) {
+        // Open Gmail web interface in new tab
+        window.open(gmailUrl, '_blank');
+      } else if (userAgent.includes('outlook') || userAgent.includes('office')) {
+        // Open Outlook web interface in new tab
+        window.open(outlookUrl, '_blank');
+      } else {
+        // Fallback to standard mailto
+        window.location.href = `mailto:${to}?subject=${encodedSubject}&body=${encodedBody}`;
+      }
+    } else {
+      // Mobile - keep existing behavior
+      const mailtoLink = `mailto:${to}?subject=${encodedSubject}&body=${encodedBody}`;
+      window.location.href = mailtoLink;
+    }
     
-    // Open email client
-    window.location.href = mailtoLink;
+    // TODO: When Supabase is connected, increment emailsSent count here
+    console.log('Email sent - will increment emailsSent count in database');
     
     toast({
       title: "Opening Your Email App",
       description: "Your objection letter is ready to send! Review and click send in your email app.",
     });
   };
+
+  const totalUsers = userCount.viewers + userCount.emailsSent;
+  const shouldShowCounter = totalUsers >= 1000;
+  const displayCount = showFullCount ? totalUsers.toLocaleString() : "1K+";
 
   const stats = [
     { icon: Shield, label: "Constitutional Articles", value: "Art 33, Art 35, Art 118(1)" },
@@ -134,10 +185,24 @@ Citizen of Kenya`);
         <div className="absolute inset-0 bg-gradient-to-r from-red-600/5 via-transparent to-green-600/5"></div>
         <div className="relative max-w-6xl mx-auto px-4 py-16">
           <div className="text-center">
-            <div className="inline-flex items-center gap-3 bg-red-50 text-red-700 px-6 py-3 rounded-full text-sm font-medium mb-6">
+            <div className={`inline-flex items-center gap-3 px-6 py-3 rounded-full text-sm font-medium mb-6 ${
+              shouldShowCounter 
+                ? 'bg-green-50 text-green-700' 
+                : 'bg-red-50 text-red-700'
+            }`}>
               <AlertTriangle className="h-5 w-5" />
-              Action Required: Share your voice. Your constitutional right protects it.
+              {shouldShowCounter ? (
+                <span 
+                  onClick={() => setShowFullCount(!showFullCount)}
+                  className="cursor-pointer"
+                >
+                  As used by {displayCount} citizens
+                </span>
+              ) : (
+                'Action Required: Share your voice. Your constitutional right protects it.'
+              )}
             </div>
+            
             
             <h1 className="text-5xl font-bold text-gray-900 mb-6 leading-tight">
               Object to the{' '}
