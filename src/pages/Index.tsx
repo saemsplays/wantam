@@ -589,27 +589,24 @@ Citizen of Kenya`);
               rel="noopener noreferrer"
               className="underline text-emerald-400 hover:text-emerald-300"
               >
-              Civic Education Kenya App (CEKA).  
+              Civic Education Kenya App (CEKA). 
             </a>
           </strong>
-           </div>
-  <div>
-    CEKA provides this tool under the Constitution of Kenya 2010 (Art 33, Art 35, Art 118(1)).
-  </div>
-  <div>CEKA does not store, monitor, or share any user data.</div>
-  <div className="italic mt-2">
-    By using this platform, you acknowledge that all content is user-generated. CEKA holds no liability for any outcomes arising from your objection email.
-  </div>
-</div>
-          <p className="mt-4 flex items-center justify-center gap-2 text-gray-400">
-            <Scale className="h-5 w-5 text-emerald-400" />
-            <span>
-              Exercise your constitutional right to participate in legislative processes (Art 118(1)).
-            </span>
-          </p>
-        </div>
+          CEKA provides this tool under the Constitution of Kenya 2010 (Art 33, Art 35, Art 118(1)). 
+          CEKA does not store, monitor, or share any user data.
+        </p>
+        <p className="mt-2 italic">
+          By using this platform, you acknowledge that all content is user-generated. CEKA holds no liability for any outcomes arising from your objection email.
+        </p>
+        <p className="mt-4 flex items-center justify-center gap-2 text-gray-400">
+          <Scale className="h-5 w-5 text-emerald-400" />
+          <span>
+            Exercise your constitutional right to participate in legislative processes (Art 118(1)).
+          </span>
+        </p>
       </div>
-    );
-   };
-      
-  export default Index;
+    </div>
+  );
+};
+
+export default Index;
