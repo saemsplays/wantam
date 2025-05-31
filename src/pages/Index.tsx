@@ -6,21 +6,23 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Send, Mail, FileText, CheckCircle } from "lucide-react";
+import { Send, Mail, FileText, CheckCircle, User } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 const Index = () => {
   const [email, setEmail] = useState('');
+  const [isGoogleSignedIn, setIsGoogleSignedIn] = useState(false);
   const [selectedRecipients, setSelectedRecipients] = useState({
     clerk: true,
     financeCommittee: true
   });
   const [subject, setSubject] = useState('RE: MEMORANDUM OF OBJECTION TO THE FINANCE BILL 2025 (NATIONAL ASSEMBLY BILLS NO. 19 OF 2025)');
-  const [messageBody, setMessageBody] = useState(`Dear Official,
+  const [messageBody, setMessageBody] = useState(`Dear Clerk of the National Assembly and Members of the Finance Committee,
 
 The above subject refers;
 
 Following the invitation by the National Assembly to submit comments on the above. Recognizing the Sovereignty of the People and Supremacy of the Constitution as under Chapter 1 of the Constitution of Kenya 2010, Rights and Fundamental Freedoms as provided under Chapter 4 of the Bill of Rights, Leadership and Integrity of State Officers as under Chapter 6, the Role of the Legislature under Chapter 8.
+
 Pursuant to Articles 10(2), 118(1) of the Constitution 2010 that mandates Public Participation in any Legislative Process I wish to submit my Memoranda as follows:
 
 1. REJECTION OF SECTION A, PART I OF THE 1ST SCHEDULE OF THE VALUE ADDED TAX ACT
@@ -29,13 +31,11 @@ This amendment is incompatible with the economic and social rights guaranteed un
 Removing zero-rated status from essential goods will increase the cost of living and disproportionately burden low-income households.
 The agricultural sector, a key economic driver, will be negatively affected, harming Kenyan households that rely on agriculture for income.
 
-
 2. REJECTION OF AMENDMENTS TO SECTIONS 2 & 5 OF THE EXCISE DUTY ACT
 
 These amendments violate the non-discrimination protections under Article 27 of the Constitution of Kenya 2010.
 Expanding digital lending tax to include services offered by non-resident persons over the internet will adversely affect Kenyans who depend on digital loans for essential expenses.
 While aiming to create fair competition, these changes will increase borrowing costs, making credit less accessible and leading to financial exclusion for low and middle-income Kenyans.
-
 
 3. REJECTION OF AMENDMENTS TO SECTION 59A OF THE TAX PROCEDURES ACT
 
@@ -43,24 +43,21 @@ The deletion of subsection 1B is unconstitutional as it infringes on the right t
 This amendment would grant the Commissioner unrestricted authority to access personal and private data, including M-Pesa financial records, without necessary safeguards.
 There are inadequate protections against potential overreach by the Kenya Revenue Authority, creating a risk of unauthorized access to citizens' private financial information.
 
-
-
 In conclusion, I call for the withdrawal of this Bill as it is made in Bad Faith, ignorant to the Current Economic Needs and Political Wills of the People of Kenya, Will Entrench the Abuse of Power by the Revenue Authorities, A Dubious Attempt to Sneak in Tyranny, Reinforce Poverty, Promote Marginalization and at the end of it Will Deny Kenyans the Transformative Agenda of Vision 2030. I thus pray that you Reject it for the sake of a better Kenya.
+
 Yours Faithfully,
 
-……………(Your Name)……………………………..(SIGN)
+[Your Name Here]
 
 Citizen of Kenya`);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const recipients = {
     clerk: {
-      name: "The Clerk of The National Assembly",
+      name: "Clerk of the National Assembly",
       email: "cna@parliament.go.ke"
     },
     financeCommittee: {
-      name: "The Finance Committee of the National Assembly",
+      name: "Finance Committee of the National Assembly", 
       email: "financecommitteena@parliament.go.ke"
     }
   };
@@ -79,6 +76,18 @@ Citizen of Kenya`);
     localStorage.setItem('userEmail', newEmail);
   };
 
+  const handleGoogleSignIn = () => {
+    // Simulate Google sign-in - in real implementation this would use Google OAuth
+    const mockGoogleEmail = "user@gmail.com";
+    setEmail(mockGoogleEmail);
+    setIsGoogleSignedIn(true);
+    localStorage.setItem('userEmail', mockGoogleEmail);
+    toast({
+      title: "Signed in with Google",
+      description: "Your email has been auto-filled",
+    });
+  };
+
   const handleRecipientChange = (recipient: string, checked: boolean) => {
     setSelectedRecipients(prev => ({
       ...prev,
@@ -93,13 +102,11 @@ Citizen of Kenya`);
     return emails;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
+  const handleSendEmail = () => {
     if (!email) {
       toast({
         title: "Email Required",
-        description: "Please enter your email address",
+        description: "Please enter your email address or sign in with Google",
         variant: "destructive"
       });
       return;
@@ -114,83 +121,32 @@ Citizen of Kenya`);
       return;
     }
 
-    if (!messageBody.includes('(Your Name)')) {
+    if (messageBody.includes('[Your Name Here]')) {
       toast({
-        title: "Sign Your Message",
-        description: "Please replace '(Your Name)' with your actual name in the message body",
+        title: "Complete Your Letter",
+        description: "Please replace '[Your Name Here]' with your actual name",
         variant: "destructive"
       });
       return;
     }
 
-    setIsSubmitting(true);
-
-    try {
-      // Simulate email sending (in real implementation, this would call your backend)
-      const selectedEmails = getSelectedRecipientEmails();
-      const emailData = {
-        from: email,
-        to: selectedEmails,
-        subject: subject,
-        body: messageBody
-      };
-
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      console.log('Email submission:', emailData);
-      
-      setIsSubmitted(true);
-      toast({
-        title: "Objection Submitted Successfully!",
-        description: `Your memorandum has been sent to ${selectedEmails.length} recipient(s)`,
-      });
-    } catch (error) {
-      toast({
-        title: "Submission Failed",
-        description: "There was an error sending your objection. Please try again.",
-        variant: "destructive"
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
+    const selectedEmails = getSelectedRecipientEmails();
+    const to = selectedEmails.join(',');
+    const encodedSubject = encodeURIComponent(subject);
+    const encodedBody = encodeURIComponent(messageBody);
+    
+    const mailtoLink = `mailto:${to}?subject=${encodedSubject}&body=${encodedBody}`;
+    
+    console.log('Opening email client with:', { to, subject, body: messageBody });
+    
+    // Open email client
+    window.location.href = mailtoLink;
+    
+    toast({
+      title: "Opening Email Client",
+      description: `Launching your email app with ${selectedEmails.length} recipient(s)`,
+    });
   };
-
-  if (isSubmitted) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-red-50 flex items-center justify-center p-4">
-        <Card className="w-full max-w-2xl">
-          <CardContent className="pt-6">
-            <div className="text-center">
-              <CheckCircle className="mx-auto h-16 w-16 text-green-600 mb-4" />
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                Objection Submitted Successfully!
-              </h1>
-              <p className="text-gray-600 mb-6">
-                Your memorandum against the Finance Bill 2025 has been sent to the National Assembly.
-              </p>
-              <div className="bg-gray-50 p-4 rounded-lg mb-6">
-                <h3 className="font-semibold mb-2">Sent to:</h3>
-                <ul className="text-sm text-gray-600">
-                  {selectedRecipients.clerk && <li>• The Clerk of The National Assembly</li>}
-                  {selectedRecipients.financeCommittee && <li>• The Finance Committee of the National Assembly</li>}
-                </ul>
-              </div>
-              <Button 
-                onClick={() => {
-                  setIsSubmitted(false);
-                  setMessageBody(messageBody); // Keep the edited message
-                }}
-                variant="outline"
-              >
-                Submit Another Objection
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-red-50">
@@ -206,7 +162,7 @@ Citizen of Kenya`);
                 Finance Bill 2025 Objection
               </h1>
               <p className="text-gray-600">
-                Submit your memorandum to the National Assembly
+                Submit your formal objection to the National Assembly
               </p>
             </div>
           </div>
@@ -215,7 +171,17 @@ Citizen of Kenya`);
 
       {/* Main Form */}
       <div className="max-w-4xl mx-auto px-4 py-8">
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="space-y-6">
+          
+          {/* Instructions */}
+          <Card className="bg-blue-50 border-blue-200">
+            <CardContent className="pt-6">
+              <p className="text-blue-800 text-sm">
+                <strong>Instructions:</strong> Fill in your details below and click "Send Email" to open your email client (Gmail, Outlook, etc.) with a pre-filled objection letter. You can review and modify the letter before sending.
+              </p>
+            </CardContent>
+          </Card>
+
           {/* Email Input */}
           <Card>
             <CardHeader>
@@ -224,15 +190,45 @@ Citizen of Kenya`);
                 Your Email Address
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <Input
-                type="email"
-                placeholder="Enter your email address"
-                value={email}
-                onChange={handleEmailChange}
-                required
-                className="text-lg"
-              />
+            <CardContent className="space-y-4">
+              {!isGoogleSignedIn ? (
+                <>
+                  <Input
+                    type="email"
+                    placeholder="Enter your email address"
+                    value={email}
+                    onChange={handleEmailChange}
+                    className="text-lg"
+                  />
+                  <div className="text-center">
+                    <span className="text-sm text-gray-500">Or</span>
+                  </div>
+                  <Button
+                    onClick={handleGoogleSignIn}
+                    variant="outline"
+                    className="w-full"
+                  >
+                    <User className="mr-2 h-4 w-4" />
+                    Sign in with Google to autofill
+                  </Button>
+                </>
+              ) : (
+                <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg">
+                  <CheckCircle className="h-5 w-5 text-green-600" />
+                  <span className="text-green-800">Signed in: {email}</span>
+                  <Button
+                    onClick={() => {
+                      setIsGoogleSignedIn(false);
+                      setEmail('');
+                    }}
+                    variant="ghost"
+                    size="sm"
+                    className="ml-auto text-green-600"
+                  >
+                    Change
+                  </Button>
+                </div>
+              )}
             </CardContent>
           </Card>
 
@@ -240,27 +236,32 @@ Citizen of Kenya`);
           <Card>
             <CardHeader>
               <CardTitle>Select Recipients</CardTitle>
+              <p className="text-sm text-gray-600">Choose who to send your objection to:</p>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <div className="flex items-center space-x-2">
+                <div className="flex items-start space-x-3">
                   <Checkbox
                     id="clerk"
                     checked={selectedRecipients.clerk}
                     onCheckedChange={(checked) => handleRecipientChange('clerk', checked as boolean)}
+                    className="mt-1"
                   />
-                  <Label htmlFor="clerk" className="text-sm font-medium">
-                    {recipients.clerk.name} ({recipients.clerk.email})
+                  <Label htmlFor="clerk" className="text-sm font-medium leading-relaxed">
+                    <div className="font-semibold">{recipients.clerk.name}</div>
+                    <div className="text-gray-600">{recipients.clerk.email}</div>
                   </Label>
                 </div>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-start space-x-3">
                   <Checkbox
                     id="financeCommittee"
                     checked={selectedRecipients.financeCommittee}
                     onCheckedChange={(checked) => handleRecipientChange('financeCommittee', checked as boolean)}
+                    className="mt-1"
                   />
-                  <Label htmlFor="financeCommittee" className="text-sm font-medium">
-                    {recipients.financeCommittee.name} ({recipients.financeCommittee.email})
+                  <Label htmlFor="financeCommittee" className="text-sm font-medium leading-relaxed">
+                    <div className="font-semibold">{recipients.financeCommittee.name}</div>
+                    <div className="text-gray-600">{recipients.financeCommittee.email}</div>
                   </Label>
                 </div>
               </div>
@@ -270,13 +271,14 @@ Citizen of Kenya`);
           {/* Subject Line */}
           <Card>
             <CardHeader>
-              <CardTitle>Subject Line</CardTitle>
+              <CardTitle>Email Subject</CardTitle>
+              <p className="text-sm text-gray-600">You can edit the subject line if needed:</p>
             </CardHeader>
             <CardContent>
               <Input
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
-                className="text-lg"
+                className="text-lg font-medium"
               />
             </CardContent>
           </Card>
@@ -284,22 +286,22 @@ Citizen of Kenya`);
           {/* Message Body */}
           <Card>
             <CardHeader>
-              <CardTitle>Your Memorandum</CardTitle>
+              <CardTitle>Your Objection Letter</CardTitle>
               <p className="text-sm text-gray-600">
-                Edit the message below as needed. Remember to replace "(Your Name)" with your actual name and sign at the end.
+                Review and edit the formal objection letter below. Make sure to replace "[Your Name Here]" with your actual name.
               </p>
             </CardHeader>
             <CardContent>
               <Textarea
                 value={messageBody}
                 onChange={(e) => setMessageBody(e.target.value)}
-                rows={25}
-                className="text-sm leading-relaxed"
+                rows={30}
+                className="text-sm leading-relaxed font-mono"
               />
             </CardContent>
           </Card>
 
-          {/* Reminder */}
+          {/* Important Notice */}
           <Card className="bg-yellow-50 border-yellow-200">
             <CardContent className="pt-6">
               <div className="flex items-start gap-3">
@@ -308,38 +310,63 @@ Citizen of Kenya`);
                 </div>
                 <div>
                   <h3 className="font-semibold text-yellow-800 mb-1">
-                    Before Submitting
+                    Before Sending
                   </h3>
                   <p className="text-yellow-700 text-sm">
-                    Please ensure you have replaced "(Your Name)" with your actual name and signed the message at the end.
+                    Please ensure you have replaced "[Your Name Here]" with your actual name and reviewed all the content above. 
+                    Clicking "Send Email" will open your email client with the objection ready to send.
                   </p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* Submit Button */}
+          {/* Send Button */}
           <div className="flex justify-center pt-4">
             <Button
-              type="submit"
+              onClick={handleSendEmail}
               size="lg"
-              disabled={isSubmitting}
-              className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 text-lg"
+              className="bg-green-600 hover:bg-green-700 text-white px-12 py-4 text-lg font-semibold"
             >
-              {isSubmitting ? (
-                <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Submitting...
-                </>
-              ) : (
-                <>
-                  <Send className="mr-2 h-5 w-5" />
-                  Submit Objection
-                </>
-              )}
+              <Send className="mr-3 h-6 w-6" />
+              Send Email Now
             </Button>
           </div>
-        </form>
+
+          {/* Final Review Section */}
+          <Card className="bg-gray-50">
+            <CardHeader>
+              <CardTitle className="text-lg">Review Your Submission</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div>
+                <span className="font-medium">From:</span> {email || "Please enter your email"}
+              </div>
+              <div>
+                <span className="font-medium">To:</span> {
+                  getSelectedRecipientEmails().length > 0 
+                    ? getSelectedRecipientEmails().join(', ')
+                    : "Please select recipients"
+                }
+              </div>
+              <div>
+                <span className="font-medium">Subject:</span> {subject}
+              </div>
+              <div>
+                <span className="font-medium">Status:</span> 
+                <span className={messageBody.includes('[Your Name Here]') 
+                  ? "text-red-600 ml-2" 
+                  : "text-green-600 ml-2"
+                }>
+                  {messageBody.includes('[Your Name Here]') 
+                    ? "⚠️ Please replace [Your Name Here] with your actual name"
+                    : "✅ Ready to send"
+                  }
+                </span>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
       {/* Footer */}
