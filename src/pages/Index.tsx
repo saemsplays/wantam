@@ -589,7 +589,7 @@ Citizen of Kenya`);
               rel="noopener noreferrer"
               className="underline text-emerald-400 hover:text-emerald-300"
               >
-              Civic Education Kenya App (CEKA). 
+              Civic Education Kenya App (CEKA).  
             </a>
           </strong>
            <br />
