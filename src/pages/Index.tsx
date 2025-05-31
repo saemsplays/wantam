@@ -592,10 +592,12 @@ Citizen of Kenya`);
               Civic Education Kenya App (CEKA). 
             </a>
           </strong>
-          <br /> {/* Added line break */}
-          CEKA provides this tool under the Constitution of Kenya 2010 (Art 33, Art 35, Art 118(1)).
-          <br /> {/* Added line break */}
-          CEKA does not store, monitor, or share any user data.
+        </p>
+           <p className="mb-2">
+             CEKA provides this tool under the Constitution of Kenya 2010 (Art 33, Art 35, Art 118(1)).
+           </p> 
+          <p className="mb-3">
+            CEKA does not store, monitor, or share any user data.
         </p>
         <p className="mt-2 italic">
           By using this platform, you acknowledge that all content is user-generated. CEKA holds no liability for any outcomes arising from your objection email.
