@@ -598,7 +598,7 @@ Citizen of Kenya`);
         </p>
         <p className="mt-1">
           CEKA does not store, monitor, or share any user data.
-        /p>
+        </p>
           <p className="mt-2 italic">
             By using this platform, you acknowledge that all content is user-generated. CEKA holds no liability for any outcomes arising from your objection email.
           </p>
