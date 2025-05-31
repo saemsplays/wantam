@@ -136,7 +136,7 @@ Citizen of Kenya`);
           <div className="text-center">
             <div className="inline-flex items-center gap-3 bg-red-50 text-red-700 px-6 py-3 rounded-full text-sm font-medium mb-6">
               <AlertTriangle className="h-5 w-5" />
-              Action Required: Public Participation Now Open
+              Action Required: Share your voice. Your constitutional right protects it.
             </div>
             
             <h1 className="text-5xl font-bold text-gray-900 mb-6 leading-tight">
@@ -174,16 +174,16 @@ Citizen of Kenya`);
       {/* ─── 2. Main Content ─── */}
       <div className="max-w-4xl mx-auto px-4 py-12 space-y-8">
 
-        {/* ── ChatGPT Assistant Card ── */}
-        <Card className="bg-gradient-to-r from-purple-50 to-indigo-50 border-purple-200">
+       {/* ── ChatGPT Assistant Card ── */}
+        <Card className="bg-gradient-to-r from-red-600 to-green-600 border-gray-200 shadow-lg">
           <CardContent className="pt-6">
             <div className="flex items-start gap-4">
-              <div className="bg-purple-600 p-2 rounded-lg flex-shrink-0">
+              <div className="bg-white/20 p-2 rounded-lg flex-shrink-0 backdrop-blur-sm">
                 <Scale className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900 mb-2">Need help understanding the Finance Bill 2025?</h3>
-                <p className="text-sm text-gray-600 mb-4">
+                <h3 className="font-semibold text-white mb-2">Need help understanding the Finance Bill 2025?</h3>
+                <p className="text-sm text-white/90 mb-4">
                   Get instant answers to all your questions about the Finance Bill 2025 from our AI assistant.
                   Understand specific clauses, their implications, and how they might affect you.
                 </p>
@@ -191,12 +191,12 @@ Citizen of Kenya`);
                   href="https://chatgpt.com/g/g-681270efebe08191ad509259b304815b-2025-finance-bill-gpt"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-medium transition-colors"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-white text-gray-900 hover:bg-white/90 rounded-lg text-sm font-medium transition-colors"
                   >
                   Ask the Finance Bill Assistant
                   <ArrowUpRight className="h-4 w-4" />
                 </a>
-                <p className="text-xs text-gray-500 mt-2">
+                <p className="text-xs text-white/70 mt-2">
                   Opens in a new window. No login required.
                 </p>
               </div>
@@ -458,7 +458,7 @@ Citizen of Kenya`);
               rel="noopener noreferrer"
               className="underline text-emerald-400 hover:text-emerald-300"
               >
-              Civic Education Kenya App (CEKA)
+              Civic Education Kenya App (CEKA). 
             </a>
           </strong>
           CEKA provides this tool under the Constitution of Kenya 2010 (Art 33, Art 35, Art 118(1)). 
