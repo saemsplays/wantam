@@ -7,6 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Send, Mail, FileText, CheckCircle, User, AlertTriangle, Shield, Scale, Users } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { ArrowUpRight } from "lucide-react";
 
 const Index = () => {
   const [userName, setUserName] = useState('');
@@ -172,6 +173,36 @@ Citizen of Kenya`);
 
       {/* ─── 2. Main Content ─── */}
       <div className="max-w-4xl mx-auto px-4 py-12 space-y-8">
+
+        {/* ── ChatGPT Assistant Card ── */}
+        <Card className="bg-gradient-to-r from-purple-50 to-indigo-50 border-purple-200">
+          <CardContent className="pt-6">
+            <div className="flex items-start gap-4">
+              <div className="bg-purple-600 p-2 rounded-lg flex-shrink-0">
+                <Scale className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-2">Need help understanding the Finance Bill 2025?</h3>
+                <p className="text-sm text-gray-600 mb-4">
+                  Get instant answers to all your questions about the Finance Bill 2025 from our AI assistant.
+                  Understand specific clauses, their implications, and how they might affect you.
+                </p>
+                <a
+                  href="https://chatgpt.com/g/g-681270efebe08191ad509259b304815b-2025-finance-bill-gpt"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-medium transition-colors"
+                  >
+                  Ask the Finance Bill Assistant
+                  <ArrowUpRight className="h-4 w-4" />
+                </a>
+                <p className="text-xs text-gray-500 mt-2">
+                  Opens in a new window. No login required.
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
         
         {/* ── Quick Start Guide ── */}
         <Card className="bg-gradient-to-r from-blue-50 to-emerald-50 border-blue-200">
@@ -210,7 +241,7 @@ Citizen of Kenya`);
               </div>
               Your Details
             </CardTitle>
-            <p className="text-gray-600">Only your name is required to personalize the objection letter</p>
+            <p className="text-gray-600">Only your name is required to prefill the objection letter</p>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -419,7 +450,17 @@ Citizen of Kenya`);
       {/* ─── 3. Footer with CEKA Attribution & Disclaimer ─── */}
       <div className="bg-gray-900 text-gray-200 py-8 text-xs text-center px-4">
         <p>
-          <strong>Published by Civic Education Kenya (CEKA)</strong> – Registered NGO No. XXXXXX. 
+          <strong>
+            Published by{" "}
+            <a
+              href="https://ceka.lovable.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline text-emerald-400 hover:text-emerald-300"
+              >
+              Civic Education Kenya App (CEKA)
+            </a>
+          </strong>
           CEKA provides this tool under the Constitution of Kenya 2010 (Art 33, Art 35, Art 118(1)). 
           CEKA does not store, monitor, or share any user data.
         </p>
