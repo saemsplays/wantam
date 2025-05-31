@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,6 +9,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Send, Mail, FileText, CheckCircle, User, AlertTriangle, Shield, Scale, Users } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { ArrowUpRight } from "lucide-react";
+import { createClient } from '@supabase/supabase-js';
+
+// Initialize Supabase client
+const supabaseUrl = process.env.REACT_APP_SUPABASE_URL || '';
+const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY || '';
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const Index = () => {
   const [userName, setUserName] = useState('');
@@ -52,6 +59,85 @@ Yours Faithfully,
 
 Citizen of Kenya`);
 
+  // Counter state - connected to Supabase database
+  const [userCount, setUserCount] = useState({ viewers: 0, emailsSent: 0 });
+  const [showFullCount, setShowFullCount] = useState(false);
+
+  // Function to fetch current counts from database
+  const fetchCounts = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('user_counts')
+        .select('viewers, emails_sent')
+        .single();
+      
+      if (error) {
+        console.error('Error fetching counts:', error);
+        return;
+      }
+      
+      setUserCount({
+        viewers: data?.viewers || 0,
+        emailsSent: data?.emails_sent || 0
+      });
+    } catch (error) {
+      console.error('Error in fetchCounts:', error);
+    }
+  };
+
+  // Function to increment page view
+  const incrementPageView = async () => {
+    try {
+      const { error } = await supabase.rpc('increment_user_action', {
+        action_type_param: 'page_view'
+      });
+      
+      if (error) {
+        console.error('Error incrementing page view:', error);
+      }
+    } catch (error) {
+      console.error('Error in incrementPageView:', error);
+    }
+  };
+
+  // Function to increment email sent
+  const incrementEmailSent = async () => {
+    try {
+      const { error } = await supabase.rpc('increment_user_action', {
+        action_type_param: 'email_sent'
+      });
+      
+      if (error) {
+        console.error('Error incrementing email sent:', error);
+        return;
+      }
+      
+      // Refresh counts immediately after email action
+      await fetchCounts();
+    } catch (error) {
+      console.error('Error in incrementEmailSent:', error);
+    }
+  };
+
+  // Track page view on component mount
+  useEffect(() => {
+    const initializePageView = async () => {
+      await incrementPageView();
+      await fetchCounts();
+    };
+    
+    initializePageView();
+  }, []);
+
+  // Auto-update counter every 5 minutes
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchCounts();
+    }, 5 * 60 * 1000); // 5 minutes
+
+    return () => clearInterval(interval);
+  }, []);
+
   const recipients = {
     clerk: {
       name: "Clerk of the National Assembly",
@@ -77,7 +163,11 @@ Citizen of Kenya`);
     return emails;
   };
 
-  const handleSendEmail = () => {
+  const isDesktop = () => {
+    return !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  };
+
+  const handleSendEmail = async () => {
     if (!userName.trim()) {
       toast({
         title: "Name Required",
@@ -102,16 +192,43 @@ Citizen of Kenya`);
     const personalizedMessage = messageBody.replace('[USER_NAME_PLACEHOLDER]', userName.trim());
     const encodedBody = encodeURIComponent(personalizedMessage);
     
-    const mailtoLink = `mailto:${to}?subject=${encodedSubject}&body=${encodedBody}`;
+    // Enhanced desktop support
+    if (isDesktop()) {
+      // Try Gmail web interface first, then fallback to standard mailto
+      const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&su=${encodedSubject}&body=${encodedBody}`;
+      const outlookUrl = `https://outlook.live.com/mail/0/deeplink/compose?to=${encodeURIComponent(to)}&subject=${encodedSubject}&body=${encodedBody}`;
+      
+      // Try to detect email preference or provide options
+      const userAgent = navigator.userAgent.toLowerCase();
+      
+      if (userAgent.includes('chrome') || userAgent.includes('edge')) {
+        // Open Gmail web interface in new tab
+        window.open(gmailUrl, '_blank');
+      } else if (userAgent.includes('outlook') || userAgent.includes('office')) {
+        // Open Outlook web interface in new tab
+        window.open(outlookUrl, '_blank');
+      } else {
+        // Fallback to standard mailto
+        window.location.href = `mailto:${to}?subject=${encodedSubject}&body=${encodedBody}`;
+      }
+    } else {
+      // Mobile - keep existing behavior
+      const mailtoLink = `mailto:${to}?subject=${encodedSubject}&body=${encodedBody}`;
+      window.location.href = mailtoLink;
+    }
     
-    // Open email client
-    window.location.href = mailtoLink;
+    // Increment email sent count in database
+    await incrementEmailSent();
     
     toast({
       title: "Opening Your Email App",
       description: "Your objection letter is ready to send! Review and click send in your email app.",
     });
   };
+
+  const totalUsers = userCount.viewers + userCount.emailsSent;
+  const shouldShowCounter = totalUsers >= 1000;
+  const displayCount = showFullCount ? totalUsers.toLocaleString() : "1K+";
 
   const stats = [
     { icon: Shield, label: "Constitutional Articles", value: "Art 33, Art 35, Art 118(1)" },
@@ -134,10 +251,24 @@ Citizen of Kenya`);
         <div className="absolute inset-0 bg-gradient-to-r from-red-600/5 via-transparent to-green-600/5"></div>
         <div className="relative max-w-6xl mx-auto px-4 py-16">
           <div className="text-center">
-            <div className="inline-flex items-center gap-3 bg-red-50 text-red-700 px-6 py-3 rounded-full text-sm font-medium mb-6">
+            <div className={`inline-flex items-center gap-3 px-6 py-3 rounded-full text-sm font-medium mb-6 ${
+              shouldShowCounter 
+                ? 'bg-green-50 text-green-700' 
+                : 'bg-red-50 text-red-700'
+            }`}>
               <AlertTriangle className="h-5 w-5" />
-              Action Required: Share your voice. Your constitutional right protects it.
+              {shouldShowCounter ? (
+                <span 
+                  onClick={() => setShowFullCount(!showFullCount)}
+                  className="cursor-pointer"
+                >
+                  As used by {displayCount} citizens
+                </span>
+              ) : (
+                'Action Required: Share your voice. Your constitutional right protects it.'
+              )}
             </div>
+            
             
             <h1 className="text-5xl font-bold text-gray-900 mb-6 leading-tight">
               Object to the{' '}
@@ -262,7 +393,7 @@ Citizen of Kenya`);
               <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3 text-emerald-900 text-sm">
                 <p>
                   <strong>Privacy & Anonymity Notice:</strong> This site collects <u>no</u> personal data. 
-                  All inputs remain on your device until you click “Send.” 
+                  All inputs remain on your device until you click "Send." 
                   You may use a pseudonym or initials if desired.
                 </p>
               </div>
