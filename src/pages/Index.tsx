@@ -150,12 +150,27 @@ Citizen of Kenya`);
               Submit your formal objection to protect essential goods and privacy rights.
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-              {stats.map((stat, index) => (
-                <div
-                  key={index}
-                  className="bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl p-6 shadow-sm"
-                >
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+    {stats.map((stat, index) => (
+      <div
+        key={index}
+        className="bg-white shadow rounded-lg p-6 flex flex-col items-center text-center"
+      >
+        {/* Icon */}
+        <stat.icon className="h-6 w-6 text-blue-600 mb-3" />
+
+        {/* Label */}
+        <h3 className="text-lg font-semibold text-gray-900 mb-1">
+          {stat.label}
+        </h3>
+
+        {/* Value */}
+        <p className="text-sm text-gray-600">
+          {stat.value}
+        </p>
+      </div>
+    ))}
+  </div>
                   <div className="flex items-center gap-3 mb-2">
                     <div className="bg-blue-100 p-2 rounded-lg">
                       <stat.icon className="h-5 w-5 text-blue-600" />
