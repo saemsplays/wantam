@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,12 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Send, Mail, FileText, CheckCircle, User, AlertTriangle, Shield, Scale, Users } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { ArrowUpRight } from "lucide-react";
-import { createClient } from '@supabase/supabase-js';
-
-// Initialize Supabase client
-const supabaseUrl = process.env.REACT_APP_SUPABASE_URL || '';
-const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY || '';
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+import { supabase } from "@/integrations/supabase/client";
 
 const Index = () => {
   const [userName, setUserName] = useState('');
@@ -59,81 +53,53 @@ Yours Faithfully,
 
 Citizen of Kenya`);
 
-  // Counter state - connected to Supabase database
   const [userCount, setUserCount] = useState({ viewers: 0, emailsSent: 0 });
   const [showFullCount, setShowFullCount] = useState(false);
 
-  // Function to fetch current counts from database
-  const fetchCounts = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('user_counts')
-        .select('viewers, emails_sent')
-        .single();
-      
-      if (error) {
-        console.error('Error fetching counts:', error);
-        return;
-      }
-      
-      setUserCount({
-        viewers: data?.viewers || 0,
-        emailsSent: data?.emails_sent || 0
-      });
-    } catch (error) {
-      console.error('Error in fetchCounts:', error);
-    }
-  };
-
-  // Function to increment page view
-  const incrementPageView = async () => {
-    try {
-      const { error } = await supabase.rpc('increment_user_action', {
-        action_type_param: 'page_view'
-      });
-      
-      if (error) {
-        console.error('Error incrementing page view:', error);
-      }
-    } catch (error) {
-      console.error('Error in incrementPageView:', error);
-    }
-  };
-
-  // Function to increment email sent
-  const incrementEmailSent = async () => {
-    try {
-      const { error } = await supabase.rpc('increment_user_action', {
-        action_type_param: 'email_sent'
-      });
-      
-      if (error) {
-        console.error('Error incrementing email sent:', error);
-        return;
-      }
-      
-      // Refresh counts immediately after email action
-      await fetchCounts();
-    } catch (error) {
-      console.error('Error in incrementEmailSent:', error);
-    }
-  };
-
   // Track page view on component mount
   useEffect(() => {
-    const initializePageView = async () => {
-      await incrementPageView();
-      await fetchCounts();
+    const trackPageView = async () => {
+      try {
+        await supabase.rpc('increment_user_action', { action_type_param: 'view' });
+        console.log('Page view tracked successfully');
+      } catch (error) {
+        console.error('Error tracking page view:', error);
+      }
     };
-    
-    initializePageView();
+
+    trackPageView();
   }, []);
 
-  // Auto-update counter every 5 minutes
+  // Fetch user counts and set up auto-refresh
   useEffect(() => {
-    const interval = setInterval(() => {
-      fetchCounts();
-    }, 5 * 60 * 1000); // 5 minutes
+    const fetchCounts = async () => {
+      try {
+        // Use a simpler query structure to avoid TypeScript issues
+        const response = await supabase
+          .from('user_counts')
+          .select('viewers, emails_sent')
+          .limit(1);
+        
+        if (response.error) throw response.error;
+        
+        const data = response.data?.[0];
+        if (data) {
+          setUserCount({
+            viewers: data.viewers || 0,
+            emailsSent: data.emails_sent || 0
+          });
+          console.log('Fetched counts:', data);
+        }
+      } catch (error) {
+        console.error('Error fetching counts:', error);
+      }
+    };
+
+    // Fetch immediately
+    fetchCounts();
+
+    // Set up auto-refresh every 5 minutes
+    const interval = setInterval(fetchCounts, 5 * 60 * 1000);
 
     return () => clearInterval(interval);
   }, []);
@@ -186,6 +152,14 @@ Citizen of Kenya`);
       return;
     }
 
+    // Track email sent action
+    try {
+      await supabase.rpc('increment_user_action', { action_type_param: 'email_sent' });
+      console.log('Email sent action tracked successfully');
+    } catch (error) {
+      console.error('Error tracking email sent:', error);
+    }
+
     const selectedEmails = getSelectedRecipientEmails();
     const to = selectedEmails.join(',');
     const encodedSubject = encodeURIComponent(subject);
@@ -216,9 +190,6 @@ Citizen of Kenya`);
       const mailtoLink = `mailto:${to}?subject=${encodedSubject}&body=${encodedBody}`;
       window.location.href = mailtoLink;
     }
-    
-    // Increment email sent count in database
-    await incrementEmailSent();
     
     toast({
       title: "Opening Your Email App",
@@ -282,19 +253,19 @@ Citizen of Kenya`);
               Submit your formal objection to protect essential goods and privacy rights.
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
               {stats.map((stat, index) => (
                 <div
                   key={index}
-                  className="bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl p-6 shadow-sm"
+                  className="bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl p-3 md:p-6 shadow-sm"
                 >
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="bg-blue-100 p-2 rounded-lg">
-                      <stat.icon className="h-5 w-5 text-blue-600" />
+                  <div className="flex flex-col items-center gap-2 mb-2 text-center">
+                    <div className="bg-blue-100 p-2 rounded-lg flex-shrink-0">
+                      <stat.icon className="h-4 w-4 md:h-5 md:w-5 text-blue-600" />
                     </div>
-                    <h3 className="font-semibold text-gray-900">{stat.label}</h3>
+                    <h3 className="font-semibold text-gray-900 text-xs md:text-base leading-tight">{stat.label}</h3>
                   </div>
-                  <p className="text-sm text-gray-600">{stat.value}</p>
+                  <p className="text-xs md:text-sm text-gray-600 text-center leading-tight">{stat.value}</p>
                 </div>
               ))}
             </div>
@@ -564,10 +535,10 @@ Citizen of Kenya`);
               <Button
                 onClick={handleSendEmail}
                 size="lg"
-                className="bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 text-white px-12 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+                className="bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 text-white px-4 sm:px-6 md:px-12 py-4 text-sm sm:text-base md:text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 w-full max-w-full"
               >
-                <Send className="mr-3 h-6 w-6" />
-                Open Email & Send Objection
+                <Send className="mr-2 sm:mr-3 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 flex-shrink-0" />
+                <span className="truncate text-xs sm:text-sm md:text-base">Open Email & Send Objection</span>
               </Button>
 
               <p className="text-xs text-gray-500 max-w-md mx-auto">
@@ -592,22 +563,18 @@ Citizen of Kenya`);
               Civic Education Kenya App (CEKA). 
             </a>
           </strong>
-        </p>
-           <p className="mb-2">
-             CEKA provides this tool under the Constitution of Kenya 2010 (Art 33, Art 35, Art 118(1)).
-           </p> 
-          <p className="mb-3">
-            CEKA does not store, monitor, or share any user data.
+          CEKA provides this tool under the Constitution of Kenya 2010 (Art 33, Art 35, Art 118(1)). 
+          CEKA does not store, monitor, or share any user data.
         </p>
         <p className="mt-2 italic">
           By using this platform, you acknowledge that all content is user-generated. CEKA holds no liability for any outcomes arising from your objection email.
         </p>
-        <p className="mt-4 flex items-center justify-center gap-2 text-gray-400">
-          <Scale className="h-5 w-5 text-emerald-400" />
-          <span>
+        <div className="mt-4 flex flex-col sm:flex-row items-center justify-center gap-2 text-gray-400">
+          <Scale className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-400 flex-shrink-0" />
+          <span className="text-center text-xs sm:text-sm">
             Exercise your constitutional right to participate in legislative processes (Art 118(1)).
           </span>
-        </p>
+        </div>
       </div>
     </div>
   );
