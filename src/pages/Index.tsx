@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -75,15 +74,15 @@ Citizen of Kenya`);
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        // Query the user_counts table directly instead of using the function
-        const { data, error } = await supabase
+        // Use a simpler query structure to avoid TypeScript issues
+        const response = await supabase
           .from('user_counts')
           .select('viewers, emails_sent')
-          .eq('id', 1)
-          .single();
+          .limit(1);
         
-        if (error) throw error;
+        if (response.error) throw response.error;
         
+        const data = response.data?.[0];
         if (data) {
           setUserCount({
             viewers: data.viewers || 0,
