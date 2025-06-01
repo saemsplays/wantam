@@ -89,7 +89,7 @@ Citizen of Kenya`);
   const incrementPageView = async () => {
     try {
       const { error } = await supabase.rpc('increment_user_action', {
-        action_type_param: 'view'
+        action_type_param: 'page_view'
       });
       
       if (error) {
