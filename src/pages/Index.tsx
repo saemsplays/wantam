@@ -75,16 +75,21 @@ Citizen of Kenya`);
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        const { data, error } = await supabase.rpc('get_user_counts');
+        // Query the user_counts table directly instead of using the function
+        const { data, error } = await supabase
+          .from('user_counts')
+          .select('viewers, emails_sent')
+          .eq('id', 1)
+          .single();
+        
         if (error) throw error;
         
-        if (data && data.length > 0) {
-          const counts = data[0];
+        if (data) {
           setUserCount({
-            viewers: counts.viewers || 0,
-            emailsSent: counts.emails_sent || 0
+            viewers: data.viewers || 0,
+            emailsSent: data.emails_sent || 0
           });
-          console.log('Fetched counts:', counts);
+          console.log('Fetched counts:', data);
         }
       } catch (error) {
         console.error('Error fetching counts:', error);
@@ -253,15 +258,15 @@ Citizen of Kenya`);
               {stats.map((stat, index) => (
                 <div
                   key={index}
-                  className="bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl p-4 md:p-6 shadow-sm"
+                  className="bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl p-3 md:p-6 shadow-sm"
                 >
-                  <div className="flex flex-col md:flex-row items-center md:items-start gap-2 md:gap-3 mb-2 text-center md:text-left">
+                  <div className="flex flex-col items-center gap-2 mb-2 text-center">
                     <div className="bg-blue-100 p-2 rounded-lg flex-shrink-0">
                       <stat.icon className="h-4 w-4 md:h-5 md:w-5 text-blue-600" />
                     </div>
-                    <h3 className="font-semibold text-gray-900 text-sm md:text-base">{stat.label}</h3>
+                    <h3 className="font-semibold text-gray-900 text-xs md:text-base leading-tight">{stat.label}</h3>
                   </div>
-                  <p className="text-xs md:text-sm text-gray-600 text-center md:text-left">{stat.value}</p>
+                  <p className="text-xs md:text-sm text-gray-600 text-center leading-tight">{stat.value}</p>
                 </div>
               ))}
             </div>
@@ -531,10 +536,10 @@ Citizen of Kenya`);
               <Button
                 onClick={handleSendEmail}
                 size="lg"
-                className="bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 text-white px-6 md:px-12 py-4 text-base md:text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 w-full md:w-auto max-w-full"
+                className="bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 text-white px-4 sm:px-6 md:px-12 py-4 text-sm sm:text-base md:text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 w-full max-w-full"
               >
-                <Send className="mr-3 h-5 w-5 md:h-6 md:w-6 flex-shrink-0" />
-                <span className="truncate">Open Email & Send Objection</span>
+                <Send className="mr-2 sm:mr-3 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 flex-shrink-0" />
+                <span className="truncate text-xs sm:text-sm md:text-base">Open Email & Send Objection</span>
               </Button>
 
               <p className="text-xs text-gray-500 max-w-md mx-auto">
@@ -565,12 +570,12 @@ Citizen of Kenya`);
         <p className="mt-2 italic">
           By using this platform, you acknowledge that all content is user-generated. CEKA holds no liability for any outcomes arising from your objection email.
         </p>
-        <p className="mt-4 flex flex-col md:flex-row items-center justify-center gap-2 text-gray-400">
-          <Scale className="h-5 w-5 text-emerald-400 flex-shrink-0" />
-          <span className="text-center">
+        <div className="mt-4 flex flex-col sm:flex-row items-center justify-center gap-2 text-gray-400">
+          <Scale className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-400 flex-shrink-0" />
+          <span className="text-center text-xs sm:text-sm">
             Exercise your constitutional right to participate in legislative processes (Art 118(1)).
           </span>
-        </p>
+        </div>
       </div>
     </div>
   );
