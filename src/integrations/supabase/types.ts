@@ -9,13 +9,44 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      user_actions: {
+        Row: {
+          action_type: string
+          created_at: string | null
+          id: number
+        }
+        Insert: {
+          action_type: string
+          created_at?: string | null
+          id?: number
+        }
+        Update: {
+          action_type?: string
+          created_at?: string | null
+          id?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
-      [_ in never]: never
+      user_counts: {
+        Row: {
+          emails_sent: number | null
+          last_updated: string | null
+          viewers: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      [_ in never]: never
+      increment_user_action: {
+        Args: Record<PropertyKey, never> | { action_type_param: string }
+        Returns: undefined
+      }
+      update_user_actions: {
+        Args: { viewed: boolean; tapped: boolean }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
