@@ -27,20 +27,34 @@ export type Database = {
         }
         Relationships: []
       }
-    }
-    Views: {
       user_counts: {
         Row: {
-          emails_sent: number | null
-          last_updated: string | null
-          viewers: number | null
+          emails_sent: number
+          id: number
+          last_updated: string
+          viewers: number
+        }
+        Insert: {
+          emails_sent?: number
+          id?: number
+          last_updated?: string
+          viewers?: number
+        }
+        Update: {
+          emails_sent?: number
+          id?: number
+          last_updated?: string
+          viewers?: number
         }
         Relationships: []
       }
     }
+    Views: {
+      [_ in never]: never
+    }
     Functions: {
       increment_user_action: {
-        Args: Record<PropertyKey, never> | { action_type_param: string }
+        Args: Record<PropertyKey, never> | { action_type_param?: string }
         Returns: undefined
       }
       update_user_actions: {

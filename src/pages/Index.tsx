@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -74,15 +75,17 @@ Citizen of Kenya`);
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        // Use a simpler query structure to avoid TypeScript issues
-        const response = await supabase
+        const { data, error } = await supabase
           .from('user_counts')
           .select('viewers, emails_sent')
-          .limit(1);
+          .eq('id', 1)
+          .single();
         
-        if (response.error) throw response.error;
+        if (error) {
+          console.error('Error fetching counts:', error);
+          return;
+        }
         
-        const data = response.data?.[0];
         if (data) {
           setUserCount({
             viewers: data.viewers || 0,
@@ -560,9 +563,9 @@ Citizen of Kenya`);
               rel="noopener noreferrer"
               className="underline text-emerald-400 hover:text-emerald-300"
               >
-              Civic Education Kenya App (CEKA). 
+              Civic Education Kenya App (CEKA).
             </a>
-          </strong>
+          </strong>{" "}
           CEKA provides this tool under the Constitution of Kenya 2010 (Art 33, Art 35, Art 118(1)). 
           CEKA does not store, monitor, or share any user data.
         </p>
