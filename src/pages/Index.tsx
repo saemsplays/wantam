@@ -5,13 +5,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Send, Mail, FileText, CheckCircle, User, AlertTriangle, Shield, Scale, Users, Play, RotateCcw } from "lucide-react";
+import { Send, Mail, FileText, CheckCircle, User, AlertTriangle, Shield, Scale, Users, Play, RotateCcw, ArrowUpRight } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { ArrowUpRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { ScrollProgressTracker } from '../components/ScrollProgressTracker';
 import { JoyrideTour } from '../components/JoyrideTour';
 import { ScrollToTop } from '../components/ScrollToTop';
+import { TourStarter } from '../components/TourStarter';
 
 const Index = () => {
   const [userName, setUserName] = useState('');
@@ -115,41 +116,12 @@ Citizen of Kenya`);
     return () => clearInterval(interval);
   }, []);
 
-  // Check if user has seen tour before and show tour
+  // Check if user has seen tour before and show tour starter instead
   useEffect(() => {
     const tourSeen = localStorage.getItem('finance-bill-tour-seen');
-    if (!tourSeen && !hasSeenTour) {
-      const timer = setTimeout(() => {
-        setShowTour(true);
-      }, 2000);
-      return () => clearTimeout(timer);
+    if (tourSeen) {
+      setHasSeenTour(true);
     }
-  }, [hasSeenTour]);
-
-  // Intersection Observer for tracking active sections
-  useEffect(() => {
-    const observerOptions = {
-      root: null,
-      rootMargin: '-20% 0px -20% 0px',
-      threshold: 0.5
-    };
-
-    const observerCallback = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setActiveSection(entry.target.id);
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
-
-    sections.forEach(section => {
-      const element = document.getElementById(section.id);
-      if (element) observer.observe(element);
-    });
-
-    return () => observer.disconnect();
   }, []);
 
   const handleTourComplete = () => {
@@ -162,6 +134,10 @@ Citizen of Kenya`);
     setShowTour(false);
     setHasSeenTour(true);
     localStorage.setItem('finance-bill-tour-seen', 'true');
+  };
+
+  const startTour = () => {
+    setShowTour(true);
   };
 
   const restartTour = () => {
@@ -294,14 +270,16 @@ Citizen of Kenya`);
         </p>
         
         {/* Tour restart button */}
-        <button
-          onClick={restartTour}
-          className="absolute right-4 top-1/2 transform -translate-y-1/2 flex items-center gap-1 px-3 py-1 bg-yellow-200 hover:bg-yellow-300 text-yellow-800 rounded-full text-xs font-medium transition-colors"
-          title="Restart tour"
-        >
-          <Play className="h-3 w-3" />
-          Tour
-        </button>
+        {hasSeenTour && (
+          <button
+            onClick={restartTour}
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 flex items-center gap-1 px-3 py-1 bg-yellow-200 hover:bg-yellow-300 text-yellow-800 rounded-full text-xs font-medium transition-colors"
+            title="Restart tour"
+          >
+            <Play className="h-3 w-3" />
+            Tour
+          </button>
+        )}
       </div>
 
       {/* Hero Section */}
@@ -363,6 +341,11 @@ Citizen of Kenya`);
 
       {/* Main Content */}
       <div className="max-w-4xl mx-auto px-4 py-12 space-y-8">
+
+        {/* Tour Starter - only show if user hasn't seen tour */}
+        {!hasSeenTour && !showTour && (
+          <TourStarter onStartTour={startTour} />
+        )}
 
         {/* ChatGPT Assistant Card */}
         <Card className="bg-gradient-to-r from-red-600 to-green-600 border-gray-200 shadow-lg">

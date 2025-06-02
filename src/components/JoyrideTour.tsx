@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, X, Play } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X, Play, CheckCircle } from 'lucide-react';
 import { ToastNotification } from './ToastNotification';
 
 interface TourStep {
