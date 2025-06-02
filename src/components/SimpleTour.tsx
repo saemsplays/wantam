@@ -22,6 +22,12 @@ export const SimpleTour: React.FC<SimpleTourProps> = ({ isActive, onComplete, on
 
   const tourSteps: TourStep[] = [
     {
+      id: 'introduction',
+      title: 'Introduction to Finance Bill 2025',
+      description: 'Understand the constitutional violations and why this bill threatens essential rights',
+      targetId: 'hero'
+    },
+    {
       id: 'gpt-assistant',
       title: 'AI Assistant Available',
       description: 'Get help understanding the Finance Bill with our AI assistant',
@@ -64,8 +70,9 @@ export const SimpleTour: React.FC<SimpleTourProps> = ({ isActive, onComplete, on
   const handleNext = () => {
     if (currentStep < tourSteps.length - 1) {
       setCurrentStep(prev => prev + 1);
-      // Scroll to the target element
-      const element = document.getElementById(currentStepData.targetId);
+      // Scroll to the target element for the NEXT step
+      const nextStep = tourSteps[currentStep + 1];
+      const element = document.getElementById(nextStep.targetId);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
@@ -77,8 +84,26 @@ export const SimpleTour: React.FC<SimpleTourProps> = ({ isActive, onComplete, on
   const handlePrev = () => {
     if (currentStep > 0) {
       setCurrentStep(prev => prev - 1);
+      // Scroll to the target element for the PREVIOUS step
+      const prevStep = tourSteps[currentStep - 1];
+      const element = document.getElementById(prevStep.targetId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
     }
   };
+
+  // Scroll to current step when tour starts
+  React.useEffect(() => {
+    if (isActive && currentStepData) {
+      const element = document.getElementById(currentStepData.targetId);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+      }
+    }
+  }, [isActive, currentStepData]);
 
   if (!isActive) return null;
 
@@ -87,9 +112,9 @@ export const SimpleTour: React.FC<SimpleTourProps> = ({ isActive, onComplete, on
       {/* Overlay */}
       <div className="fixed inset-0 bg-black bg-opacity-40 z-[60]" onClick={onSkip} />
       
-      {/* Tour Card */}
-      <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[61] w-full max-w-md mx-4">
-        <Card className="shadow-2xl">
+      {/* Tour Card - Positioned to not obscure content */}
+      <div className="fixed top-4 right-4 z-[61] w-full max-w-sm mx-4 md:max-w-md">
+        <Card className="shadow-2xl border-2 border-blue-500">
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
               <CardTitle className="text-lg">Tour Guide</CardTitle>

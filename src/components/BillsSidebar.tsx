@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, ChevronDown, ChevronUp, Plus, ExternalLink } from "lucide-react";
+import { FileText, ChevronDown, ChevronUp, Plus, ExternalLink, Heart, AlertTriangle, Globe, Mail, Phone } from "lucide-react";
 
 interface Bill {
   name: string;
@@ -24,13 +24,35 @@ const relatedBills: Bill[] = [
 export const BillsSidebar: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showSuggestionForm, setShowSuggestionForm] = useState(false);
+  const [showSupportForm, setShowSupportForm] = useState(false);
+  const [showReportForm, setShowReportForm] = useState(false);
   const [suggestion, setSuggestion] = useState('');
+  const [supportMessage, setSupportMessage] = useState('');
+  const [reportDetails, setReportDetails] = useState('');
 
   const handleSuggestionSubmit = () => {
     if (suggestion.trim()) {
       console.log('Bill suggestion submitted:', suggestion);
       setSuggestion('');
       setShowSuggestionForm(false);
+      // Here you would typically send to a backend or email
+    }
+  };
+
+  const handleSupportSubmit = () => {
+    if (supportMessage.trim()) {
+      console.log('Support message submitted:', supportMessage);
+      setSupportMessage('');
+      setShowSupportForm(false);
+      // Here you would typically send to a backend or email
+    }
+  };
+
+  const handleReportSubmit = () => {
+    if (reportDetails.trim()) {
+      console.log('Report submitted:', reportDetails);
+      setReportDetails('');
+      setShowReportForm(false);
       // Here you would typically send to a backend or email
     }
   };
@@ -86,7 +108,10 @@ export const BillsSidebar: React.FC = () => {
               ))}
             </div>
 
-            <div className="border-t pt-3">
+            {/* Divider */}
+            <div className="border-t pt-3 space-y-2">
+              
+              {/* Suggest a Bill */}
               {!showSuggestionForm ? (
                 <Button
                   variant="outline"
@@ -120,6 +145,110 @@ export const BillsSidebar: React.FC = () => {
                       onClick={handleSuggestionSubmit}
                       className="flex-1 text-xs"
                       disabled={!suggestion.trim()}
+                    >
+                      Submit
+                    </Button>
+                  </div>
+                </div>
+              )}
+
+              {/* Support Button */}
+              {!showSupportForm ? (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowSupportForm(true)}
+                  className="w-full text-xs bg-green-50 hover:bg-green-100 border-green-200"
+                >
+                  <Heart className="h-3 w-3 mr-1" />
+                  Support Us
+                </Button>
+              ) : (
+                <div className="space-y-2">
+                  <Textarea
+                    placeholder="How would you like to support CEKA?"
+                    value={supportMessage}
+                    onChange={(e) => setSupportMessage(e.target.value)}
+                    className="text-xs resize-none"
+                    rows={3}
+                  />
+                  <div className="flex gap-1">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setShowSupportForm(false)}
+                      className="flex-1 text-xs"
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      size="sm"
+                      onClick={handleSupportSubmit}
+                      className="flex-1 text-xs bg-green-600 hover:bg-green-700"
+                      disabled={!supportMessage.trim()}
+                    >
+                      Submit
+                    </Button>
+                  </div>
+                </div>
+              )}
+
+              {/* CEKA Link */}
+              <a
+                href="https://ceka.lovable.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full"
+              >
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full text-xs bg-blue-50 hover:bg-blue-100 border-blue-200"
+                >
+                  <Globe className="h-3 w-3 mr-1" />
+                  Visit CEKA
+                </Button>
+              </a>
+
+              {/* Report Feature */}
+              {!showReportForm ? (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowReportForm(true)}
+                  className="w-full text-xs bg-red-50 hover:bg-red-100 border-red-200"
+                >
+                  <AlertTriangle className="h-3 w-3 mr-1" />
+                  Report Violations
+                </Button>
+              ) : (
+                <div className="space-y-2">
+                  <Textarea
+                    placeholder="Report government abuse, abduction, or atrocity..."
+                    value={reportDetails}
+                    onChange={(e) => setReportDetails(e.target.value)}
+                    className="text-xs resize-none"
+                    rows={4}
+                  />
+                  <div className="text-xs text-red-600 mb-2">
+                    <p>Emergency contacts:</p>
+                    <p>📞 Kenya Red Cross: 1199</p>
+                    <p>📧 KHRC: info@khrc.or.ke</p>
+                  </div>
+                  <div className="flex gap-1">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setShowReportForm(false)}
+                      className="flex-1 text-xs"
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      size="sm"
+                      onClick={handleReportSubmit}
+                      className="flex-1 text-xs bg-red-600 hover:bg-red-700"
+                      disabled={!reportDetails.trim()}
                     >
                       Submit
                     </Button>

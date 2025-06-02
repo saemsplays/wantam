@@ -65,14 +65,15 @@ Citizen of Kenya`);
   const [showTour, setShowTour] = useState(false);
   const [hasSeenTour, setHasSeenTour] = useState(false);
 
-  // Section definitions with specific percentages
+  // Section definitions with updated percentages including Introduction
   const sections = [
+    { id: 'hero', title: 'Introduction', position: 0 },
     { id: 'gpt-card', title: 'Finance Bill GPT', position: 15 },
     { id: 'details', title: 'Your Details', position: 31 },
     { id: 'recipients', title: 'Send To', position: 43 },
     { id: 'subject', title: 'Email Subject', position: 52 },
-    { id: 'letter', title: 'Letter Review', position: 64 },
-    { id: 'send', title: 'Send Objection', position: 100 }
+    { id: 'letter', title: 'Your Objection Letter', position: 64 },
+    { id: 'send', title: 'Ready To Submit Your Objection?', position: 100 }
   ];
 
   useEffect(() => {
@@ -631,16 +632,16 @@ Citizen of Kenya`);
       </div>
 
       {/* Footer - Fixed width issue */}
-      <footer className="bg-gray-900 text-gray-200 py-8 text-xs text-center px-4 w-full overflow-hidden">
+      <footer className="bg-gray-900 text-gray-200 py-8 text-xs text-center px-4 max-w-full overflow-x-hidden">
         <div className="max-w-6xl mx-auto">
-          <p className="break-words">
+          <p className="break-words max-w-full">
             <strong>
               Published by{" "}
               <a
                 href="https://ceka.lovable.app"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline text-emerald-400 hover:text-emerald-300"
+                className="underline text-emerald-400 hover:text-emerald-300 break-words"
               >
                 Civic Education Kenya App (CEKA). 
               </a>
@@ -648,12 +649,12 @@ Citizen of Kenya`);
             CEKA provides this tool under the Constitution of Kenya 2010 (Art 33, Art 35, Art 118(1)). 
             CEKA does not store, monitor, or share any user data.
           </p>
-          <p className="mt-2 italic break-words">
+          <p className="mt-2 italic break-words max-w-full">
             By using this platform, you acknowledge that all content is user-generated. CEKA holds no liability for any outcomes arising from your objection email.
           </p>
           <div className="mt-4 flex flex-col sm:flex-row items-center justify-center gap-2 text-gray-400">
             <Scale className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-400 flex-shrink-0" />
-            <span className="text-center text-xs sm:text-sm break-words">
+            <span className="text-center text-xs sm:text-sm break-words max-w-full">
               Exercise your constitutional right to participate in legislative processes (Art 118(1)).
             </span>
           </div>

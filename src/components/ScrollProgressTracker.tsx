@@ -58,6 +58,7 @@ export const ScrollProgressTracker: React.FC<ScrollProgressTrackerProps> = ({
         {sections.map((section, index) => {
           const isActive = activeSection === section.id;
           const isPassed = sections.findIndex(s => s.id === activeSection) > index;
+          const isIntroduction = section.id === 'hero';
 
           return (
             <div
@@ -78,9 +79,11 @@ export const ScrollProgressTracker: React.FC<ScrollProgressTrackerProps> = ({
                 `}
               />
 
-              {/* Magnetic pulse effect for active section */}
-              {isActive && (
-                <div className="absolute inset-0 rounded-full bg-blue-400 animate-ping opacity-75" />
+              {/* Magnetic pulse effect for active section and special glow for Introduction */}
+              {(isActive || isIntroduction) && (
+                <div className={`absolute inset-0 rounded-full ${
+                  isIntroduction ? 'bg-gradient-to-r from-red-400 to-green-400' : 'bg-blue-400'
+                } animate-ping opacity-75`} />
               )}
 
               {/* Tooltip */}
