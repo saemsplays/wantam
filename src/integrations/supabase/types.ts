@@ -9,6 +9,21 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      action_counts: {
+        Row: {
+          action_type: string
+          count: number | null
+        }
+        Insert: {
+          action_type: string
+          count?: number | null
+        }
+        Update: {
+          action_type?: string
+          count?: number | null
+        }
+        Relationships: []
+      }
       user_actions: {
         Row: {
           action_type: string
@@ -27,18 +42,44 @@ export type Database = {
         }
         Relationships: []
       }
-    }
-    Views: {
       user_counts: {
         Row: {
+          emails_sent: number
+          id: number
+          last_updated: string
+          viewers: number
+        }
+        Insert: {
+          emails_sent?: number
+          id?: number
+          last_updated?: string
+          viewers?: number
+        }
+        Update: {
+          emails_sent?: number
+          id?: number
+          last_updated?: string
+          viewers?: number
+        }
+        Relationships: []
+      }
+    }
+    Views: {
+      aggregate_stats: {
+        Row: {
           emails_sent: number | null
-          last_updated: string | null
+          emails_total: number | null
           viewers: number | null
+          views_total: number | null
         }
         Relationships: []
       }
     }
     Functions: {
+      increment_action_count: {
+        Args: { action: string }
+        Returns: undefined
+      }
       increment_user_action: {
         Args: Record<PropertyKey, never> | { action_type_param: string }
         Returns: undefined
