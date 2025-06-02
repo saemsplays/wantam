@@ -72,7 +72,7 @@ Citizen of Kenya`);
     { id: 'details', title: 'Your Details', position: 31 },
     { id: 'recipients', title: 'Send To', position: 43 },
     { id: 'subject', title: 'Email Subject', position: 52 },
-    { id: 'letter', title: 'Your Objection Letter', position: 64 },
+    { id: 'letter', title: 'Your Objection Letter', position: 77 },
     { id: 'send', title: 'Ready To Submit Your Objection?', position: 100 }
   ];
 
