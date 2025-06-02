@@ -4,15 +4,18 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
   FileText, ChevronDown, ChevronUp, ChevronRight, Plus, ExternalLink, 
-  Heart, AlertTriangle, Globe, Mail, Phone, Shield, Users, Eye, Zap
+  Heart, AlertTriangle, Globe, Mail, Phone, Shield, Users, Eye, Zap, Menu, X
 } from "lucide-react";
 
-interface Bill {
-  name: string;
-  year: string;
-  status: string;
-  path: string;
+interface Category {
+  id: string;
+  title: string;
+  icon: React.ComponentType;
+  description: string;
+  color: string;
+  urgency: string;
 }
+const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
 
 const relatedBills: Bill[] = [
   { name: "Tax Laws (Amendment) Bill", year: "2024", status: "Active", path: "/bills/tax-laws-amendment-2024" },
@@ -31,10 +34,20 @@ const ReportingHub = ({ onClose }: { onClose?: () => void }) => {
   const [copiedText, setCopiedText] = useState('');
 
   const copyToClipboard = (text: string) => {
+  if (navigator.clipboard) {
     navigator.clipboard.writeText(text);
-    setCopiedText(text);
-    setTimeout(() => setCopiedText(''), 2000);
-  };
+  } else {
+    // Fallback for older browsers
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textArea);
+  }
+  setCopiedText(text);
+  setTimeout(() => setCopiedText(''), 2000);
+};
 
   const categories = [
     {
@@ -612,6 +625,8 @@ Sincerely,
 
   // Handle contact methods with prefilled content
   const renderContactMethods = (org: any, category: any, subcategory: any) => {
+    if (!org.contact) return null; // Guard clause
+    
     return (
       <div className="mt-2 space-y-1">
         {org.contact.website && (
@@ -832,16 +847,17 @@ Sincerely,
             <div className="space-y-3">
               <h3 className="font-semibold text-xs text-gray-800 mb-1">Organizations:</h3>
               {specificResources.organizations.map((org: any, index: number) => (
-                <div key={index} className="p-3 border border-gray-200 rounded-lg">
-                  <h4 className="font-semibold text-xs text-gray-800">{org.name}</h4>
-                  {org.description && <p className="text-xs text-gray-600 mt-1">{org.description}</p>}
+              <div key={index} className="p-3 border border-gray-200 rounded-lg">
+                <h4 className="font-semibold text-xs text-gray-800">{org.name}</h4>
+                {org.description && <p className="text-xs text-gray-600 mt-1">{org.description}</p>}
                   
-                  {(org.contact?.website || org.contact?.email || org.contact?.phone) && (
-                    <div className="mt-2">
-                      <h5 className="font-semibold text-xs text-gray-700 mb-1">Contact:</h5>
-                      {renderContactMethods(org, selectedCategory, specificResources)}
-                    </div>
-                  )}
+                  {/* Contact Info */}
+    {(org.contact?.website || org.contact?.email || org.contact?.phone) && (
+      <div className="mt-2">
+        <h5 className="font-semibold text-xs text-gray-700 mb-1">Contact:</h5>
+        {renderContactMethods(org, selectedCategory, specificResources)}
+      </div>
+    )}
                       )}
                       {org.contact.email && (
                         <div className="flex items-center text-xs">
@@ -875,27 +891,27 @@ Sincerely,
                     </div>
                   )}
                   
-                  {org.services && (
-                    <div className="mt-2">
-                      <h5 className="font-semibold text-xs text-gray-700 mb-1">Services:</h5>
-                      <ul className="list-disc pl-4 space-y-1">
-                        {org.services.map((service: string, idx: number) => (
-                          <li key={idx} className="text-xs text-gray-600">{service}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                  {/* Services */}
+    {org.services && (
+      <div className="mt-2">
+        <h5 className="font-semibold text-xs text-gray-700 mb-1">Services:</h5>
+        <ul className="list-disc pl-4 space-y-1">
+          {org.services.map((service: string, idx: number) => (
+            <li key={idx} className="text-xs text-gray-600">{service}</li>
+          ))}
+        </ul>
+      </div>
+    )}
                   
-                  {org.process && (
-                    <div className="mt-2">
-                      <h5 className="font-semibold text-xs text-gray-700 mb-1">Process:</h5>
-                      <p className="text-xs text-gray-600">{org.process}</p>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
+                  {/* Process */}
+    {org.process && (
+      <div className="mt-2">
+        <h5 className="font-semibold text-xs text-gray-700 mb-1">Process:</h5>
+        <p className="text-xs text-gray-600">{org.process}</p>
+      </div>
+    )}
+  </div>
+))}
 
           {specificResources.contacts && (
             <div className="mt-3">
@@ -1174,13 +1190,41 @@ export const BillsSidebar: React.FC = () => {
 
                   <div className="border-t pt-3 space-y-2">
                     {/* ... (desktop forms remain the same) ... */}
-                  </div>
-                </>
-              )}
-            </CardContent>
-          )}
-        </Card>
-      </div>
+                  <div className="border-t pt-3 space-y-2">
+  <Button 
+    variant="outline"
+    size="sm"
+    className="w-full text-xs"
+    onClick={() => setShowSuggestionForm(true)}
+  >
+    <Plus className="h-3 w-3 mr-1" />
+    Suggest a Bill
+  </Button>
+  <Button 
+    variant="outline"
+    size="sm"
+    className="w-full text-xs"
+    onClick={() => setShowSupportForm(true)}
+  >
+    <Heart className="h-3 w-3 mr-1" />
+    Support CEKA
+  </Button>
+  <Button 
+    variant="outline"
+    size="sm"
+    className="w-full text-xs"
+    onClick={() => setShowReportHub(true)}
+  >
+    <AlertTriangle className="h-3 w-3 mr-1" />
+    Report Hub
+  </Button>
+  <a href="https://ceka.lovable.app/" target="_blank" rel="noopener noreferrer">
+    <Button variant="outline" size="sm" className="w-full text-xs">
+      <Globe className="h-3 w-3 mr-1" />
+      Visit CEKA
+    </Button>
+  </a>
+</div>
 
       {/* Mobile Floating Action Button */}
       <MobileFAB onClick={() => openMobileDrawer('bills')} />
@@ -1237,8 +1281,10 @@ export const BillsSidebar: React.FC = () => {
           rel="noopener noreferrer"
           className="flex flex-col items-center text-xs px-2 text-gray-600 hover:text-gray-900"
         >
+          <Button variant="ghost" className="flex flex-col text-xs px-2">
           <Globe className="h-4 w-4 mb-1" />
           CEKA
+           </Button>
         </a>
       </div>
     </>
