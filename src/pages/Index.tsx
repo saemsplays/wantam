@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,7 +8,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Send, Mail, FileText, CheckCircle, User, AlertTriangle, Shield, Scale, Users, Play, RotateCcw, ArrowUpRight } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
-import { ArrowUpRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { ScrollProgressTracker } from '../components/ScrollProgressTracker';
 import { JoyrideTour } from '../components/JoyrideTour';
