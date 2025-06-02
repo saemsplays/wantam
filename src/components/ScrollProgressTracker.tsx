@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 interface Section {
   id: string;
   title: string;
+  position: number; // percentage position instead of calculated
 }
 
 interface ScrollProgressTrackerProps {
@@ -29,11 +30,6 @@ export const ScrollProgressTracker: React.FC<ScrollProgressTrackerProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const getMarkerPosition = (index: number) => {
-    const totalSections = sections.length;
-    return (index / (totalSections - 1)) * 100;
-  };
-
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -43,6 +39,13 @@ export const ScrollProgressTracker: React.FC<ScrollProgressTrackerProps> = ({
 
   return (
     <div className="fixed right-8 top-1/2 transform -translate-y-1/2 z-50 hidden md:flex flex-col items-center">
+      {/* Instruction text */}
+      <div className="mb-3 bg-white rounded-lg px-3 py-1 shadow-lg border border-gray-200">
+        <span className="text-xs font-medium text-gray-600">
+          Tap circles to jump to sections
+        </span>
+      </div>
+
       {/* Progress Bar Container */}
       <div className="relative w-1 h-80 bg-gray-200 rounded-full shadow-lg">
         {/* Background progress fill */}
@@ -60,7 +63,7 @@ export const ScrollProgressTracker: React.FC<ScrollProgressTrackerProps> = ({
             <div
               key={section.id}
               className="absolute left-1/2 transform -translate-x-1/2 cursor-pointer group"
-              style={{ top: `${getMarkerPosition(index)}%` }}
+              style={{ top: `${section.position}%` }}
               onClick={() => scrollToSection(section.id)}
             >
               <div

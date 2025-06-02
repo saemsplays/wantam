@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,9 +9,10 @@ import { Send, Mail, FileText, CheckCircle, User, AlertTriangle, Shield, Scale, 
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { ScrollProgressTracker } from '../components/ScrollProgressTracker';
-import { JoyrideTour } from '../components/JoyrideTour';
+import { SimpleTour } from '../components/SimpleTour';
 import { ScrollToTop } from '../components/ScrollToTop';
 import { TourStarter } from '../components/TourStarter';
+import { BillsSidebar } from '../components/BillsSidebar';
 
 const Index = () => {
   const [userName, setUserName] = useState('');
@@ -65,14 +65,14 @@ Citizen of Kenya`);
   const [showTour, setShowTour] = useState(false);
   const [hasSeenTour, setHasSeenTour] = useState(false);
 
-  // Section definitions for the progress tracker
+  // Section definitions with specific percentages
   const sections = [
-    { id: 'hero', title: 'Introduction' },
-    { id: 'details', title: 'Your Details' },
-    { id: 'recipients', title: 'Recipients' },
-    { id: 'subject', title: 'Email Subject' },
-    { id: 'letter', title: 'Letter Review' },
-    { id: 'send', title: 'Send Objection' }
+    { id: 'gpt-card', title: 'Finance Bill GPT', position: 15 },
+    { id: 'details', title: 'Your Details', position: 31 },
+    { id: 'recipients', title: 'Send To', position: 43 },
+    { id: 'subject', title: 'Email Subject', position: 52 },
+    { id: 'letter', title: 'Letter Review', position: 64 },
+    { id: 'send', title: 'Send Objection', position: 100 }
   ];
 
   useEffect(() => {
@@ -241,8 +241,8 @@ Citizen of Kenya`);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-emerald-50">
-      {/* Joyride Tour */}
-      <JoyrideTour
+      {/* Simple Tour */}
+      <SimpleTour
         isActive={showTour}
         onComplete={handleTourComplete}
         onSkip={handleTourSkip}
@@ -254,22 +254,22 @@ Citizen of Kenya`);
         sections={sections}
       />
 
+      {/* Bills Sidebar */}
+      <BillsSidebar />
+
       {/* Scroll to Top Button */}
       <ScrollToTop />
 
-      {/* Section highlight overlay */}
       <div className={`fixed inset-0 pointer-events-none transition-all duration-700 ease-out z-10 ${
         activeSection !== 'hero' ? 'bg-black bg-opacity-5' : ''
       }`} />
 
-      {/* Top Constitutional Shield Banner */}
       <div className="bg-yellow-100 border-y-2 border-yellow-300 text-yellow-900 p-3 text-center text-xs font-medium relative z-20">
         <p className="max-w-3xl mx-auto">
           This platform operates under <strong>Art 33 (Freedom of Expression)</strong>, <strong>Art 35 (Access to Information)</strong>, and <strong>Art 118(1) (Public Participation)</strong> of the Constitution of Kenya 2010. 
           No data is stored or shared. All emails are drafted locally on your device.
         </p>
         
-        {/* Tour restart button */}
         {hasSeenTour && (
           <button
             onClick={restartTour}
@@ -282,7 +282,6 @@ Citizen of Kenya`);
         )}
       </div>
 
-      {/* Hero Section */}
       <section id="hero" className={`relative overflow-hidden bg-white transition-all duration-700 ${
         activeSection === 'hero' ? 'relative z-30 scale-[1.02]' : 'relative z-20'
       }`}>
@@ -339,45 +338,43 @@ Citizen of Kenya`);
         </div>
       </section>
 
-      {/* Main Content */}
       <div className="max-w-4xl mx-auto px-4 py-12 space-y-8">
-
-        {/* Tour Starter - only show if user hasn't seen tour */}
         {!hasSeenTour && !showTour && (
           <TourStarter onStartTour={startTour} />
         )}
 
         {/* ChatGPT Assistant Card */}
-        <Card className="bg-gradient-to-r from-red-600 to-green-600 border-gray-200 shadow-lg">
-          <CardContent className="pt-6">
-            <div className="flex items-start gap-4">
-              <div className="bg-white/20 p-2 rounded-lg flex-shrink-0 backdrop-blur-sm">
-                <Scale className="h-6 w-6 text-white" />
+        <section id="gpt-card">
+          <Card className="bg-gradient-to-r from-red-600 to-green-600 border-gray-200 shadow-lg">
+            <CardContent className="pt-6">
+              <div className="flex items-start gap-4">
+                <div className="bg-white/20 p-2 rounded-lg flex-shrink-0 backdrop-blur-sm">
+                  <Scale className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-white mb-2">Need help understanding the Finance Bill 2025?</h3>
+                  <p className="text-sm text-white/90 mb-4">
+                    Get instant answers to all your questions about the Finance Bill 2025 from our AI assistant.
+                    Understand specific clauses, their implications, and how they might affect you.
+                  </p>
+                  <a
+                    href="https://chatgpt.com/g/g-681270efebe08191ad509259b304815b-2025-finance-bill-gpt"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-white text-gray-900 hover:bg-white/90 rounded-lg text-sm font-medium transition-colors"
+                  >
+                    Ask the Finance Bill Assistant
+                    <ArrowUpRight className="h-4 w-4" />
+                  </a>
+                  <p className="text-xs text-white/70 mt-2">
+                    Opens in a new window. No login required.
+                  </p>
+                </div>
               </div>
-              <div>
-                <h3 className="font-semibold text-white mb-2">Need help understanding the Finance Bill 2025?</h3>
-                <p className="text-sm text-white/90 mb-4">
-                  Get instant answers to all your questions about the Finance Bill 2025 from our AI assistant.
-                  Understand specific clauses, their implications, and how they might affect you.
-                </p>
-                <a
-                  href="https://chatgpt.com/g/g-681270efebe08191ad509259b304815b-2025-finance-bill-gpt"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-white text-gray-900 hover:bg-white/90 rounded-lg text-sm font-medium transition-colors"
-                >
-                  Ask the Finance Bill Assistant
-                  <ArrowUpRight className="h-4 w-4" />
-                </a>
-                <p className="text-xs text-white/70 mt-2">
-                  Opens in a new window. No login required.
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </section>
         
-        {/* Quick Start Guide */}
         <Card className="bg-gradient-to-r from-blue-50 to-emerald-50 border-blue-200">
           <CardContent className="pt-6">
             <div className="flex items-start gap-4">
@@ -405,7 +402,6 @@ Citizen of Kenya`);
           </CardContent>
         </Card>
 
-        {/* Your Details Section */}
         <section id="details" className={`transition-all duration-700 ${
           activeSection === 'details' ? 'relative z-30 scale-[1.02]' : 'relative z-20'
         }`}>
@@ -446,7 +442,6 @@ Citizen of Kenya`);
           </Card>
         </section>
 
-        {/* Recipients Section */}
         <section id="recipients" className={`transition-all duration-700 ${
           activeSection === 'recipients' ? 'relative z-30 scale-[1.02]' : 'relative z-20'
         }`}>
@@ -496,7 +491,6 @@ Citizen of Kenya`);
           </Card>
         </section>
 
-        {/* Subject Line Section */}
         <section id="subject" className={`transition-all duration-700 ${
           activeSection === 'subject' ? 'relative z-30 scale-[1.02]' : 'relative z-20'
         }`}>
@@ -520,7 +514,6 @@ Citizen of Kenya`);
           </Card>
         </section>
 
-        {/* Letter Preview Section */}
         <section id="letter" className={`transition-all duration-700 ${
           activeSection === 'letter' ? 'relative z-30 scale-[1.02]' : 'relative z-20'
         }`}>
@@ -570,7 +563,6 @@ Citizen of Kenya`);
           </Card>
         </section>
 
-        {/* Send Section */}
         <section id="send" className={`transition-all duration-700 ${
           activeSection === 'send' ? 'relative z-30 scale-[1.02]' : 'relative z-20'
         }`}>
@@ -587,7 +579,6 @@ Citizen of Kenya`);
                   </p>
                 </div>
 
-                {/* Status Check */}
                 <div className="bg-white rounded-lg p-4 max-w-md mx-auto">
                   <div className="space-y-2 text-sm">
                     <div className="flex items-center justify-between">
@@ -639,33 +630,35 @@ Citizen of Kenya`);
         </section>
       </div>
 
-      {/* Footer */}
-      <div className="bg-gray-900 text-gray-200 py-8 text-xs text-center px-4">
-        <p>
-          <strong>
-            Published by{" "}
-            <a
-              href="https://ceka.lovable.app"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline text-emerald-400 hover:text-emerald-300"
-            >
-              Civic Education Kenya App (CEKA). 
-            </a>
-          </strong>
-          CEKA provides this tool under the Constitution of Kenya 2010 (Art 33, Art 35, Art 118(1)). 
-          CEKA does not store, monitor, or share any user data.
-        </p>
-        <p className="mt-2 italic">
-          By using this platform, you acknowledge that all content is user-generated. CEKA holds no liability for any outcomes arising from your objection email.
-        </p>
-        <div className="mt-4 flex flex-col sm:flex-row items-center justify-center gap-2 text-gray-400">
-          <Scale className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-400 flex-shrink-0" />
-          <span className="text-center text-xs sm:text-sm">
-            Exercise your constitutional right to participate in legislative processes (Art 118(1)).
-          </span>
+      {/* Footer - Fixed width issue */}
+      <footer className="bg-gray-900 text-gray-200 py-8 text-xs text-center px-4 w-full overflow-hidden">
+        <div className="max-w-6xl mx-auto">
+          <p className="break-words">
+            <strong>
+              Published by{" "}
+              <a
+                href="https://ceka.lovable.app"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline text-emerald-400 hover:text-emerald-300"
+              >
+                Civic Education Kenya App (CEKA). 
+              </a>
+            </strong>
+            CEKA provides this tool under the Constitution of Kenya 2010 (Art 33, Art 35, Art 118(1)). 
+            CEKA does not store, monitor, or share any user data.
+          </p>
+          <p className="mt-2 italic break-words">
+            By using this platform, you acknowledge that all content is user-generated. CEKA holds no liability for any outcomes arising from your objection email.
+          </p>
+          <div className="mt-4 flex flex-col sm:flex-row items-center justify-center gap-2 text-gray-400">
+            <Scale className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-400 flex-shrink-0" />
+            <span className="text-center text-xs sm:text-sm break-words">
+              Exercise your constitutional right to participate in legislative processes (Art 118(1)).
+            </span>
+          </div>
         </div>
-      </div>
+      </footer>
     </div>
   );
 };
