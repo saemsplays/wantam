@@ -77,17 +77,17 @@ Citizen of Kenya`);
   ];
 
   useEffect(() => {
-    const trackPageView = async () => {
-      try {
-        await supabase.rpc('increment_user_action', { action_type_param: 'view' });
-        console.log('Page view tracked successfully');
-      } catch (error) {
-        console.error('Error tracking page view:', error);
-      }
-    };
+  const trackPageView = async () => {
+    try {
+      await supabase.rpc('increment_user_action', { action_type_param: 'page_view' }); // Changed from 'view' to 'page_view'
+      console.log('Page view tracked successfully');
+    } catch (error) {
+      console.error('Error tracking page view:', error);
+    }
+  };
 
-    trackPageView();
-  }, []);
+  trackPageView();
+}, []);
 
   useEffect(() => {
     const fetchCounts = async () => {
@@ -194,11 +194,11 @@ Citizen of Kenya`);
     }
 
     try {
-      await supabase.rpc('increment_user_action', { action_type_param: 'email_sent' });
-      console.log('Email sent action tracked successfully');
-    } catch (error) {
-      console.error('Error tracking email sent:', error);
-    }
+    await supabase.rpc('increment_user_action', { action_type_param: 'email_sent' }); // This is correct
+    console.log('Email sent action tracked successfully');
+  } catch (error) {
+    console.error('Error tracking email sent:', error);
+  }
 
     const selectedEmails = getSelectedRecipientEmails();
     const to = selectedEmails.join(',');
