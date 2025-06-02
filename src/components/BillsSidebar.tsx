@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, ChevronDown, ChevronUp, Plus, ExternalLink, Heart, AlertTriangle, Globe, Mail, Phone } from "lucide-react";
+import { FileText, ChevronDown, ChevronUp, Plus, ExternalLink, Heart, AlertTriangle, Mail, Phone } from "lucide-react";
 
 interface Bill {
   name: string;
@@ -22,242 +22,168 @@ const relatedBills: Bill[] = [
 ];
 
 export const BillsSidebar: React.FC = () => {
-  const [isExpanded, setIsExpanded] = useState(false);
   const [showSuggestionForm, setShowSuggestionForm] = useState(false);
-  const [showSupportForm, setShowSupportForm] = useState(false);
-  const [showReportForm, setShowReportForm] = useState(false);
   const [suggestion, setSuggestion] = useState('');
-  const [supportMessage, setSupportMessage] = useState('');
-  const [reportDetails, setReportDetails] = useState('');
 
   const handleSuggestionSubmit = () => {
     if (suggestion.trim()) {
       console.log('Bill suggestion submitted:', suggestion);
       setSuggestion('');
       setShowSuggestionForm(false);
-      // Here you would typically send to a backend or email
-    }
-  };
-
-  const handleSupportSubmit = () => {
-    if (supportMessage.trim()) {
-      console.log('Support message submitted:', supportMessage);
-      setSupportMessage('');
-      setShowSupportForm(false);
-      // Here you would typically send to a backend or email
-    }
-  };
-
-  const handleReportSubmit = () => {
-    if (reportDetails.trim()) {
-      console.log('Report submitted:', reportDetails);
-      setReportDetails('');
-      setShowReportForm(false);
-      // Here you would typically send to a backend or email
     }
   };
 
   return (
-    <div className="fixed left-4 top-1/2 transform -translate-y-1/2 z-50 hidden lg:block">
+    <div className="fixed left-4 top-1/2 transform -translate-y-1/2 z-50 hidden lg:block space-y-4">
+      {/* Related Bills Card */}
       <Card className="w-64 shadow-lg border border-gray-200">
         <CardHeader className="pb-2">
-          <CardTitle className="flex items-center justify-between text-sm">
-            <div className="flex items-center gap-2">
-              <FileText className="h-4 w-4 text-blue-600" />
-              Related Bills
-            </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsExpanded(!isExpanded)}
-              className="h-6 w-6 p-0"
-            >
-              {isExpanded ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
-            </Button>
+          <CardTitle className="flex items-center gap-2 text-sm">
+            <FileText className="h-4 w-4 text-blue-600" />
+            Related Bills
           </CardTitle>
         </CardHeader>
-
-        {isExpanded && (
-          <CardContent className="pt-0">
-            <div className="space-y-2 mb-4">
-              {relatedBills.map((bill, index) => (
-                <a
-                  key={index}
-                  href={bill.path}
-                  className="block p-2 rounded-lg border border-gray-100 hover:border-blue-200 hover:bg-blue-50 transition-colors group"
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1 min-w-0">
-                      <h4 className="text-xs font-medium text-gray-900 leading-tight mb-1">
-                        {bill.name}
-                      </h4>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs text-gray-500">{bill.year}</span>
-                        <span className={`text-xs px-1.5 py-0.5 rounded-full ${
-                          bill.status === 'Active' ? 'bg-green-100 text-green-700' :
-                          bill.status === 'Pending' ? 'bg-yellow-100 text-yellow-700' :
-                          'bg-gray-100 text-gray-700'
-                        }`}>
-                          {bill.status}
-                        </span>
-                      </div>
-                    </div>
-                    <ExternalLink className="h-3 w-3 text-gray-400 group-hover:text-blue-600 transition-colors" />
-                  </div>
-                </a>
-              ))}
-            </div>
-
-            {/* Divider */}
-            <div className="border-t pt-3 space-y-2">
-              
-              {/* Suggest a Bill */}
-              {!showSuggestionForm ? (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setShowSuggestionForm(true)}
-                  className="w-full text-xs"
-                >
-                  <Plus className="h-3 w-3 mr-1" />
-                  Suggest a Bill
-                </Button>
-              ) : (
-                <div className="space-y-2">
-                  <Textarea
-                    placeholder="Suggest a bill for us to cover..."
-                    value={suggestion}
-                    onChange={(e) => setSuggestion(e.target.value)}
-                    className="text-xs resize-none"
-                    rows={3}
-                  />
-                  <div className="flex gap-1">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setShowSuggestionForm(false)}
-                      className="flex-1 text-xs"
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      size="sm"
-                      onClick={handleSuggestionSubmit}
-                      className="flex-1 text-xs"
-                      disabled={!suggestion.trim()}
-                    >
-                      Submit
-                    </Button>
-                  </div>
-                </div>
-              )}
-
-              {/* Support Button */}
-              {!showSupportForm ? (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setShowSupportForm(true)}
-                  className="w-full text-xs bg-green-50 hover:bg-green-100 border-green-200"
-                >
-                  <Heart className="h-3 w-3 mr-1" />
-                  Support Us
-                </Button>
-              ) : (
-                <div className="space-y-2">
-                  <Textarea
-                    placeholder="How would you like to support CEKA?"
-                    value={supportMessage}
-                    onChange={(e) => setSupportMessage(e.target.value)}
-                    className="text-xs resize-none"
-                    rows={3}
-                  />
-                  <div className="flex gap-1">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setShowSupportForm(false)}
-                      className="flex-1 text-xs"
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      size="sm"
-                      onClick={handleSupportSubmit}
-                      className="flex-1 text-xs bg-green-600 hover:bg-green-700"
-                      disabled={!supportMessage.trim()}
-                    >
-                      Submit
-                    </Button>
-                  </div>
-                </div>
-              )}
-
-              {/* CEKA Link */}
+        <CardContent className="pt-0">
+          <div className="space-y-2 mb-4">
+            {relatedBills.map((bill, index) => (
               <a
-                href="https://ceka.lovable.app/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block w-full"
+                key={index}
+                href={bill.path}
+                className="block p-2 rounded-lg border border-gray-100 hover:border-blue-200 hover:bg-blue-50 transition-colors group"
               >
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="w-full text-xs bg-blue-50 hover:bg-blue-100 border-blue-200"
-                >
-                  <Globe className="h-3 w-3 mr-1" />
-                  Visit CEKA
-                </Button>
-              </a>
-
-              {/* Report Feature */}
-              {!showReportForm ? (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setShowReportForm(true)}
-                  className="w-full text-xs bg-red-50 hover:bg-red-100 border-red-200"
-                >
-                  <AlertTriangle className="h-3 w-3 mr-1" />
-                  Report Violations
-                </Button>
-              ) : (
-                <div className="space-y-2">
-                  <Textarea
-                    placeholder="Report government abuse, abduction, or atrocity..."
-                    value={reportDetails}
-                    onChange={(e) => setReportDetails(e.target.value)}
-                    className="text-xs resize-none"
-                    rows={4}
-                  />
-                  <div className="text-xs text-red-600 mb-2">
-                    <p>Emergency contacts:</p>
-                    <p>📞 Kenya Red Cross: 1199</p>
-                    <p>📧 KHRC: info@khrc.or.ke</p>
+                <div className="flex items-start justify-between">
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-xs font-medium text-gray-900 leading-tight mb-1">
+                      {bill.name}
+                    </h4>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-gray-500">{bill.year}</span>
+                      <span className={`text-xs px-1.5 py-0.5 rounded-full ${
+                        bill.status === 'Active' ? 'bg-green-100 text-green-700' :
+                        bill.status === 'Pending' ? 'bg-yellow-100 text-yellow-700' :
+                        'bg-gray-100 text-gray-700'
+                      }`}>
+                        {bill.status}
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex gap-1">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setShowReportForm(false)}
-                      className="flex-1 text-xs"
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      size="sm"
-                      onClick={handleReportSubmit}
-                      className="flex-1 text-xs bg-red-600 hover:bg-red-700"
-                      disabled={!reportDetails.trim()}
-                    >
-                      Submit
-                    </Button>
-                  </div>
+                  <ExternalLink className="h-3 w-3 text-gray-400 group-hover:text-blue-600 transition-colors" />
                 </div>
-              )}
+              </a>
+            ))}
+          </div>
+
+          {/* Suggest a Bill */}
+          {!showSuggestionForm ? (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowSuggestionForm(true)}
+              className="w-full text-xs"
+            >
+              <Plus className="h-3 w-3 mr-1" />
+              Suggest a Bill
+            </Button>
+          ) : (
+            <div className="space-y-2">
+              <Textarea
+                placeholder="Suggest a bill for us to cover..."
+                value={suggestion}
+                onChange={(e) => setSuggestion(e.target.value)}
+                className="text-xs resize-none"
+                rows={3}
+              />
+              <div className="flex gap-1">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowSuggestionForm(false)}
+                  className="flex-1 text-xs"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={handleSuggestionSubmit}
+                  className="flex-1 text-xs"
+                  disabled={!suggestion.trim()}
+                >
+                  Submit
+                </Button>
+              </div>
             </div>
-          </CardContent>
-        )}
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Support Us Card */}
+      <Card className="w-64 shadow-lg border border-green-200 bg-green-50">
+        <CardContent className="pt-4">
+          <a
+            href="https://www.paypal.com/ncp/payment/5HP7FN968RTH6"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block"
+          >
+            <Button
+              className="w-full text-xs bg-green-600 hover:bg-green-700 text-white"
+              size="sm"
+            >
+              <Heart className="h-3 w-3 mr-1" />
+              Support Us
+            </Button>
+          </a>
+          <p className="text-xs text-green-700 mt-2 text-center">
+            Help us continue our work protecting constitutional rights
+          </p>
+        </CardContent>
+      </Card>
+
+      {/* Visit CEKA Card */}
+      <Card className="w-64 shadow-lg border border-blue-200 bg-blue-50">
+        <CardContent className="pt-4">
+          <a
+            href="https://ceka.lovable.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block"
+          >
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-full text-xs bg-blue-50 hover:bg-blue-100 border-blue-200"
+            >
+              <img 
+                src="/lovable-uploads/5fd566ee-5934-4cc8-a80d-a33de3e8c578.png" 
+                alt="CEKA" 
+                className="h-3 w-3 mr-1" 
+              />
+              Visit CEKA
+            </Button>
+          </a>
+          <p className="text-xs text-blue-700 mt-2 text-center">
+            Civic Education Kenya App - Empowering citizens through constitutional literacy
+          </p>
+        </CardContent>
+      </Card>
+
+      {/* Report Violations Card */}
+      <Card className="w-64 shadow-lg border border-red-200 bg-red-50">
+        <CardContent className="pt-4">
+          <a href="/report-violations" className="block">
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-full text-xs bg-red-50 hover:bg-red-100 border-red-200"
+            >
+              <AlertTriangle className="h-3 w-3 mr-1" />
+              Report Violations
+            </Button>
+          </a>
+          <p className="text-xs text-red-700 mt-2 text-center">
+            Report government abuse, violations, or atrocities securely
+          </p>
+        </CardContent>
       </Card>
     </div>
   );
