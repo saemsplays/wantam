@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,7 +13,6 @@ import { SimpleTour } from '../components/SimpleTour';
 import { ScrollToTop } from '../components/ScrollToTop';
 import { TourStarter } from '../components/TourStarter';
 import { BillsSidebar } from '../components/BillsSidebar';
-import { MobileFAB } from '../components/MobileFAB';
 
 const Index = () => {
   const [userName, setUserName] = useState('');
@@ -259,9 +257,6 @@ Citizen of Kenya`);
 
       {/* Bills Sidebar */}
       <BillsSidebar />
-
-      {/* Mobile FAB */}
-      <MobileFAB />
 
       {/* Scroll to Top Button */}
       <ScrollToTop />
