@@ -952,7 +952,7 @@ Sincerely,
 
 // Floating Action Button for Mobile
 const MobileFAB: React.FC<{ onClick: () => void }> = ({ onClick }) => (
-  <div className="fixed bottom-18 left-4 z-50 lg:hidden">
+  <div className="fixed bottom-20 left-4 z-50 lg:hidden">
     <Button
       className="rounded-full w-14 h-14 shadow-lg"
       onClick={onClick}
