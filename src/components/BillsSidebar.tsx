@@ -15,7 +15,13 @@ interface Category {
   color: string;
   urgency: string;
 }
-const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+
+interface Bill {
+  name: string;
+  year: string;
+  status: string;
+  path: string;
+}
 
 const relatedBills: Bill[] = [
   { name: "Tax Laws (Amendment) Bill", year: "2024", status: "Active", path: "/bills/tax-laws-amendment-2024" },
@@ -34,20 +40,20 @@ const ReportingHub = ({ onClose }: { onClose?: () => void }) => {
   const [copiedText, setCopiedText] = useState('');
 
   const copyToClipboard = (text: string) => {
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(text);
-  } else {
-    // Fallback for older browsers
-    const textArea = document.createElement('textarea');
-    textArea.value = text;
-    document.body.appendChild(textArea);
-    textArea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textArea);
-  }
-  setCopiedText(text);
-  setTimeout(() => setCopiedText(''), 2000);
-};
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text);
+    } else {
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+    }
+    setCopiedText(text);
+    setTimeout(() => setCopiedText(''), 2000);
+  };
 
   const categories = [
     {
@@ -164,7 +170,6 @@ const ReportingHub = ({ onClose }: { onClose?: () => void }) => {
     ]
   };
 
-  // Complete resources object with all categories and subcategories
   const resources = {
     'local-ngos': {
       'torture': {
@@ -576,7 +581,6 @@ const ReportingHub = ({ onClose }: { onClose?: () => void }) => {
     }
   };
 
-  // Prefilled email templates
   const getEmailTemplate = (org: any, category: any, subcategory: any) => {
     const subject = encodeURIComponent(`Human Rights Violation Report - ${org.name}`);
     const body = encodeURIComponent(
@@ -625,7 +629,7 @@ Sincerely,
 
   // Handle contact methods with prefilled content
   const renderContactMethods = (org: any, category: any, subcategory: any) => {
-    if (!org.contact) return null; // Guard clause
+    if (!org.contact) return null;
     
     return (
       <div className="mt-2 space-y-1">
@@ -858,7 +862,6 @@ Sincerely,
         {renderContactMethods(org, selectedCategory, specificResources)}
       </div>
     )}
-                      )}
                       {org.contact.email && (
                         <div className="flex items-center text-xs">
                           <Mail size={12} className="mr-2 text-blue-600" />
@@ -993,7 +996,6 @@ const MobileDrawer: React.FC<{
     </div>
   );
 };
-
 
 // Enhanced BillsSidebar with scrollable content and mobile support
 export const BillsSidebar: React.FC = () => {
@@ -1189,42 +1191,106 @@ export const BillsSidebar: React.FC = () => {
                   </div>
 
                   <div className="border-t pt-3 space-y-2">
-                    {/* ... (desktop forms remain the same) ... */}
-                  <div className="border-t pt-3 space-y-2">
-  <Button 
-    variant="outline"
-    size="sm"
-    className="w-full text-xs"
-    onClick={() => setShowSuggestionForm(true)}
-  >
-    <Plus className="h-3 w-3 mr-1" />
-    Suggest a Bill
-  </Button>
-  <Button 
-    variant="outline"
-    size="sm"
-    className="w-full text-xs"
-    onClick={() => setShowSupportForm(true)}
-  >
-    <Heart className="h-3 w-3 mr-1" />
-    Support CEKA
-  </Button>
-  <Button 
-    variant="outline"
-    size="sm"
-    className="w-full text-xs"
-    onClick={() => setShowReportHub(true)}
-  >
-    <AlertTriangle className="h-3 w-3 mr-1" />
-    Report Hub
-  </Button>
-  <a href="https://ceka.lovable.app/" target="_blank" rel="noopener noreferrer">
-    <Button variant="outline" size="sm" className="w-full text-xs">
-      <Globe className="h-3 w-3 mr-1" />
-      Visit CEKA
-    </Button>
-  </a>
-</div>
+                    <Button 
+                      variant="outline"
+                      size="sm"
+                      className="w-full text-xs"
+                      onClick={() => setShowSuggestionForm(true)}
+                    >
+                      <Plus className="h-3 w-3 mr-1" />
+                      Suggest a Bill
+                    </Button>
+                    <Button 
+                      variant="outline"
+                      size="sm"
+                      className="w-full text-xs"
+                      onClick={() => setShowSupportForm(true)}
+                    >
+                      <Heart className="h-3 w-3 mr-1" />
+                      Support CEKA
+                    </Button>
+                    <Button 
+                      variant="outline"
+                      size="sm"
+                      className="w-full text-xs"
+                      onClick={() => setShowReportHub(true)}
+                    >
+                      <AlertTriangle className="h-3 w-3 mr-1" />
+                      Report Hub
+                    </Button>
+                    <a href="https://ceka.lovable.app/" target="_blank" rel="noopener noreferrer">
+                      <Button variant="outline" size="sm" className="w-full text-xs">
+                        <Globe className="h-3 w-3 mr-1" />
+                        Visit CEKA
+                      </Button>
+                    </a>
+                  </div>
+
+                  {showSuggestionForm && (
+                    <div className="mt-4 p-4 bg-gray-50 rounded-lg border">
+                      <h3 className="font-semibold text-xs mb-2">Suggest a Bill</h3>
+                      <Textarea
+                        placeholder="Suggest a bill for us to cover..."
+                        value={suggestion}
+                        onChange={(e) => setSuggestion(e.target.value)}
+                        className="mb-2 text-xs min-h-[60px]"
+                      />
+                      <div className="flex gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="flex-1 text-xs"
+                          onClick={() => setShowSuggestionForm(false)}
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          size="sm"
+                          className="flex-1 text-xs"
+                          onClick={handleSuggestionSubmit}
+                          disabled={!suggestion.trim()}
+                        >
+                          Submit
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+
+                  {showSupportForm && (
+                    <div className="mt-4 p-4 bg-green-50 rounded-lg border border-green-200">
+                      <h3 className="font-semibold text-xs mb-2">Support CEKA</h3>
+                      <Textarea
+                        placeholder="How would you like to support CEKA?"
+                        value={supportMessage}
+                        onChange={(e) => setSupportMessage(e.target.value)}
+                        className="mb-2 text-xs min-h-[60px]"
+                      />
+                      <div className="flex gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="flex-1 text-xs"
+                          onClick={() => setShowSupportForm(false)}
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          size="sm"
+                          className="flex-1 text-xs bg-green-600 hover:bg-green-700"
+                          onClick={handleSupportSubmit}
+                          disabled={!supportMessage.trim()}
+                        >
+                          Submit
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+            </CardContent>
+          )}
+        </Card>
+      </div>
 
       {/* Mobile Floating Action Button */}
       <MobileFAB onClick={() => openMobileDrawer('bills')} />
@@ -1282,9 +1348,9 @@ export const BillsSidebar: React.FC = () => {
           className="flex flex-col items-center text-xs px-2 text-gray-600 hover:text-gray-900"
         >
           <Button variant="ghost" className="flex flex-col text-xs px-2">
-          <Globe className="h-4 w-4 mb-1" />
-          CEKA
-           </Button>
+            <Globe className="h-4 w-4 mb-1" />
+            CEKA
+          </Button>
         </a>
       </div>
     </>
