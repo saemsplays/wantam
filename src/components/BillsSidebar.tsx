@@ -1283,7 +1283,10 @@ export const BillsSidebar: React.FC = () => {
       </div>
 
       {/* Mobile Floating Action Button */}
-      <MobileFAB onClick={() => openMobileDrawer('bills')} />
+<MobileFAB 
+  onClick={() => openMobileDrawer('bills')} 
+  className="fixed left-4 bottom-16 z-50"
+/>
 
       {/* Mobile Drawer */}
       <MobileDrawer 
