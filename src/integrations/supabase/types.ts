@@ -81,7 +81,7 @@ export type Database = {
         Returns: undefined
       }
       increment_user_action: {
-        Args: Record<PropertyKey, never> | { action_type_param: string }
+        Args: { action_type_param: string }
         Returns: undefined
       }
       update_user_actions: {
