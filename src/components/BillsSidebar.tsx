@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -24,6 +23,16 @@ interface Bill {
   path: string;
 }
 
+interface QuestionOption {
+  text: string;
+  leads: string;
+}
+
+interface QuestionnaireAnswer {
+  text: string;
+  leads: string;
+}
+
 const relatedBills: Bill[] = [
   { name: "Tax Laws (Amendment) Bill", year: "2024", status: "Active", path: "/bills/tax-laws-amendment-2024" },
   { name: "Public Finance Management Bill", year: "2024", status: "Pending", path: "/bills/public-finance-management-2024" },
@@ -35,8 +44,8 @@ const relatedBills: Bill[] = [
 // Enhanced Reporting Hub Component with prefilled content and hyperlinks
 const ReportingHub = ({ onClose }: { onClose?: () => void }) => {
   const [currentView, setCurrentView] = useState('sidebar');
-  const [selectedCategory, setSelectedCategory] = useState<any>(null);
-  const [questionnaire, setQuestionnaire] = useState({});
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+  const [questionnaire, setQuestionnaire] = useState<Record<number, QuestionnaireAnswer>>({});
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [copiedText, setCopiedText] = useState('');
 
@@ -171,7 +180,7 @@ const ReportingHub = ({ onClose }: { onClose?: () => void }) => {
     ]
   };
 
-  const resources = {
+  const resources: any = {
     'local-ngos': {
       'torture': {
         title: 'Torture Documentation & Support',
@@ -608,14 +617,14 @@ Sincerely,
     return `mailto:${org.contact.email}?subject=${subject}&body=${body}`;
   };
 
-  const handleCategorySelect = (category: any) => {
+  const handleCategorySelect = (category: Category) => {
     setSelectedCategory(category);
     setCurrentView('questionnaire');
     setCurrentQuestion(0);
     setQuestionnaire({});
   };
 
-  const handleQuestionAnswer = (answer: any) => {
+  const handleQuestionAnswer = (answer: QuestionOption) => {
     const newQuestionnaire = { ...questionnaire, [currentQuestion]: answer };
     setQuestionnaire(newQuestionnaire);
     setCurrentView('results');
@@ -755,6 +764,8 @@ Sincerely,
   );
 
   const renderQuestionnaire = () => {
+    if (!selectedCategory) return null;
+    
     const categoryQuestions = questions[selectedCategory.id as keyof typeof questions];
     const currentQ = categoryQuestions[currentQuestion];
 
@@ -777,7 +788,7 @@ Sincerely,
           <div>
             <h2 className="text-sm font-semibold text-gray-800 mb-3">{currentQ.question}</h2>
             <div className="space-y-2">
-              {currentQ.options.map((option: any, index: number) => (
+              {currentQ.options.map((option: QuestionOption, index: number) => (
                 <button
                   key={index}
                   onClick={() => handleQuestionAnswer(option)}
@@ -797,9 +808,16 @@ Sincerely,
   };
 
   const renderResults = () => {
-    const selectedAnswer = questionnaire[0 as keyof typeof questionnaire];
-    const resourceCategory = resources[selectedCategory.id as keyof typeof resources];
-    const specificResources = resourceCategory[selectedAnswer.leads as keyof typeof resourceCategory];
+    if (!selectedCategory) return null;
+    
+    const selectedAnswer = questionnaire[0] as QuestionnaireAnswer;
+    if (!selectedAnswer) return null;
+    
+    const resourceCategory = resources[selectedCategory.id];
+    if (!resourceCategory) return null;
+    
+    const specificResources = resourceCategory[selectedAnswer.leads];
+    if (!specificResources) return null;
 
     return (
       <div className="w-full">
