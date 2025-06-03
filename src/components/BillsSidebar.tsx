@@ -963,42 +963,14 @@ const MobileFAB: React.FC<{ onClick: () => void }> = ({ onClick }) => (
 );
 
 // Mobile Navigation Drawer
-// Mobile Navigation Drawer
 const MobileDrawer: React.FC<{ 
   isOpen: boolean; 
   onClose: () => void; 
   children: React.ReactNode 
 }> = ({ isOpen, onClose, children }) => {
-  return (
-    <div 
-      className={`fixed inset-0 z-40 lg:hidden transition-all duration-300 ${
-        isOpen 
-          ? 'opacity-100 pointer-events-auto' 
-          : 'opacity-0 pointer-events-none'
-      }`}
-    >
-      {/* Backdrop */}
-      <div 
-        className={`absolute inset-0 bg-black transition-opacity duration-300 ${
-          isOpen ? 'bg-opacity-50' : 'bg-opacity-0'
-        }`}
-        onClick={onClose}
-      />
-      
-      {/* Drawer Content */}
-      <div 
-        className={`absolute bottom-0 left-0 right-0 bg-white rounded-t-xl shadow-xl transform transition-all duration-300 ease-out ${
-          isOpen 
-            ? 'translate-y-0 opacity-100' 
-            : 'translate-y-full opacity-0'
-        }`}
-      >
-        {children}
-      </div>
-    </div>
-  );
-};
+  if (!isOpen) return null;
 
+  
   return (
     <div className="fixed inset-0 z-50 lg:hidden">
       <div className="absolute inset-0 bg-black bg-opacity-50" onClick={onClose} />
