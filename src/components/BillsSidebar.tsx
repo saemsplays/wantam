@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -851,70 +852,41 @@ Sincerely,
             <div className="space-y-3">
               <h3 className="font-semibold text-xs text-gray-800 mb-1">Organizations:</h3>
               {specificResources.organizations.map((org: any, index: number) => (
-              <div key={index} className="p-3 border border-gray-200 rounded-lg">
-                <h4 className="font-semibold text-xs text-gray-800">{org.name}</h4>
-                {org.description && <p className="text-xs text-gray-600 mt-1">{org.description}</p>}
+                <div key={index} className="p-3 border border-gray-200 rounded-lg">
+                  <h4 className="font-semibold text-xs text-gray-800">{org.name}</h4>
+                  {org.description && <p className="text-xs text-gray-600 mt-1">{org.description}</p>}
                   
                   {/* Contact Info */}
-    {(org.contact?.website || org.contact?.email || org.contact?.phone) && (
-      <div className="mt-2">
-        <h5 className="font-semibold text-xs text-gray-700 mb-1">Contact:</h5>
-        {renderContactMethods(org, selectedCategory, specificResources)}
-      </div>
-    )}
-                      {org.contact.email && (
-                        <div className="flex items-center text-xs">
-                          <Mail size={12} className="mr-2 text-blue-600" />
-                          <span>{org.contact.email}</span>
-                        </div>
-                      )}
-                      {org.contact.phone && (
-                        <div className="flex items-center text-xs">
-                          <Phone size={12} className="mr-2 text-green-600" />
-                          <span>{org.contact.phone}</span>
-                        </div>
-                      )}
-                      {org.contact.mobile && (
-                        <div className="flex items-center text-xs">
-                          <Phone size={12} className="mr-2 text-green-600" />
-                          <span>{org.contact.mobile}</span>
-                        </div>
-                      )}
-                      {org.contact.address && (
-                        <div className="flex items-start text-xs">
-                          <div className="mt-1 mr-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                              <circle cx="12" cy="10" r="3"></circle>
-                            </svg>
-                          </div>
-                          <span>{org.contact.address}</span>
-                        </div>
-                      )}
+                  {(org.contact?.website || org.contact?.email || org.contact?.phone) && (
+                    <div className="mt-2">
+                      <h5 className="font-semibold text-xs text-gray-700 mb-1">Contact:</h5>
+                      {renderContactMethods(org, selectedCategory, specificResources)}
                     </div>
                   )}
                   
                   {/* Services */}
-    {org.services && (
-      <div className="mt-2">
-        <h5 className="font-semibold text-xs text-gray-700 mb-1">Services:</h5>
-        <ul className="list-disc pl-4 space-y-1">
-          {org.services.map((service: string, idx: number) => (
-            <li key={idx} className="text-xs text-gray-600">{service}</li>
-          ))}
-        </ul>
-      </div>
-    )}
+                  {org.services && (
+                    <div className="mt-2">
+                      <h5 className="font-semibold text-xs text-gray-700 mb-1">Services:</h5>
+                      <ul className="list-disc pl-4 space-y-1">
+                        {org.services.map((service: string, idx: number) => (
+                          <li key={idx} className="text-xs text-gray-600">{service}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                   
                   {/* Process */}
-    {org.process && (
-      <div className="mt-2">
-        <h5 className="font-semibold text-xs text-gray-700 mb-1">Process:</h5>
-        <p className="text-xs text-gray-600">{org.process}</p>
-      </div>
-    )}
-  </div>
-))}
+                  {org.process && (
+                    <div className="mt-2">
+                      <h5 className="font-semibold text-xs text-gray-700 mb-1">Process:</h5>
+                      <p className="text-xs text-gray-600">{org.process}</p>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
 
           {specificResources.contacts && (
             <div className="mt-3">
