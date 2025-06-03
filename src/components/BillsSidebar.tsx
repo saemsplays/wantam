@@ -6,11 +6,12 @@ import {
   FileText, ChevronDown, ChevronUp, ChevronRight, Plus, ExternalLink, 
   Heart, AlertTriangle, Globe, Mail, Phone, Shield, Eye, Zap, Menu, X
 } from "lucide-react";
+import DonationWidget from './DonationWidget';
 
 interface Category {
   id: string;
   title: string;
-  icon: React.ComponentType<{ size?: number; className?: string }>;
+  icon: React.ComponentType<any>;
   description: string;
   color: string;
   urgency: string;
@@ -998,10 +999,14 @@ export const BillsSidebar: React.FC = () => {
   const [supportMessage, setSupportMessage] = useState('');
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [mobileContent, setMobileContent] = useState<'bills' | 'suggest' | 'support' | 'report'>('bills');
+  const [showDonationWidget, setShowDonationWidget] = useState(false);
+  const [donationTimedOut, setDonationTimedOut] = useState(false);
 
   const handleSuggestionSubmit = () => {
     if (suggestion.trim()) {
-      console.log('Bill suggestion submitted:', suggestion);
+      const subject = encodeURIComponent('Bill Suggestion from CEKA Website');
+      const body = encodeURIComponent(`Bill Suggestion:\n\n${suggestion}`);
+      window.open(`mailto:civiceducationkenya@gmail.com?subject=${subject}&body=${body}`, '_blank');
       setSuggestion('');
       setShowSuggestionForm(false);
     }
@@ -1010,9 +1015,15 @@ export const BillsSidebar: React.FC = () => {
   const handleSupportSubmit = () => {
     if (supportMessage.trim()) {
       console.log('Support message submitted:', supportMessage);
+      setShowDonationWidget(true);
       setSupportMessage('');
       setShowSupportForm(false);
     }
+  };
+
+  const handleDonationTimeout = () => {
+    setDonationTimedOut(true);
+    setShowDonationWidget(false);
   };
 
   const openMobileDrawer = (content: typeof mobileContent) => {
@@ -1344,6 +1355,14 @@ export const BillsSidebar: React.FC = () => {
           </Button>
         </a>
       </div>
+
+      {/* Donation Widget */}
+      {(showDonationWidget || !donationTimedOut) && (
+        <DonationWidget 
+          onTimedOut={handleDonationTimeout}
+          isVisible={showDonationWidget}
+        />
+      )}
     </>
   );
 };
