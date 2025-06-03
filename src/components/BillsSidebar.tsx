@@ -4,13 +4,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
   FileText, ChevronDown, ChevronUp, ChevronRight, Plus, ExternalLink, 
-  Heart, AlertTriangle, Globe, Mail, Phone, Shield, Users, Eye, Zap, Menu, X
+  Heart, AlertTriangle, Globe, Mail, Phone, Shield, Eye, Zap, Menu, X
 } from "lucide-react";
 
 interface Category {
   id: string;
   title: string;
-  icon: React.ComponentType;
+  icon: React.ComponentType<{ size?: number; className?: string }>;
   description: string;
   color: string;
   urgency: string;
