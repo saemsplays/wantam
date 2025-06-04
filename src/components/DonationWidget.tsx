@@ -147,14 +147,6 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
           onMouseLeave={handleMouseLeave}
           onClick={handleExpand}
         >
-          {/* Glowing backdrop effect */}
-          <div 
-            className={`absolute inset-0 rounded-full transition-all duration-700 ease-out ${
-              isHovering 
-                ? 'bg-red-400 blur-xl scale-150 opacity-30' 
-                : 'bg-red-500 blur-lg scale-100 opacity-20'
-            }`}
-          />
           
           {/* Main button container - fixed size to prevent layout shifts */}
           <div className="relative w-48 h-12 flex items-center">
