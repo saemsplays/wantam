@@ -192,7 +192,7 @@ const RotatingText = forwardRef<any, RotatingTextProps>((props, ref) => {
       className={cn("text-rotate", mainClassName)}
       {...rest}
       layout
-      layoutTransition={{ type: "spring", damping: 25, stiffness: 200, mass: 0.6 }}
+      layoutTransition={{ type: "spring", damping: 28, stiffness: 60, mass: 0.5 }}
       transition={transition} // <- this applies to layout changes 
     >
       <span className="text-rotate-sr-only">{texts[currentTextIndex]}</span>
@@ -203,7 +203,7 @@ const RotatingText = forwardRef<any, RotatingTextProps>((props, ref) => {
             splitBy === "lines" ? "text-rotate-lines" : "text-rotate"
           )}
           layout="position"
-          layoutTransition={{ type: "spring", damping: 20, stiffness: 150, mass: 0.6 }}
+          layoutTransition={{ type: "spring", damping: 28, stiffness: 60, mass: 0.5 }}
           aria-hidden="true"
         >
           {elements.map((wordObj, wordIndex, array) => {
