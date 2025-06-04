@@ -191,8 +191,8 @@ const RotatingText = forwardRef<any, RotatingTextProps>((props, ref) => {
     <motion.span
       className={cn("text-rotate", mainClassName)}
       {...rest}
-      layout="position"
-      layoutTransition={{ type: "spring", damping: 25, stiffness: 150, mass: 0.6 }}
+      layout
+      layoutTransition={{ type: "spring", damping: 25, stiffness: 200, mass: 0.6 }}
       transition={transition} // <- this applies to layout changes 
     >
       <span className="text-rotate-sr-only">{texts[currentTextIndex]}</span>
