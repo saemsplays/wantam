@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Send, Mail, FileText, CheckCircle, User, AlertTriangle, Shield, Scale, Users, Play, RotateCcw, ArrowUpRight } from "lucide-react";
+import { Send, Mail, FileText, CheckCircle, User, AlertTriangle, Shield, Scale, Users, Play, RotateCcw, ArrowUpRight, Download } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { ScrollProgressTracker } from '../components/ScrollProgressTracker';
@@ -13,6 +13,11 @@ import { SimpleTour } from '../components/SimpleTour';
 import { ScrollToTop } from '../components/ScrollToTop';
 import { TourStarter } from '../components/TourStarter';
 import { BillsSidebar } from '../components/BillsSidebar';
+import DonationWidget from '../components/DonationWidget';
+import LetterGlitch from '../components/LetterGlitch';
+import BlurText from '../components/BlurText';
+import TrueFocus from '../components/TrueFocus';
+import Folder from '../components/Folder';
 
 const Index = () => {
   const [userName, setUserName] = useState('');
@@ -60,34 +65,36 @@ Citizen of Kenya`);
   const [userCount, setUserCount] = useState({ viewers: 0, emailsSent: 0 });
   const [showFullCount, setShowFullCount] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
+  const [titleAnimationComplete, setTitleAnimationComplete] = useState(false);
   
   // Tour state
   const [showTour, setShowTour] = useState(false);
   const [hasSeenTour, setHasSeenTour] = useState(false);
 
-  // Section definitions with updated percentages including Introduction
+  // Section definitions with updated percentages
   const sections = [
-    { id: 'hero', title: 'Introduction', position: 0 },
+    { id: 'hero', title: 'Digital Resistance', position: 0 },
     { id: 'gpt-card', title: 'Finance Bill GPT', position: 15 },
-    { id: 'details', title: 'Your Details', position: 31 },
-    { id: 'recipients', title: 'Send To', position: 43 },
-    { id: 'subject', title: 'Email Subject', position: 52 },
-    { id: 'letter', title: 'Your Objection Letter', position: 74 },
+    { id: 'download-app', title: 'Download App', position: 25 },
+    { id: 'details', title: 'Your Details', position: 35 },
+    { id: 'recipients', title: 'Send To', position: 47 },
+    { id: 'subject', title: 'Email Subject', position: 56 },
+    { id: 'letter', title: 'Your Objection Letter', position: 78 },
     { id: 'send', title: 'Ready To Submit Your Objection?', position: 98 }
   ];
 
   useEffect(() => {
-  const trackPageView = async () => {
-    try {
-      await supabase.rpc('increment_user_action', { action_type_param: 'page_view' }); // Changed from 'view' to 'page_view'
-      console.log('Page view tracked successfully');
-    } catch (error) {
-      console.error('Error tracking page view:', error);
-    }
-  };
+    const trackPageView = async () => {
+      try {
+        await supabase.rpc('increment_user_action', { action_type_param: 'page_view' });
+        console.log('Page view tracked successfully');
+      } catch (error) {
+        console.error('Error tracking page view:', error);
+      }
+    };
 
-  trackPageView();
-}, []);
+    trackPageView();
+  }, []);
 
   useEffect(() => {
     const fetchCounts = async () => {
@@ -117,13 +124,16 @@ Citizen of Kenya`);
     return () => clearInterval(interval);
   }, []);
 
-  // Check if user has seen tour before and show tour starter instead
   useEffect(() => {
     const tourSeen = localStorage.getItem('finance-bill-tour-seen');
     if (tourSeen) {
       setHasSeenTour(true);
     }
   }, []);
+
+  const handleTitleAnimationComplete = () => {
+    setTitleAnimationComplete(true);
+  };
 
   const handleTourComplete = () => {
     setShowTour(false);
@@ -194,11 +204,11 @@ Citizen of Kenya`);
     }
 
     try {
-    await supabase.rpc('increment_user_action', { action_type_param: 'email_sent' }); // This is correct
-    console.log('Email sent action tracked successfully');
-  } catch (error) {
-    console.error('Error tracking email sent:', error);
-  }
+      await supabase.rpc('increment_user_action', { action_type_param: 'email_sent' });
+      console.log('Email sent action tracked successfully');
+    } catch (error) {
+      console.error('Error tracking email sent:', error);
+    }
 
     const selectedEmails = getSelectedRecipientEmails();
     const to = selectedEmails.join(',');
@@ -261,6 +271,9 @@ Citizen of Kenya`);
       {/* Scroll to Top Button */}
       <ScrollToTop />
 
+      {/* Donation Widget */}
+      <DonationWidget />
+
       <div className={`fixed inset-0 pointer-events-none transition-all duration-700 ease-out z-10 ${
         activeSection !== 'hero' ? 'bg-black bg-opacity-5' : ''
       }`} />
@@ -283,11 +296,21 @@ Citizen of Kenya`);
         )}
       </div>
 
-      <section id="hero" className={`relative overflow-hidden bg-white transition-all duration-700 ${
+      <section id="hero" className={`relative overflow-hidden bg-black transition-all duration-700 ${
         activeSection === 'hero' ? 'relative z-30 scale-[1.02]' : 'relative z-20'
       }`}>
-        <div className="absolute inset-0 bg-gradient-to-r from-red-600/5 via-transparent to-green-600/5"></div>
-        <div className="relative max-w-6xl mx-auto px-4 py-16">
+        {/* Letter Glitch Background */}
+        <div className="absolute inset-0">
+          <LetterGlitch 
+            glitchSpeed={50}
+            centerVignette={true}
+            outerVignette={false}
+            smooth={true}
+            glitchColors={['#ff0000', '#ffffff', '#000000']}
+          />
+        </div>
+
+        <div className="relative max-w-6xl mx-auto px-4 py-16 z-10">
           <div className="text-center">
             <div className={`inline-flex items-center gap-3 px-6 py-3 rounded-full text-sm font-medium mb-6 ${
               shouldShowCounter 
@@ -307,14 +330,30 @@ Citizen of Kenya`);
               )}
             </div>
             
-            <h1 className="text-5xl font-bold text-gray-900 mb-6 leading-tight">
-              Object to the{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-green-600">
-                Finance Bill 2025
-              </span>
-            </h1>
+            <div className="mb-6">
+              <BlurText
+                text="Object to the"
+                delay={150}
+                animateBy="words"
+                direction="top"
+                onAnimationComplete={handleTitleAnimationComplete}
+                className="text-5xl font-bold text-white mb-2 leading-tight"
+              />
+              
+              {titleAnimationComplete && (
+                <TrueFocus 
+                  sentence="Finance Bill 2025"
+                  manualMode={false}
+                  blurAmount={5}
+                  borderColor="#ff0000"
+                  glowColor="rgba(255, 0, 0, 0.6)"
+                  animationDuration={1}
+                  pauseBetweenAnimations={2}
+                />
+              )}
+            </div>
             
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
               Exercise your constitutional right to participate in legislative processes.
               Submit your formal objection to protect essential goods and privacy rights.
             </p>
@@ -323,15 +362,15 @@ Citizen of Kenya`);
               {stats.map((stat, index) => (
                 <div
                   key={index}
-                  className="bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl p-3 md:p-6 shadow-sm"
+                  className="bg-white/10 backdrop-blur-sm border border-gray-700 rounded-xl p-3 md:p-6 shadow-sm"
                 >
                   <div className="flex flex-col items-center gap-2 mb-2 text-center">
                     <div className="bg-blue-100 p-2 rounded-lg flex-shrink-0">
                       <stat.icon className="h-4 w-4 md:h-5 md:w-5 text-blue-600" />
                     </div>
-                    <h3 className="font-semibold text-gray-900 text-xs md:text-base leading-tight">{stat.label}</h3>
+                    <h3 className="font-semibold text-white text-xs md:text-base leading-tight">{stat.label}</h3>
                   </div>
-                  <p className="text-xs md:text-sm text-gray-600 text-center leading-tight">{stat.value}</p>
+                  <p className="text-xs md:text-sm text-gray-300 text-center leading-tight">{stat.value}</p>
                 </div>
               ))}
             </div>
@@ -369,6 +408,45 @@ Citizen of Kenya`);
                   </a>
                   <p className="text-xs text-white/70 mt-2">
                     Opens in a new window. No login required.
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* Download App Section */}
+        <section id="download-app">
+          <Card className="bg-gradient-to-r from-blue-600 to-purple-600 border-gray-200 shadow-lg">
+            <CardContent className="pt-6">
+              <div className="flex items-center gap-6">
+                <div className="flex-shrink-0">
+                  <Folder 
+                    size={1.5} 
+                    color="#00d8ff" 
+                    className="mx-auto"
+                    items={[
+                      <div key="app1" className="text-xs text-center p-2 bg-blue-100 rounded">CEKA App</div>,
+                      <div key="app2" className="text-xs text-center p-2 bg-green-100 rounded">Civic Tools</div>,
+                      <div key="app3" className="text-xs text-center p-2 bg-red-100 rounded">Democracy</div>
+                    ]}
+                  />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-white mb-2 flex items-center gap-2">
+                    <Download className="h-5 w-5" />
+                    Download the CEKA App
+                  </h3>
+                  <p className="text-sm text-white/90 mb-4">
+                    Get the full CEKA experience on your mobile device. Access civic tools, 
+                    stay updated on bills, and participate in democracy on the go.
+                  </p>
+                  <button className="inline-flex items-center gap-2 px-4 py-2 bg-white text-gray-900 hover:bg-white/90 rounded-lg text-sm font-medium transition-colors">
+                    Coming Soon
+                    <Download className="h-4 w-4" />
+                  </button>
+                  <p className="text-xs text-white/70 mt-2">
+                    Mobile app in development. Click the folder to preview features!
                   </p>
                 </div>
               </div>

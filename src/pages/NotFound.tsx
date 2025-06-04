@@ -3,6 +3,7 @@ import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Construction, Home, ArrowLeft, Clock, Wrench } from "lucide-react";
+import LetterGlitch from "@/components/LetterGlitch";
 
 const NotFound = () => {
   const location = useLocation();
@@ -15,12 +16,23 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center px-4">
-      <div className="max-w-2xl mx-auto text-center">
+    <div className="min-h-screen bg-black flex items-center justify-center px-4 relative overflow-hidden">
+      {/* Letter Glitch Background */}
+      <div className="absolute inset-0">
+        <LetterGlitch 
+          glitchSpeed={80}
+          centerVignette={true}
+          outerVignette={false}
+          smooth={true}
+          glitchColors={['#ff4444', '#44ff44', '#4444ff']}
+        />
+      </div>
+
+      <div className="max-w-2xl mx-auto text-center relative z-10">
         {/* Animated Construction Icon */}
         <div className="relative mb-8">
           <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-blue-500 rounded-full blur-3xl opacity-20 animate-pulse"></div>
-          <div className="relative bg-gray-800 rounded-full p-8 border border-gray-700 shadow-2xl">
+          <div className="relative bg-gray-800/80 backdrop-blur-sm rounded-full p-8 border border-gray-700 shadow-2xl">
             <Construction className="h-24 w-24 text-green-400 mx-auto animate-bounce" />
           </div>
         </div>
@@ -38,18 +50,19 @@ const NotFound = () => {
 
           <div className="space-y-4 max-w-lg mx-auto">
             <p className="text-lg text-gray-300 leading-relaxed">
-              We're working hard to bring you this content! This page is currently under development and will be available soon.
+              In an era of rapid digital transformation, we're building something revolutionary. 
+              This page is currently under development and will be available soon with cutting-edge civic engagement tools.
             </p>
             
             <div className="flex items-center justify-center space-x-2 text-green-400">
               <Clock className="h-5 w-5 animate-spin" />
-              <span className="text-sm font-medium">Coming Soon</span>
+              <span className="text-sm font-medium">Developing Digital Democracy</span>
             </div>
           </div>
 
           {/* Progress Bar */}
           <div className="max-w-md mx-auto">
-            <div className="bg-gray-700 rounded-full h-2 overflow-hidden">
+            <div className="bg-gray-700/50 backdrop-blur-sm rounded-full h-2 overflow-hidden">
               <div className="bg-gradient-to-r from-green-400 to-blue-400 h-full rounded-full animate-pulse w-3/4"></div>
             </div>
             <p className="text-xs text-gray-400 mt-2">Development Progress: 75%</p>
@@ -66,7 +79,7 @@ const NotFound = () => {
             
             <Button 
               variant="outline" 
-              className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white px-8 py-3 rounded-lg font-semibold transition-all duration-200 flex items-center space-x-2"
+              className="border-gray-600 text-gray-300 hover:bg-gray-800/50 hover:text-white px-8 py-3 rounded-lg font-semibold transition-all duration-200 flex items-center space-x-2 backdrop-blur-sm"
               onClick={() => window.history.back()}
             >
               <ArrowLeft className="h-5 w-5" />
@@ -75,11 +88,11 @@ const NotFound = () => {
           </div>
 
           {/* Footer Message */}
-          <div className="pt-8 border-t border-gray-700">
+          <div className="pt-8 border-t border-gray-700/50">
             <div className="flex items-center justify-center space-x-2 text-gray-400">
               <Wrench className="h-4 w-4" />
               <span className="text-sm">
-                Thank you for your patience as we build something amazing!
+                Building the future of civic engagement with advanced digital tools!
               </span>
             </div>
             <p className="text-xs text-gray-500 mt-2">
