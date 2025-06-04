@@ -192,7 +192,7 @@ const RotatingText = forwardRef<any, RotatingTextProps>((props, ref) => {
       className={cn("text-rotate", mainClassName)}
       {...rest}
       layout
-      transition={transition}
+      layoutTransition={{ duration: 0.4, ease: "easeInOut" }}
     >
       <span className="text-rotate-sr-only">{texts[currentTextIndex]}</span>
       <AnimatePresence mode={animatePresenceMode} initial={animatePresenceInitial}>
