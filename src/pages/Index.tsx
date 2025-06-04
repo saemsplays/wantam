@@ -441,6 +441,7 @@ Citizen of Kenya`);
                   </CardContent>
                 </Card>
 
+                
                 <Card className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-500 dark:to-purple-500 border-gray-200 dark:border-gray-700 shadow-lg">
                   <CardContent className="pt-6">
                     <div className="flex items-start gap-4">
@@ -452,10 +453,14 @@ Citizen of Kenya`);
                         <p className="text-sm text-white/90 mb-4">
                           Get the #RejectFinanceBill mobile app for civic engagement on the go.
                         </p>
-                        <button className="inline-flex items-center gap-2 px-4 py-2 bg-white text-gray-900 hover:bg-white/90 rounded-lg text-sm font-medium transition-colors">
-                          Download Here
+                        <a 
+                          href="https://juzqumvamllubshomuge.supabase.co/storage/v1/object/sign/apps/Signed%20APK%20-%20Prod%20Ready/RFB254%20by%20CEKA.apk?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8wZThlZDg5OC05N2JkLTRhNmEtYjUwZS0zMTU5M2U4NmMwOTIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBzL1NpZ25lZCBBUEsgLSBQcm9kIFJlYWR5L1JGQjI1NCBieSBDRUtBLmFwayIsImlhdCI6MTc0OTA2Mjg3OSwiZXhwIjoxNzgwNTk4ODc5fQ.qS2msdBAlUVLX6XYBwNe7ErBYiRyEqZIterdv1Gjo1M"
+                          download="RFB254-by-CEKA.apk"
+                          className="inline-flex items-center gap-2 px-4 py-2 bg-white text-gray-900 hover:bg-white/90 rounded-lg text-sm font-medium transition-colors"
+                          >
+                          Download App
                           <ArrowUpRight className="h-4 w-4" />
-                        </button>
+                        </a>
                       </div>
                     </div>
                   </CardContent>
