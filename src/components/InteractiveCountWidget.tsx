@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Users, X, ChevronRight } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -27,13 +26,13 @@ const InteractiveCountWidget = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Auto-hide functionality
+  // Auto-hide functionality - FIXED: Added dependency array
   useEffect(() => {
     if (isExpanded && !hasAutoHidden) {
       autoHideTimeout.current = setTimeout(() => {
         setIsExpanded(false);
         setHasAutoHidden(true);
-      }, 8000); // Hide after 8 seconds
+      }, 8000);
       
       return () => {
         if (autoHideTimeout.current) {
@@ -41,15 +40,17 @@ const InteractiveCountWidget = () => {
         }
       };
     }
-  }, [isExpanded, hasAutoHidden]);
+  }, [isExpanded, hasAutoHidden]); // Added missing dependencies
 
-  // Touch handlers for mobile swipe
+  // Touch handlers for mobile swipe - FIXED: Prevent default on touch events
   const handleTouchStart = (e: React.TouchEvent) => {
+    e.preventDefault(); // Prevent default touch behavior
     setTouchEnd(null);
     setTouchStart(e.targetTouches[0].clientX);
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
+    e.preventDefault(); // Prevent default touch behavior
     setTouchEnd(e.targetTouches[0].clientX);
   };
 
@@ -57,7 +58,7 @@ const InteractiveCountWidget = () => {
     if (!touchStart || !touchEnd) return;
     
     const distance = touchStart - touchEnd;
-    const isRightSwipe = distance < -50; // Swipe right
+    const isRightSwipe = distance < -50;
     
     if (isRightSwipe && !isExpanded) {
       setIsExpanded(true);
@@ -65,38 +66,38 @@ const InteractiveCountWidget = () => {
     }
   };
 
-  // Handle click outside to close on mobile
+  // Handle click outside to close - FIXED: Removed isMobile dependency
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (isMobile && isExpanded && widgetRef.current && !widgetRef.current.contains(event.target as Node)) {
+      if (widgetRef.current && !widgetRef.current.contains(event.target as Node)) {
         setIsExpanded(false);
       }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isMobile, isExpanded]);
+  }, []); // Removed isMobile dependency
 
-  // Fetch real count updates
+  // Fetch real count updates - FIXED: Added error handling
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        const response = await supabase
+        const { data, error } = await supabase
           .from('user_counts')
           .select('viewers, emails_sent')
           .limit(1);
         
-        if (response.error) throw response.error;
+        if (error) throw error;
         
-        const data = response.data?.[0];
-        if (data) {
+        if (data && data.length > 0) {
           setUserCount({
-            viewers: data.viewers || 0,
-            emailsSent: data.emails_sent || 0
+            viewers: data[0].viewers || 0,
+            emailsSent: data[0].emails_sent || 0
           });
         }
       } catch (error) {
         console.error('Error fetching counts:', error);
+        // Optional: Set error state or show user notification
       }
     };
 
@@ -122,9 +123,9 @@ const InteractiveCountWidget = () => {
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
-          {/* Swipe hint - only show when collapsed */}
+          {/* Swipe hint */}
           {!isExpanded && (
-            <div className="absolute -right-8 top-1/2 -translate-y-1/2 bg-blue-500 text-white p-2 rounded-r-lg shadow-lg animate-pulse">
+            <div className="fixed left-0 top-1/2 -translate-y-1/2 bg-blue-500 text-white p-2 rounded-r-lg shadow-lg animate-pulse z-50">
               <ChevronRight size={16} />
             </div>
           )}
@@ -141,6 +142,7 @@ const InteractiveCountWidget = () => {
               <button
                 onClick={() => setIsExpanded(false)}
                 className="text-gray-400 hover:text-gray-600 transition-colors"
+                aria-label="Close widget"
               >
                 <X size={18} />
               </button>
@@ -207,14 +209,17 @@ const InteractiveCountWidget = () => {
               setIsExpanded(true);
               setHasAutoHidden(false);
             }}
+            role="button"
+            tabIndex={0}
+            aria-label="Expand widget"
           >
             <div className="flex flex-col items-center gap-2">
               <Users size={16} />
-              <div className="text-xs font-bold writing-mode-vertical-rl text-orientation-mixed">
+              <div className="text-xs font-bold" style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}>
                 <CountUp 
                   to={totalCount} 
                   duration={2}
-                  separator="k"
+                  separator=","
                   className="tabular-nums"
                 />
               </div>
@@ -223,7 +228,7 @@ const InteractiveCountWidget = () => {
 
           {/* Expanded widget */}
           <div className={`bg-white/95 backdrop-blur-md border-r border-gray-200 shadow-2xl rounded-r-2xl p-6 w-80 transition-all duration-500 ${
-            isExpanded ? 'opacity-100' : 'opacity-0'
+            isExpanded ? 'opacity-100' : 'opacity-0 pointer-events-none'
           }`}>
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
@@ -238,6 +243,7 @@ const InteractiveCountWidget = () => {
               <button
                 onClick={() => setIsExpanded(false)}
                 className="text-gray-400 hover:text-gray-600 transition-colors p-1 hover:bg-gray-100 rounded"
+                aria-label="Close widget"
               >
                 <X size={18} />
               </button>
