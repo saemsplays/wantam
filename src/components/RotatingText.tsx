@@ -202,7 +202,8 @@ const RotatingText = forwardRef<any, RotatingTextProps>((props, ref) => {
           className={cn(
             splitBy === "lines" ? "text-rotate-lines" : "text-rotate"
           )}
-          layout
+          layout="position"
+          layoutTransition={{ type: "spring", damping: 20, stiffness: 150, mass: 0.6 }}
           aria-hidden="true"
         >
           {elements.map((wordObj, wordIndex, array) => {
