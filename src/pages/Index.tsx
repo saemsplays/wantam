@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Send, Mail, FileText, CheckCircle, User, AlertTriangle, Shield, Scale, Users, Play, RotateCcw, ArrowUpRight } from "lucide-react";
+import { Send, Mail, FileText, CheckCircle, User, AlertTriangle, Shield, Scale, Users, Play, RotateCcw, ArrowUpRight, Home, Archive, Settings, HelpCircle } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { ScrollProgressTracker } from '../components/ScrollProgressTracker';
@@ -13,6 +13,9 @@ import { SimpleTour } from '../components/SimpleTour';
 import { ScrollToTop } from '../components/ScrollToTop';
 import { TourStarter } from '../components/TourStarter';
 import { BillsSidebar } from '../components/BillsSidebar';
+import LetterGlitch from '../components/LetterGlitch';
+import DonationWidget from '../components/DonationWidget';
+import Dock from '../components/Dock';
 
 const Index = () => {
   const [userName, setUserName] = useState('');
@@ -77,17 +80,17 @@ Citizen of Kenya`);
   ];
 
   useEffect(() => {
-  const trackPageView = async () => {
-    try {
-      await supabase.rpc('increment_user_action', { action_type_param: 'page_view' }); // Changed from 'view' to 'page_view'
-      console.log('Page view tracked successfully');
-    } catch (error) {
-      console.error('Error tracking page view:', error);
-    }
-  };
+    const trackPageView = async () => {
+      try {
+        await supabase.rpc('increment_user_action', { action_type_param: 'page_view' });
+        console.log('Page view tracked successfully');
+      } catch (error) {
+        console.error('Error tracking page view:', error);
+      }
+    };
 
-  trackPageView();
-}, []);
+    trackPageView();
+  }, []);
 
   useEffect(() => {
     const fetchCounts = async () => {
@@ -194,11 +197,11 @@ Citizen of Kenya`);
     }
 
     try {
-    await supabase.rpc('increment_user_action', { action_type_param: 'email_sent' }); // This is correct
-    console.log('Email sent action tracked successfully');
-  } catch (error) {
-    console.error('Error tracking email sent:', error);
-  }
+      await supabase.rpc('increment_user_action', { action_type_param: 'email_sent' });
+      console.log('Email sent action tracked successfully');
+    } catch (error) {
+      console.error('Error tracking email sent:', error);
+    }
 
     const selectedEmails = getSelectedRecipientEmails();
     const to = selectedEmails.join(',');
@@ -240,8 +243,37 @@ Citizen of Kenya`);
     { icon: Users, label: "Public Participation", value: "Mandated by Art 118(1)" }
   ];
 
+  // Start page slightly below top to hide yellow bar
+  useEffect(() => {
+    window.scrollTo(0, window.innerHeight * 0.02);
+  }, []);
+
+  // Dock items
+  const dockItems = [
+    { 
+      icon: <Home size={18} />, 
+      label: 'Home', 
+      onClick: () => window.scrollTo({ top: 0, behavior: 'smooth' })
+    },
+    { 
+      icon: <FileText size={18} />, 
+      label: 'Bills', 
+      onClick: () => document.getElementById('details')?.scrollIntoView({ behavior: 'smooth' })
+    },
+    { 
+      icon: <Archive size={18} />, 
+      label: 'Archive', 
+      onClick: () => alert('Archive coming soon!')
+    },
+    { 
+      icon: <HelpCircle size={18} />, 
+      label: 'Help', 
+      onClick: () => setShowTour(true)
+    },
+  ];
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-emerald-50">
+    <div className="min-h-screen">
       {/* Simple Tour */}
       <SimpleTour
         isActive={showTour}
@@ -255,16 +287,18 @@ Citizen of Kenya`);
         sections={sections}
       />
 
-      {/* Bills Sidebar */}
-      <BillsSidebar />
+      {/* Bills Sidebar - only show when scrolled past hero */}
+      <div className={`transition-all duration-500 ${activeSection === 'hero' ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+        <BillsSidebar />
+      </div>
 
       {/* Scroll to Top Button */}
       <ScrollToTop />
 
-      <div className={`fixed inset-0 pointer-events-none transition-all duration-700 ease-out z-10 ${
-        activeSection !== 'hero' ? 'bg-black bg-opacity-5' : ''
-      }`} />
+      {/* Donation Widget */}
+      <DonationWidget />
 
+      {/* Yellow disclaimer bar */}
       <div className="bg-yellow-100 border-y-2 border-yellow-300 text-yellow-900 p-3 text-center text-xs font-medium relative z-20">
         <p className="max-w-3xl mx-auto">
           This platform operates under <strong>Art 33 (Freedom of Expression)</strong>, <strong>Art 35 (Access to Information)</strong>, and <strong>Art 118(1) (Public Participation)</strong> of the Constitution of Kenya 2010. 
@@ -283,9 +317,30 @@ Citizen of Kenya`);
         )}
       </div>
 
-      <section id="hero" className={`relative overflow-hidden bg-white transition-all duration-700 ${
-        activeSection === 'hero' ? 'relative z-30 scale-[1.02]' : 'relative z-20'
-      }`}>
+      {/* Hero Section 1 - LetterGlitch only */}
+      <section className="h-screen relative overflow-hidden">
+        <LetterGlitch
+          glitchSpeed={50}
+          centerVignette={true}
+          outerVignette={false}
+          smooth={true}
+        />
+        
+        {/* Centered text revealing #rejectfinancebill */}
+        <div className="absolute inset-0 flex items-center justify-center z-10">
+          <div className="text-center">
+            <h1 className="text-6xl md:text-8xl font-bold text-white font-mono tracking-wider">
+              #REJECT
+            </h1>
+            <h2 className="text-4xl md:text-6xl font-bold text-white font-mono tracking-wider mt-2">
+              FINANCEBILL
+            </h2>
+          </div>
+        </div>
+      </section>
+
+      {/* Hero Section 2 - Main content */}
+      <section id="hero" className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-emerald-50 min-h-screen">
         <div className="absolute inset-0 bg-gradient-to-r from-red-600/5 via-transparent to-green-600/5"></div>
         <div className="relative max-w-6xl mx-auto px-4 py-16">
           <div className="text-center">
@@ -319,7 +374,7 @@ Citizen of Kenya`);
               Submit your formal objection to protect essential goods and privacy rights.
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto mb-12">
               {stats.map((stat, index) => (
                 <div
                   key={index}
@@ -335,16 +390,69 @@ Citizen of Kenya`);
                 </div>
               ))}
             </div>
+
+            {/* Apple-style widget layout */}
+            <div className="space-y-4 max-w-4xl mx-auto">
+              {/* Tour Starter - Full width */}
+              {!hasSeenTour && !showTour && (
+                <TourStarter onStartTour={startTour} />
+              )}
+
+              {/* GPT and Download widgets - Half width each */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* ChatGPT Assistant Card */}
+                <Card className="bg-gradient-to-r from-red-600 to-green-600 border-gray-200 shadow-lg">
+                  <CardContent className="pt-6">
+                    <div className="flex items-start gap-4">
+                      <div className="bg-white/20 p-2 rounded-lg flex-shrink-0 backdrop-blur-sm">
+                        <Scale className="h-6 w-6 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-white mb-2">Finance Bill GPT</h3>
+                        <p className="text-sm text-white/90 mb-4">
+                          Get instant answers about the Finance Bill 2025 from our AI assistant.
+                        </p>
+                        <a
+                          href="https://chatgpt.com/g/g-681270efebe08191ad509259b304815b-2025-finance-bill-gpt"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-4 py-2 bg-white text-gray-900 hover:bg-white/90 rounded-lg text-sm font-medium transition-colors"
+                        >
+                          Ask Assistant
+                          <ArrowUpRight className="h-4 w-4" />
+                        </a>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Download App Card */}
+                <Card className="bg-gradient-to-r from-blue-600 to-purple-600 border-gray-200 shadow-lg">
+                  <CardContent className="pt-6">
+                    <div className="flex items-start gap-4">
+                      <div className="bg-white/20 p-2 rounded-lg flex-shrink-0 backdrop-blur-sm">
+                        <CheckCircle className="h-6 w-6 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-white mb-2">Download App</h3>
+                        <p className="text-sm text-white/90 mb-4">
+                          Get the CEKA mobile app for civic engagement on the go.
+                        </p>
+                        <button className="inline-flex items-center gap-2 px-4 py-2 bg-white text-gray-900 hover:bg-white/90 rounded-lg text-sm font-medium transition-colors">
+                          Coming Soon
+                          <ArrowUpRight className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       <div className="max-w-4xl mx-auto px-4 py-12 space-y-8">
-        {!hasSeenTour && !showTour && (
-          <TourStarter onStartTour={startTour} />
-        )}
-
-        {/* ChatGPT Assistant Card */}
         <section id="gpt-card">
           <Card className="bg-gradient-to-r from-red-600 to-green-600 border-gray-200 shadow-lg">
             <CardContent className="pt-6">
@@ -631,8 +739,8 @@ Citizen of Kenya`);
         </section>
       </div>
 
-      {/* Footer - Fixed width issue */}
-      <footer className="bg-gray-900 text-gray-200 py-8 text-xs text-center px-4 max-w-full overflow-x-hidden">
+      {/* Footer */}
+      <footer className="bg-gray-900 text-gray-200 py-8 text-xs text-center px-4 max-w-full overflow-x-hidden mb-20">
         <div className="max-w-6xl mx-auto">
           <p className="break-words max-w-full">
             <strong>
@@ -660,6 +768,14 @@ Citizen of Kenya`);
           </div>
         </div>
       </footer>
+
+      {/* Dock */}
+      <Dock 
+        items={dockItems}
+        panelHeight={68}
+        baseItemSize={50}
+        magnification={70}
+      />
     </div>
   );
 };
