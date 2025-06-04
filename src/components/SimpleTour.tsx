@@ -60,7 +60,7 @@ export const SimpleTour: React.FC<SimpleTourProps> = ({ isActive, onComplete, on
     {
       id: 'send',
       title: 'Send Your Objection',
-      description: 'You\'ll be redirected to your email app. Just hit send',
+      description: 'You\'ll be redirected to your email app. Hit send and you\'re done!',
       targetId: 'send'
     }
   ];
