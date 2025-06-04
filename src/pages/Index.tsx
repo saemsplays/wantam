@@ -72,13 +72,13 @@ Citizen of Kenya`);
 
   // Section definitions with updated percentages including Introduction
   const sections = [
-    { id: 'hero', title: 'Introduction', position: 0 },
-    { id: 'gpt-card', title: 'Finance Bill GPT', position: 15 },
-    { id: 'details', title: 'Your Details', position: 31 },
-    { id: 'recipients', title: 'Send To', position: 43 },
-    { id: 'subject', title: 'Email Subject', position: 52 },
-    { id: 'letter', title: 'Your Objection Letter', position: 74 },
-    { id: 'send', title: 'Ready To Submit Your Objection?', position: 98 }
+    { id: 'hero', title: 'Introduction', position: 22 },
+    { id: 'gpt-card', title: 'Finance Bill GPT', position: 30 },
+    { id: 'details', title: 'Your Details', position: 44 },
+    { id: 'recipients', title: 'Send To', position: 53 },
+    { id: 'subject', title: 'Email Subject', position: 60 },
+    { id: 'letter', title: 'Your Objection Letter', position: 73 },
+    { id: 'send', title: 'Ready To Submit Your Objection?', position: 96 }
   ];
 
   useEffect(() => {
