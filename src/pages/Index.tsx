@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Send, Mail, SquareLibrary, CheckCircle, User, AlertTriangle, Shield, Scale, Users, Play, RotateCcw, ArrowUpRight, Home, Archive, Settings, HelpCircle, Lightbulb, Heart, Flag, Globe } from "lucide-react";
+import { Send, Mail, FileText, CheckCircle, User, AlertTriangle, Shield, Scale, Users, Play, RotateCcw, ArrowUpRight, Home, Archive, Settings, HelpCircle, Lightbulb, Heart, Flag, ExternalLink } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { ScrollProgressTracker } from '../components/ScrollProgressTracker';
@@ -73,8 +73,8 @@ Citizen of Kenya`);
   // Section definitions with updated percentages including Introduction
   const sections = [
     { id: 'start', title: 'Beginning', position: 0 },
-    { id: 'hero', title: 'Introduction', position: 0 },
-    { id: 'gpt-card', title: 'Finance Bill GPT', position: 0 },
+    { id: 'hero', title: 'Introduction', position: 22 },
+    { id: 'gpt-card', title: 'Finance Bill GPT', position: 30 },
     { id: 'details', title: 'Your Details', position: 44 },
     { id: 'recipients', title: 'Send To', position: 53 },
     { id: 'subject', title: 'Email Subject', position: 60 },
@@ -251,7 +251,7 @@ Citizen of Kenya`);
 
   const dockItems = [
     { 
-      icon: <SquareLibrary size={18} />, 
+      icon: <FileText size={18} />, 
       label: 'Bills', 
       onClick: () => {
         document.getElementById('details')?.scrollIntoView({ behavior: 'smooth' });
@@ -286,7 +286,7 @@ Citizen of Kenya`);
       }
     },
     { 
-      icon: <Globe size={18} />, 
+      icon: <ExternalLink size={18} />, 
       label: 'CEKA', 
       onClick: () => {
         const confirmed = confirm('You are about to visit the main CEKA platform. Would you like to proceed?');
