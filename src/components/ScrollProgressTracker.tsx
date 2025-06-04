@@ -67,7 +67,7 @@ export const ScrollProgressTracker: React.FC<ScrollProgressTrackerProps> = ({
               onClick={() => scrollToSection(section.id)}
             >
               {/* Dark backdrop/shadow behind the circle */}
-              <div className="absolute inset-0 w-6 h-6 bg-black/3 rounded-full transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2" />
+              <div className="absolute inset-0 w-6 h-6 bg-black/5 rounded-full transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2" />
               
               <div
                 className={`
