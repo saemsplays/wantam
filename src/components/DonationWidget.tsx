@@ -25,6 +25,9 @@ const DONATION_OPTIONS = [
   }
 ];
 
+// Maximum time to show the donation widget in milliseconds (5 minutes)
+const MAX_WIDGET_DISPLAY_TIME = 5 * 60 * 1000;
+
 interface DonationWidgetProps {
   onTimedOut?: () => void;
   isVisible?: boolean;
@@ -34,11 +37,13 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
   const [isVisible, setIsVisible] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [showPulse, setShowPulse] = useState(false);
+  const [isIdle, setIsIdle] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
+  const [hasTimedOut, setHasTimedOut] = useState(false);
   const widgetMountTimeRef = useRef<number>(Date.now());
   const { toast } = useToast();
   
-  // Show widget after 5 seconds delay
+  // Show widget after delay or controlled visibility
   useEffect(() => {
     if (controlledVisibility !== undefined) {
       setIsVisible(controlledVisibility);
@@ -47,25 +52,67 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
 
     const visibilityTimer = setTimeout(() => {
       setIsVisible(true);
-    }, 5000); // 5 seconds delay
+    }, 5000); // 5 seconds
     
-    // Start pulse animation after widget becomes visible
+    // Start pulse animation after additional delay
     const pulseTimer = setTimeout(() => {
       if (!isExpanded) setShowPulse(true);
-    }, 7000); // 2 seconds after visibility
+    }, 12000); // 12 seconds
+    
+    // Set idle state after 30 seconds of no interaction
+    const idleTimer = setTimeout(() => {
+      if (!isExpanded && !isHovering) {
+        setIsIdle(true);
+      }
+    }, 30000); // 30 seconds
+    
+    // Set timeout timer to hide widget after 5 minutes
+    const timeoutTimer = setTimeout(() => {
+      if (!isExpanded) {
+        setIsVisible(false);
+        setHasTimedOut(true);
+        if (onTimedOut) onTimedOut();
+      }
+    }, MAX_WIDGET_DISPLAY_TIME);
     
     return () => {
       clearTimeout(visibilityTimer);
       clearTimeout(pulseTimer);
+      clearTimeout(idleTimer);
+      clearTimeout(timeoutTimer);
     };
-  }, [isExpanded, controlledVisibility]);
+  }, [isExpanded, isHovering, onTimedOut, controlledVisibility]);
   
   // Stop pulse animation when expanded or hovering
   useEffect(() => {
-    if (isExpanded || isHovering) {
+    if (isExpanded) {
       setShowPulse(false);
+      setIsIdle(false);
+    }
+    
+    if (isHovering) {
+      setIsIdle(false);
     }
   }, [isExpanded, isHovering]);
+
+  // Calculate remaining time and check if widget should be hidden
+  useEffect(() => {
+    if (hasTimedOut || controlledVisibility !== undefined) return;
+    
+    const checkRemainingTime = () => {
+      const elapsedTime = Date.now() - widgetMountTimeRef.current;
+      
+      if (elapsedTime >= MAX_WIDGET_DISPLAY_TIME && !isExpanded) {
+        setIsVisible(false);
+        setHasTimedOut(true);
+        if (onTimedOut) onTimedOut();
+      }
+    };
+    
+    const interval = setInterval(checkRemainingTime, 10000); // Check every 10 seconds
+    
+    return () => clearInterval(interval);
+  }, [isExpanded, hasTimedOut, onTimedOut, controlledVisibility]);
 
   const handleMpesa = () => {
     navigator.clipboard.writeText('+254798903373');
@@ -76,27 +123,32 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
     });
   };
 
-  // Don't render if not visible
-  if (!isVisible) return null;
+  // Don't render if timed out or not visible
+  if (hasTimedOut || !isVisible) return null;
 
   return (
     <div
-      className={`fixed z-50 shadow-lg rounded-lg bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700 transition-all duration-500 ease-out ${
+      className={`fixed z-50 shadow-lg rounded-lg bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700 transition-all duration-300 ${
         isExpanded 
-          ? 'bottom-1/2 right-1/2 transform translate-x-1/2 translate-y-1/2 animate-scale-in' 
-          : 'bottom-6 right-6 md:bottom-8 md:right-8 animate-fade-in'
+          ? 'bottom-1/2 right-1/2 transform translate-x-1/2 translate-y-1/2' 
+          : 'bottom-24 right-6 md:bottom-1/3 md:right-6'
       }`}
       style={{ zIndex: 999 }}
     >
       {!isExpanded ? (
         // Collapsed state (floating button)
         <button
-          className={`flex items-center justify-center p-3 rounded-lg relative bg-white dark:bg-gray-800 shadow-md transition-all duration-300 hover:scale-105 transform ${
+          className={`flex items-center justify-center p-3 rounded-lg relative bg-white dark:bg-gray-800 shadow-md transition-all duration-200 hover:scale-105 ${
             showPulse ? 'animate-pulse' : ''
-          }`}
+          } ${isIdle ? 'opacity-70' : 'opacity-100'}`}
           onClick={() => setIsExpanded(true)}
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
+          onMouseEnter={() => {
+            setIsHovering(true);
+            setIsIdle(false);
+          }}
+          onMouseLeave={() => {
+            setIsHovering(false);
+          }}
         >
           <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse" />
           <div className="relative">
@@ -106,7 +158,7 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
         </button>
       ) : (
         // Expanded state (donation options)
-        <div className="w-80 p-4 animate-fade-in">
+        <div className="w-80 p-4">
           <div className="flex justify-between items-center mb-3">
             <h3 className="font-bold text-lg flex items-center">
               <Gift className="h-5 w-5 mr-2 text-green-600" />
