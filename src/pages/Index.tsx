@@ -327,20 +327,22 @@ Citizen of Kenya`);
     speed={0.5}
   />
   <div className="absolute inset-0 flex items-center justify-center">
-    <span className="px-4 sm:px-6 md:px-8 bg-gradient-to-r from-green-600 to-red-600 dark:from-green-500 dark:to-red-500 text-white overflow-hidden py-2 sm:py-3 md:py-4 justify-center rounded-lg text-2xl sm:text-4xl md:text-6xl font-bold">
-      Reject{" "}
-      <RotatingText
-        texts={["lies", "abductions", "corruption", "Finance Bill 2025"]}
-        durations={[2000, 2000, 2000, 5000]}
-        staggerFrom="last"
-        initial={{ y: "100%" }}
-        animate={{ y: 0 }}
-        exit={{ y: "-120%" }}
-        staggerDuration={0.025}
-        splitLevelClassName="overflow-hidden pb-1 sm:pb-2 md:pb-3"
-        transition={{ type: "spring", damping: 30, stiffness: 400 }}
-      />
-    </span>
+    <div className="flex items-center space-x-4 text-2xl sm:text-4xl md:text-6xl font-bold">
+      <span className="text-white">Reject</span>
+      <div className="px-4 sm:px-6 md:px-8 bg-gradient-to-r from-green-600 to-red-600 dark:from-green-500 dark:to-red-500 text-red-600 overflow-hidden py-2 sm:py-3 md:py-4 justify-center rounded-lg">
+        <RotatingText
+          texts={["lies", "abductions", "corruption", "Finance Bill 2025"]}
+          durations={[2000, 2000, 2000, 5000]}
+          staggerFrom="last"
+          initial={{ y: "100%" }}
+          animate={{ y: 0 }}
+          exit={{ y: "-120%" }}
+          staggerDuration={0.025}
+          splitLevelClassName="overflow-hidden pb-1 sm:pb-2 md:pb-3"
+          transition={{ type: "spring", damping: 30, stiffness: 400 }}
+        />
+      </div>
+    </div>
   </div>
 </section>
 
