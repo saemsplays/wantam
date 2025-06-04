@@ -22,6 +22,12 @@ export const SimpleTour: React.FC<SimpleTourProps> = ({ isActive, onComplete, on
 
   const tourSteps: TourStep[] = [
     {
+      id: 'start',
+      title: 'Begin Your Submission',
+      description: 'Welcome! We are here to guide you to make the most of this site. Shall we?',
+      targetId: 'hero'
+    },
+    {
       id: 'introduction',
       title: 'Introduction to Finance Bill 2025',
       description: 'Understand the constitutional violations and why this bill threatens essential rights',
