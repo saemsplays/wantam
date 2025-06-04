@@ -448,12 +448,12 @@ Citizen of Kenya`);
                         <CheckCircle className="h-6 w-6 text-white" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-white mb-2">Download App</h3>
+                        <h3 className="font-semibold text-white mb-2">Use Our App</h3>
                         <p className="text-sm text-white/90 mb-4">
-                          Get the CEKA mobile app for civic engagement on the go.
+                          Get the #RejectFinanceBill mobile app for civic engagement on the go.
                         </p>
                         <button className="inline-flex items-center gap-2 px-4 py-2 bg-white text-gray-900 hover:bg-white/90 rounded-lg text-sm font-medium transition-colors">
-                          Coming Soon
+                          Download Here
                           <ArrowUpRight className="h-4 w-4" />
                         </button>
                       </div>
