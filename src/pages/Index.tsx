@@ -774,7 +774,6 @@ Citizen of Kenya`);
         panelHeight={68}
         baseItemSize={50}
         magnification={70}
-        className="!mb-0 !pb-0" // Force no bottom spacing
       />
     </div>
   );
