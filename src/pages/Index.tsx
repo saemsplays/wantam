@@ -425,7 +425,7 @@ Citizen of Kenya`);
                       <div>
                         <h3 className="font-semibold text-white mb-2">Finance Bill GPT</h3>
                         <p className="text-sm text-white/90 mb-4">
-                          Get instant answers about the Finance Bill 2025 from the 'Finance Bill GPT' AI assistant.
+                          Get instant answers about the Finance Bill 2025 from our AI assistant.
                         </p>
                         <a
                           href="https://chatgpt.com/g/g-681270efebe08191ad509259b304815b-2025-finance-bill-gpt"
@@ -733,35 +733,33 @@ Citizen of Kenya`);
       </div>
 
       <footer className="bg-gray-900 dark:bg-gray-950 text-gray-200 dark:text-gray-300 py-8 text-xs text-center px-4 max-w-full overflow-x-hidden transition-colors duration-300">
-  <div className="max-w-6xl mx-auto">
-    <p className="break-words max-w-full">
-      <strong>
-        Published by{" "}
-        
-          href="https://ceka.lovable.app"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="underline text-emerald-400 dark:text-emerald-300 hover:text-emerald-300 dark:hover:text-emerald-200 break-words"
-        >
-          Civic Education Kenya App (CEKA)
-        </a>
-      </strong>
-    </p>
-    <p className="mt-1 break-words max-w-full">
-      CEKA provides this tool under the Constitution of Kenya 2010 (Art 33, Art 35, Art 118(1)). 
-      CEKA does not store, monitor, or share any user data.
-    </p>
-    <p className="mt-2 italic break-words max-w-full">
-      By using this platform, you acknowledge that all content is user-generated. CEKA holds no liability for any outcomes arising from your objection email.
-    </p>
-    <div className="mt-4 flex flex-col sm:flex-row items-center justify-center gap-2 text-gray-400 dark:text-gray-500">
-      <Scale className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-400 dark:text-emerald-300 flex-shrink-0" />
-      <span className="text-center text-xs sm:text-sm break-words max-w-full">
-        Exercise your constitutional right to participate in legislative processes (Art 118(1)).
-      </span>
-    </div>
-  </div>
-</footer>
+        <div className="max-w-6xl mx-auto">
+          <p className="break-words max-w-full">
+            <strong>
+              Published by{" "}
+              <a
+                href="https://ceka.lovable.app"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline text-emerald-400 dark:text-emerald-300 hover:text-emerald-300 dark:hover:text-emerald-200 break-words"
+              >
+                Civic Education Kenya App (CEKA). 
+              </a>
+            </strong>
+            CEKA provides this tool under the Constitution of Kenya 2010 (Art 33, Art 35, Art 118(1)). 
+            CEKA does not store, monitor, or share any user data.
+          </p>
+          <p className="mt-2 italic break-words max-w-full">
+            By using this platform, you acknowledge that all content is user-generated. CEKA holds no liability for any outcomes arising from your objection email.
+          </p>
+          <div className="mt-4 flex flex-col sm:flex-row items-center justify-center gap-2 text-gray-400 dark:text-gray-500">
+            <Scale className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-400 dark:text-emerald-300 flex-shrink-0" />
+            <span className="text-center text-xs sm:text-sm break-words max-w-full">
+              Exercise your constitutional right to participate in legislative processes (Art 118(1)).
+            </span>
+          </div>
+        </div>
+      </footer>
 
       {/* Bottom Disclaimer */}
       <div className="bg-gray-800 dark:bg-gray-950 border-t border-gray-700 dark:border-gray-800 text-gray-300 dark:text-gray-400 p-3 text-center text-xs font-medium transition-colors duration-300">
