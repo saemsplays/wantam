@@ -298,7 +298,7 @@ Citizen of Kenya`);
   ];
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300 -mb-8">
+    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
       <SimpleTour
         isActive={showTour}
         onComplete={handleTourComplete}
@@ -774,6 +774,7 @@ Citizen of Kenya`);
         panelHeight={68}
         baseItemSize={50}
         magnification={70}
+        className="!mb-0 !pb-0" // Force no bottom spacing
       />
     </div>
   );
