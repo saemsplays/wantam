@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 
 interface Section {
@@ -67,9 +66,12 @@ export const ScrollProgressTracker: React.FC<ScrollProgressTrackerProps> = ({
               style={{ top: `${section.position}%` }}
               onClick={() => scrollToSection(section.id)}
             >
+              {/* Dark backdrop/shadow behind the circle */}
+              <div className="absolute inset-0 w-6 h-6 bg-black/20 rounded-full transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2" />
+              
               <div
                 className={`
-                  w-4 h-4 rounded-full border-3 transition-all duration-500 ease-out transform
+                  relative w-4 h-4 rounded-full border-3 transition-all duration-500 ease-out transform
                   ${isActive 
                     ? 'bg-white border-blue-500 scale-150 shadow-lg shadow-blue-500/50' 
                     : isPassed
