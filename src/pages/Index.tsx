@@ -425,7 +425,7 @@ Citizen of Kenya`);
                       <div>
                         <h3 className="font-semibold text-white mb-2">Finance Bill GPT</h3>
                         <p className="text-sm text-white/90 mb-4">
-                          Get instant answers about the Finance Bill 2025 from our AI assistant.
+                          Get instant answers about the Finance Bill 2025 from the 'Finance Bill GPT' AI assistant.
                         </p>
                         <a
                           href="https://chatgpt.com/g/g-681270efebe08191ad509259b304815b-2025-finance-bill-gpt"
