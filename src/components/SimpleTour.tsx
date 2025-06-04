@@ -22,6 +22,12 @@ export const SimpleTour: React.FC<SimpleTourProps> = ({ isActive, onComplete, on
 
   const tourSteps: TourStep[] = [
     {
+      id: 'start',
+      title: 'A Simple Guide',
+      description: 'Welcome! We are here to guide you on how to use our site most efficiently. Let's begin',
+      targetId: 'start'
+    },
+    {
       id: 'introduction',
       title: 'Introduction to Finance Bill 2025',
       description: 'Understand the constitutional violations and why this bill threatens essential rights',
@@ -31,7 +37,7 @@ export const SimpleTour: React.FC<SimpleTourProps> = ({ isActive, onComplete, on
       id: 'gpt-assistant',
       title: 'AI Assistant Available',
       description: 'Get help understanding the Finance Bill with our AI assistant',
-      targetId: 'gpt-card'
+      targetId: 'gpt-assistant'
     },
     {
       id: 'details',
