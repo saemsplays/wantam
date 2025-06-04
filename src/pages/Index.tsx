@@ -451,7 +451,7 @@ Citizen of Kenya`);
                       <div>
                         <h3 className="font-semibold text-white mb-2">Use Our App</h3>
                         <p className="text-sm text-white/90 mb-4">
-                          Get the #RejectFinanceBill mobile app for civic engagement on the go.
+                          Get the #RejectFinanceBill app and make your voice heard, on the go!
                         </p>
                         <button 
                           onClick={() => {
