@@ -35,11 +35,11 @@ interface DonationWidgetProps {
 const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: controlledVisibility }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [showPulse, setShowPulse] = useState(false);
-  const [isIdle, setIsIdle] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [hasTimedOut, setHasTimedOut] = useState(false);
+  const [opacity, setOpacity] = useState(1);
   const widgetMountTimeRef = useRef<number>(Date.now());
+  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { toast } = useToast();
   
   // Show widget after delay
@@ -53,16 +53,6 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
       setIsVisible(true);
     }, 5000);
     
-    const pulseTimer = setTimeout(() => {
-      if (!isExpanded) setShowPulse(true);
-    }, 12000);
-    
-    const idleTimer = setTimeout(() => {
-      if (!isExpanded && !isHovering) {
-        setIsIdle(true);
-      }
-    }, 30000);
-    
     const timeoutTimer = setTimeout(() => {
       if (!isExpanded) {
         setIsVisible(false);
@@ -73,22 +63,31 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
     
     return () => {
       clearTimeout(visibilityTimer);
-      clearTimeout(pulseTimer);
-      clearTimeout(idleTimer);
       clearTimeout(timeoutTimer);
     };
-  }, [isExpanded, isHovering, onTimedOut, controlledVisibility]);
-  
+  }, [isExpanded, onTimedOut, controlledVisibility]);
+
+  // Handle hover opacity changes
   useEffect(() => {
-    if (isExpanded) {
-      setShowPulse(false);
-      setIsIdle(false);
+    if (isHovering || isExpanded) {
+      setOpacity(1);
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current);
+        hoverTimeoutRef.current = null;
+      }
+    } else {
+      // Start 5-second countdown when not hovering
+      hoverTimeoutRef.current = setTimeout(() => {
+        setOpacity(0.2);
+      }, 5000);
     }
-    
-    if (isHovering) {
-      setIsIdle(false);
-    }
-  }, [isExpanded, isHovering]);
+
+    return () => {
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current);
+      }
+    };
+  }, [isHovering, isExpanded]);
 
   useEffect(() => {
     if (hasTimedOut || controlledVisibility !== undefined) return;
@@ -126,7 +125,7 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
           ? 'bottom-1/2 right-1/2 transform translate-x-1/2 translate-y-1/2 bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700' 
           : 'bottom-32 right-6'
       }`}
-      style={{ zIndex: 999 }}
+      style={{ zIndex: 999, opacity }}
     >
       {!isExpanded ? (
         // Circular button design
@@ -135,17 +134,12 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
             isHovering 
               ? 'px-4 py-3 rounded-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 shadow-lg' 
               : 'w-12 h-12 rounded-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 shadow-lg'
-          } ${showPulse ? 'animate-pulse' : ''} ${isIdle ? 'opacity-70' : 'opacity-100'}`}
+          }`}
           onClick={() => setIsExpanded(true)}
-          onMouseEnter={() => {
-            setIsHovering(true);
-            setIsIdle(false);
-          }}
-          onMouseLeave={() => {
-            setIsHovering(false);
-          }}
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
         >
-          <div className="absolute -top-1 -right-1 w-3 h-3 bg-white rounded-full animate-pulse" />
+          <div className="absolute -top-1 -right-1 w-3 h-3 bg-white rounded-full" />
           <Heart className="h-5 w-5 text-white flex-shrink-0" />
           <span className={`text-white font-medium text-sm whitespace-nowrap transition-all duration-500 ease-out overflow-hidden ${
             isHovering ? 'ml-2 opacity-100 max-w-[100px]' : 'ml-0 opacity-0 max-w-0'

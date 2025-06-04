@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Send, Mail, FileText, CheckCircle, User, AlertTriangle, Shield, Scale, Users, Play, RotateCcw, ArrowUpRight, Home, Archive, Settings, HelpCircle } from "lucide-react";
+import { Send, Mail, FileText, CheckCircle, User, AlertTriangle, Shield, Scale, Users, Play, RotateCcw, ArrowUpRight, Home, Archive, Settings, HelpCircle, Lightbulb, Heart, Flag, ExternalLink } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { ScrollProgressTracker } from '../components/ScrollProgressTracker';
@@ -13,10 +13,11 @@ import { SimpleTour } from '../components/SimpleTour';
 import { ScrollToTop } from '../components/ScrollToTop';
 import { TourStarter } from '../components/TourStarter';
 import { BillsSidebar } from '../components/BillsSidebar';
-import LetterGlitch from '../components/LetterGlitch';
 import DonationWidget from '../components/DonationWidget';
 import Dock from '../components/Dock';
-import UserCountSidebar from '../components/UserCountSidebar';
+import InteractiveCountWidget from '../components/InteractiveCountWidget';
+import Aurora from '../components/Aurora';
+import RotatingText from '../components/RotatingText';
 
 const Index = () => {
   const [userName, setUserName] = useState('');
@@ -121,7 +122,6 @@ Citizen of Kenya`);
     return () => clearInterval(interval);
   }, []);
 
-  // Check if user has seen tour before and show tour starter instead
   useEffect(() => {
     const tourSeen = localStorage.getItem('finance-bill-tour-seen');
     if (tourSeen) {
@@ -244,65 +244,81 @@ Citizen of Kenya`);
     { icon: Users, label: "Public Participation", value: "Mandated by Art 118(1)" }
   ];
 
-  // Start page slightly below top to hide yellow bar
   useEffect(() => {
     window.scrollTo(0, window.innerHeight * 0.02);
   }, []);
 
-  // Dock items
   const dockItems = [
-    { 
-      icon: <Home size={18} />, 
-      label: 'Home', 
-      onClick: () => window.scrollTo({ top: 0, behavior: 'smooth' })
-    },
     { 
       icon: <FileText size={18} />, 
       label: 'Bills', 
-      onClick: () => document.getElementById('details')?.scrollIntoView({ behavior: 'smooth' })
+      onClick: () => {
+        document.getElementById('details')?.scrollIntoView({ behavior: 'smooth' });
+      }
     },
     { 
-      icon: <Archive size={18} />, 
-      label: 'Archive', 
-      onClick: () => alert('Archive coming soon!')
+      icon: <Lightbulb size={18} />, 
+      label: 'Suggest', 
+      onClick: () => {
+        const subject = 'Suggestion for CEKA Platform';
+        const body = 'Hi CEKA Team,\n\nI have a suggestion for improving the platform:\n\n[Your suggestion here]\n\nBest regards,';
+        window.location.href = `mailto:suggestions@ceka.lovable.app?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      }
     },
     { 
-      icon: <HelpCircle size={18} />, 
-      label: 'Help', 
-      onClick: () => setShowTour(true)
+      icon: <Heart size={18} />, 
+      label: 'Support', 
+      onClick: () => {
+        const donationWidget = document.querySelector('[style*="999"]') as HTMLElement;
+        if (donationWidget) {
+          donationWidget.click();
+        }
+      }
+    },
+    { 
+      icon: <Flag size={18} />, 
+      label: 'Report', 
+      onClick: () => {
+        const subject = 'Report Issue - CEKA Platform';
+        const body = 'Hi CEKA Team,\n\nI would like to report the following issue:\n\n[Please describe the issue here]\n\nBest regards,';
+        window.location.href = `mailto:report@ceka.lovable.app?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      }
+    },
+    { 
+      icon: <ExternalLink size={18} />, 
+      label: 'CEKA', 
+      onClick: () => {
+        const confirmed = confirm('You are about to visit the main CEKA platform. Would you like to proceed?');
+        if (confirmed) {
+          window.open('https://ceka.lovable.app', '_blank');
+        }
+      }
     },
   ];
 
   return (
     <div className="min-h-screen">
-      {/* Simple Tour */}
       <SimpleTour
         isActive={showTour}
         onComplete={handleTourComplete}
         onSkip={handleTourSkip}
       />
 
-      {/* Scroll Progress Tracker */}
       <ScrollProgressTracker
         activeSection={activeSection}
         sections={sections}
       />
 
-      {/* Bills Sidebar - only show when scrolled past hero */}
       <div className={`transition-all duration-500 ${activeSection === 'hero' ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
         <BillsSidebar />
       </div>
 
-      {/* User Count Sidebar */}
-      <UserCountSidebar />
+      <InteractiveCountWidget />
 
-      {/* Scroll to Top Button */}
       <ScrollToTop />
 
-      {/* Donation Widget */}
       <DonationWidget />
 
-      {/* Yellow disclaimer bar */}
       <div className="bg-yellow-100 border-y-2 border-yellow-300 text-yellow-900 p-3 text-center text-xs font-medium relative z-20">
         <p className="max-w-3xl mx-auto">
           This platform operates under <strong>Art 33 (Freedom of Expression)</strong>, <strong>Art 35 (Access to Information)</strong>, and <strong>Art 118(1) (Public Participation)</strong> of the Constitution of Kenya 2010. 
@@ -321,18 +337,29 @@ Citizen of Kenya`);
         )}
       </div>
 
-      {/* Hero Section 1 - LetterGlitch only */}
       <section className="h-screen relative overflow-hidden">
-        <LetterGlitch
-          glitchColors={["#2b4539", "#61dca3", "#61b3dc"]}
-          glitchSpeed={50}
-          centerVignette={true}
-          outerVignette={false}
-          smooth={true}
+        <Aurora
+          colorStops={["#3A29FF", "#FF94B4", "#FF3232"]}
+          blend={0.5}
+          amplitude={1.0}
+          speed={0.5}
         />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <RotatingText
+            texts={['Object', 'Engage', 'Participate', 'Act Now!']}
+            mainClassName="px-4 sm:px-6 md:px-8 bg-gradient-to-r from-emerald-600 to-blue-600 text-white overflow-hidden py-2 sm:py-3 md:py-4 justify-center rounded-lg text-2xl sm:text-4xl md:text-6xl font-bold"
+            staggerFrom="last"
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "-120%" }}
+            staggerDuration={0.025}
+            splitLevelClassName="overflow-hidden pb-1 sm:pb-2 md:pb-3"
+            transition={{ type: "spring", damping: 30, stiffness: 400 }}
+            rotationInterval={2000}
+          />
+        </div>
       </section>
 
-      {/* Hero Section 2 - Main content */}
       <section id="hero" className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-emerald-50 min-h-screen">
         <div className="absolute inset-0 bg-gradient-to-r from-red-600/5 via-transparent to-green-600/5"></div>
         <div className="relative max-w-6xl mx-auto px-4 py-16">
@@ -384,16 +411,12 @@ Citizen of Kenya`);
               ))}
             </div>
 
-            {/* Apple-style widget layout */}
             <div className="space-y-4 max-w-4xl mx-auto">
-              {/* Tour Starter - Full width */}
               {!hasSeenTour && !showTour && (
                 <TourStarter onStartTour={startTour} />
               )}
 
-              {/* GPT and Download widgets - Half width each */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* ChatGPT Assistant Card */}
                 <Card className="bg-gradient-to-r from-red-600 to-green-600 border-gray-200 shadow-lg">
                   <CardContent className="pt-6">
                     <div className="flex items-start gap-4">
@@ -419,7 +442,6 @@ Citizen of Kenya`);
                   </CardContent>
                 </Card>
 
-                {/* Download App Card */}
                 <Card className="bg-gradient-to-r from-blue-600 to-purple-600 border-gray-200 shadow-lg">
                   <CardContent className="pt-6">
                     <div className="flex items-start gap-4">
@@ -702,8 +724,7 @@ Citizen of Kenya`);
         </section>
       </div>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-gray-200 py-8 text-xs text-center px-4 max-w-full overflow-x-hidden mb-20">
+      <footer className="bg-gray-900 text-gray-200 py-8 text-xs text-center px-4 max-w-full overflow-x-hidden">
         <div className="max-w-6xl mx-auto">
           <p className="break-words max-w-full">
             <strong>
@@ -732,7 +753,6 @@ Citizen of Kenya`);
         </div>
       </footer>
 
-      {/* Dock */}
       <Dock 
         items={dockItems}
         panelHeight={68}

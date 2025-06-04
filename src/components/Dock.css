@@ -58,17 +58,27 @@
   text-shadow: 0 0 10px rgba(97, 220, 163, 0.8);
 }
 
+.dock-item:nth-child(1):hover .dock-icon {
+  color: #3b82f6;
+  text-shadow: 0 0 10px rgba(59, 130, 246, 0.8);
+}
+
 .dock-item:nth-child(2):hover .dock-icon {
+  color: #10b981;
+  text-shadow: 0 0 10px rgba(16, 185, 129, 0.8);
+}
+
+.dock-item:nth-child(3):hover .dock-icon {
   color: #dc143c;
   text-shadow: 0 0 10px rgba(220, 20, 60, 0.8);
 }
 
-.dock-item:nth-child(3):hover .dock-icon {
-  color: #ffffff;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+.dock-item:nth-child(4):hover .dock-icon {
+  color: #f59e0b;
+  text-shadow: 0 0 10px rgba(245, 158, 11, 0.8);
 }
 
-.dock-item:nth-child(4):hover .dock-icon {
+.dock-item:nth-child(5):hover .dock-icon {
   color: #228b22;
   text-shadow: 0 0 10px rgba(34, 139, 34, 0.8);
 }
