@@ -124,10 +124,10 @@ const InteractiveCountWidget = () => {
         >
           {/* Swipe hint - only show when collapsed */}
           {!isExpanded && (
-            <div className="absolute -right-8 top-1/2 -translate-y-1/2 bg-blue-500 text-white p-2 rounded-r-lg shadow-lg animate-pulse">
-              <ChevronRight size={16} />
-            </div>
-          )}
+          <div className="fixed left-0 top-1/2 -translate-y-1/2 bg-blue-500 text-white p-2 rounded-r-lg shadow-lg animate-pulse z-50">
+            <ChevronRight size={16} />
+          </div>
+        )}
           
           {/* Main widget */}
           <div className="bg-white/95 backdrop-blur-md border-r border-gray-200 shadow-2xl rounded-r-2xl p-6 w-72">
