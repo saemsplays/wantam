@@ -16,11 +16,12 @@
   width: fit-content;
   gap: 1rem;
   border-radius: 1rem;
-  background-color: rgba(6, 6, 6, 0.9);
+  background: linear-gradient(135deg, #000000 0%, #228B22 33%, #FFFFFF 50%, #DC143C 100%);
   backdrop-filter: blur(10px);
   border: 1px solid #333;
   padding: 0 0.5rem 0.5rem;
   z-index: 50;
+  opacity: 0.9;
 }
 
 .dock-item {
@@ -41,6 +42,7 @@
 .dock-item:hover {
   background-color: rgba(32, 32, 32, 0.9);
   border-color: #555;
+  box-shadow: 0 0 20px rgba(34, 139, 34, 0.5);
 }
 
 .dock-icon {
@@ -48,6 +50,27 @@
   align-items: center;
   justify-content: center;
   color: #fff;
+  transition: all 0.3s ease;
+}
+
+.dock-item:hover .dock-icon {
+  color: #61dca3;
+  text-shadow: 0 0 10px rgba(97, 220, 163, 0.8);
+}
+
+.dock-item:nth-child(2):hover .dock-icon {
+  color: #dc143c;
+  text-shadow: 0 0 10px rgba(220, 20, 60, 0.8);
+}
+
+.dock-item:nth-child(3):hover .dock-icon {
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+.dock-item:nth-child(4):hover .dock-icon {
+  color: #228b22;
+  text-shadow: 0 0 10px rgba(34, 139, 34, 0.8);
 }
 
 .dock-label {

@@ -1,4 +1,3 @@
-
 import { useRef, useEffect } from "react";
 
 const LetterGlitch = ({
@@ -269,6 +268,29 @@ const LetterGlitch = ({
       {centerVignette && (
         <div style={centerVignetteStyle as React.CSSProperties}></div>
       )}
+      
+      {/* Text overlay with mask effect */}
+      <div className="absolute inset-0 flex items-center justify-center z-10">
+        <div 
+          className="text-center"
+          style={{
+            backgroundImage: `url(/lovable-uploads/f4bd3b89-c46d-4165-a880-0a1efa79063f.png)`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundClip: 'text',
+            WebkitBackgroundClip: 'text',
+            color: 'transparent',
+            WebkitTextFillColor: 'transparent',
+          }}
+        >
+          <h1 className="text-6xl md:text-8xl font-bold font-mono tracking-wider">
+            #REJECT
+          </h1>
+          <h2 className="text-4xl md:text-6xl font-bold font-mono tracking-wider mt-2">
+            FINANCEBILL
+          </h2>
+        </div>
+      </div>
     </div>
   );
 };

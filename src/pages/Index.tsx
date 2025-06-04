@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,6 +16,7 @@ import { BillsSidebar } from '../components/BillsSidebar';
 import LetterGlitch from '../components/LetterGlitch';
 import DonationWidget from '../components/DonationWidget';
 import Dock from '../components/Dock';
+import UserCountSidebar from '../components/UserCountSidebar';
 
 const Index = () => {
   const [userName, setUserName] = useState('');
@@ -293,6 +293,9 @@ Citizen of Kenya`);
         <BillsSidebar />
       </div>
 
+      {/* User Count Sidebar */}
+      <UserCountSidebar />
+
       {/* Scroll to Top Button */}
       <ScrollToTop />
 
@@ -327,18 +330,6 @@ Citizen of Kenya`);
           outerVignette={false}
           smooth={true}
         />
-        
-        {/* Centered text revealing #rejectfinancebill */}
-        <div className="absolute inset-0 flex items-center justify-center z-10">
-          <div className="text-center">
-            <h1 className="text-6xl md:text-8xl font-bold text-white font-mono tracking-wider">
-              #REJECT
-            </h1>
-            <h2 className="text-4xl md:text-6xl font-bold text-white font-mono tracking-wider mt-2">
-              FINANCEBILL
-            </h2>
-          </div>
-        </div>
       </section>
 
       {/* Hero Section 2 - Main content */}
@@ -455,36 +446,6 @@ Citizen of Kenya`);
       </section>
 
       <div className="max-w-4xl mx-auto px-4 py-12 space-y-8">
-        <section id="gpt-card">
-          <Card className="bg-gradient-to-r from-red-600 to-green-600 border-gray-200 shadow-lg">
-            <CardContent className="pt-6">
-              <div className="flex items-start gap-4">
-                <div className="bg-white/20 p-2 rounded-lg flex-shrink-0 backdrop-blur-sm">
-                  <Scale className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-white mb-2">Need help understanding the Finance Bill 2025?</h3>
-                  <p className="text-sm text-white/90 mb-4">
-                    Get instant answers to all your questions about the Finance Bill 2025 from our AI assistant.
-                    Understand specific clauses, their implications, and how they might affect you.
-                  </p>
-                  <a
-                    href="https://chatgpt.com/g/g-681270efebe08191ad509259b304815b-2025-finance-bill-gpt"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-white text-gray-900 hover:bg-white/90 rounded-lg text-sm font-medium transition-colors"
-                  >
-                    Ask the Finance Bill Assistant
-                    <ArrowUpRight className="h-4 w-4" />
-                  </a>
-                  <p className="text-xs text-white/70 mt-2">
-                    Opens in a new window. No login required.
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </section>
         
         <Card className="bg-gradient-to-r from-blue-50 to-emerald-50 border-blue-200">
           <CardContent className="pt-6">
