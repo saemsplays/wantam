@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -320,6 +321,7 @@ Citizen of Kenya`);
       {/* Hero Section 1 - LetterGlitch only */}
       <section className="h-screen relative overflow-hidden">
         <LetterGlitch
+          glitchColors={["#2b4539", "#61dca3", "#61b3dc"]}
           glitchSpeed={50}
           centerVignette={true}
           outerVignette={false}
