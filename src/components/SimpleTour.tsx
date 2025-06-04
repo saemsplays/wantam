@@ -28,7 +28,7 @@ export const SimpleTour: React.FC<SimpleTourProps> = ({ isActive, onComplete, on
       targetId: 'hero'
     },
     {
-      id: 'gpt-assistant',
+      id: 'gpt-card',
       title: 'AI Assistant Available',
       description: 'Get help understanding the Finance Bill with our AI assistant',
       targetId: 'gpt-card'
