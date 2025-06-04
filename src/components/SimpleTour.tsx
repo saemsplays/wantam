@@ -23,38 +23,32 @@ export const SimpleTour: React.FC<SimpleTourProps> = ({ isActive, onComplete, on
   const tourSteps: TourStep[] = [
     {
       id: 'start',
-      title: 'Begin Your Submission',
-      description: 'Welcome! We are here to guide you to make the most of this site. Shall we?',
+      title: 'Begin Your Guide',
+      description: 'Welcome! I am herer to guide you through your submission. Shall we?',
       targetId: 'hero'
     },
     {
       id: 'introduction',
-      title: 'Introduction to Finance Bill 2025',
-      description: 'Understand the constitutional violations and why this bill threatens essential rights',
+      title: 'Introduction + Finance Bill GPT',
+      description: 'Understand how the Constitution protects you + ask questions on the Finance Bill GPT',
       targetId: 'hero'
-    },
-    {
-      id: 'gpt-card',
-      title: 'AI Assistant Available',
-      description: 'Get help understanding the Finance Bill with our AI assistant',
-      targetId: 'gpt-card'
     },
     {
       id: 'details',
       title: 'Enter Your Details',
-      description: 'Add your name to personalize your objection letter',
+      description: 'Add a name to personalize your objection letter. It does not have to be your actual name.',
       targetId: 'details'
     },
     {
       id: 'recipients',
       title: 'Choose Recipients',
-      description: 'Select who should receive your constitutional objection',
+      description: 'Review who should receive your constitutional objection',
       targetId: 'recipients'
     },
     {
       id: 'subject',
       title: 'Email Subject',
-      description: 'Review and customize the email subject line',
+      description: 'Review and customize your email subject line',
       targetId: 'subject'
     },
     {
@@ -66,7 +60,7 @@ export const SimpleTour: React.FC<SimpleTourProps> = ({ isActive, onComplete, on
     {
       id: 'send',
       title: 'Send Your Objection',
-      description: 'Submit your formal objection via your email app',
+      description: 'You\'ll be redirected to your email app. Just hit send',
       targetId: 'send'
     }
   ];
