@@ -26,6 +26,7 @@ interface RotatingTextProps {
   animatePresenceMode?: "wait" | "sync" | "popLayout";
   animatePresenceInitial?: boolean;
   rotationInterval?: number;
+  durations?: number[]; // NEW: Per-text durations
   staggerDuration?: number;
   staggerFrom?: "first" | "last" | "center" | "random" | number;
   loop?: boolean;
@@ -47,6 +48,7 @@ const RotatingText = forwardRef<any, RotatingTextProps>((props, ref) => {
     animatePresenceMode = "wait",
     animatePresenceInitial = false,
     rotationInterval = 2000,
+    durations, // NEW: Per-text durations
     staggerDuration = 0,
     staggerFrom = "first",
     loop = true,
@@ -61,8 +63,20 @@ const RotatingText = forwardRef<any, RotatingTextProps>((props, ref) => {
 
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
 
+  // NEW: Timeout for variable durations
+  useEffect(() => {
+    if (!auto) return;
+    
+    const currentDuration = durations?.[currentTextIndex] ?? rotationInterval;
+    const timerId = setTimeout(() => {
+      next();
+    }, currentDuration);
+
+    return () => clearTimeout(timerId);
+  }, [auto, currentTextIndex, rotationInterval, durations]); // NEW: Added durations
+
+  // Rest of the component remains unchanged below this line
   const splitIntoCharacters = (text: string) => {
-    // Simple fallback to Array.from for character splitting
     return Array.from(text);
   };
 
@@ -172,12 +186,6 @@ const RotatingText = forwardRef<any, RotatingTextProps>((props, ref) => {
     }),
     [next, previous, jumpTo, reset]
   );
-
-  useEffect(() => {
-    if (!auto) return;
-    const intervalId = setInterval(next, rotationInterval);
-    return () => clearInterval(intervalId);
-  }, [next, rotationInterval, auto]);
 
   return (
     <motion.span
