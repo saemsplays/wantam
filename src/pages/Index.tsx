@@ -769,12 +769,15 @@ Citizen of Kenya`);
         </p>
       </div>
 
-      <Dock 
-        items={dockItems}
-        panelHeight={68}
-        baseItemSize={50}
-        magnification={70}
-      />
+      // Solution 2: Override Dock positioning to stick to absolute bottom
+      <div className="absolute bottom-0 left-0 right-0">
+        <Dock 
+          items={dockItems}
+          panelHeight={68}
+          baseItemSize={50}
+          magnification={70}
+          />
+      </div>
     </div>
   );
 };
