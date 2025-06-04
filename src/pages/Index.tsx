@@ -298,7 +298,7 @@ Citizen of Kenya`);
   ];
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
+    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300 pb-20">
       <SimpleTour
         isActive={showTour}
         onComplete={handleTourComplete}
@@ -746,13 +746,8 @@ Citizen of Kenya`);
                 Civic Education Kenya App (CEKA). 
               </a>
             </strong>
-          </p>
-          <p className="break-words max-w-full">
-            CEKA provides this tool under the Constitution of Kenya 2010 (Art 33, Art 35, Art 118(1)). 
-            CEKA does not store, monitor, or share personal user data. 
-          </p>
-          <p className="break-words max-w-full">
-            We collect only anonymous, aggregate usage statistics (such as page views) to improve service delivery.
+             CEKA provides this tool under the Constitution of Kenya 2010 (Art 33, Art 35, Art 118(1)). 
+            CEKA does not store, monitor, or share any user data.
           </p>
           <p className="mt-2 italic break-words max-w-full">
             By using this platform, you acknowledge that all content is user-generated. CEKA holds no liability for any outcomes arising from your objection email.
@@ -774,15 +769,12 @@ Citizen of Kenya`);
         </p>
       </div>
 
-  
-      <div className="absolute bottom-0 left-0 right-0">
-        <Dock 
-          items={dockItems}
-          panelHeight={68}
-          baseItemSize={50}
-          magnification={70}
-          />
-      </div>
+      <Dock 
+        items={dockItems}
+        panelHeight={68}
+        baseItemSize={50}
+        magnification={70}
+      />
     </div>
   );
 };
