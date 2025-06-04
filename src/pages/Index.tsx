@@ -328,8 +328,8 @@ Citizen of Kenya`);
   />
   <div className="absolute inset-0 flex items-center justify-center">
     <div className="flex items-center space-x-4 text-2xl sm:text-4xl md:text-6xl font-bold">
-      <span className="text-white">Reject</span>
-      <div className="px-4 sm:px-6 md:px-8 bg-gradient-to-r from-green-600 to-red-600 dark:from-green-500 dark:to-red-500 text-red-600 overflow-hidden py-2 sm:py-3 md:py-4 justify-center rounded-lg">
+      <span className="text-red-600">Reject</span>
+      <div className="px-4 sm:px-6 md:px-8 bg-gradient-to-r from-green-600 to-red-600 dark:from-green-500 dark:to-red-500 text-white overflow-hidden py-2 sm:py-3 md:py-4 justify-center rounded-lg">
         <RotatingText
           texts={["lies", "abductions", "corruption", "Finance Bill 2025"]}
           durations={[2000, 2000, 2000, 5000]}
