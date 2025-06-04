@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -35,19 +36,12 @@
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -96,6 +90,67 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground transition-colors duration-300;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Dark mode improvements */
+  .dark {
+    color-scheme: dark;
+  }
+
+  .dark body {
+    @apply bg-gray-900 text-gray-100;
+  }
+
+  /* Ensure proper contrast in dark mode */
+  .dark input,
+  .dark textarea,
+  .dark select {
+    @apply bg-gray-800 border-gray-600 text-gray-100;
+  }
+
+  .dark input:focus,
+  .dark textarea:focus,
+  .dark select:focus {
+    @apply ring-blue-400 border-blue-400;
+  }
+
+  /* Dark mode scrollbars */
+  .dark::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .dark::-webkit-scrollbar-track {
+    @apply bg-gray-800;
+  }
+
+  .dark::-webkit-scrollbar-thumb {
+    @apply bg-gray-600 rounded;
+  }
+
+  .dark::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-500;
+  }
+}
+
+/* Kenyan flag gradient utilities */
+@layer utilities {
+  .bg-kenyan-gradient {
+    background: linear-gradient(135deg, #000000 0%, #DC143C 50%, #006400 100%);
+  }
+  
+  .text-kenyan-gradient {
+    background: linear-gradient(135deg, #DC143C 0%, #006400 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .border-kenyan-gradient {
+    border-image: linear-gradient(135deg, #000000, #DC143C, #006400) 1;
   }
 }

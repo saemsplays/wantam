@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -19,6 +20,13 @@ export default {
 		},
 		extend: {
 			colors: {
+				// Kenyan flag colors
+				kenyan: {
+					black: '#000000',
+					red: '#DC143C',
+					green: '#006400',
+					white: '#FFFFFF'
+				},
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',

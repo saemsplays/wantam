@@ -297,7 +297,7 @@ Citizen of Kenya`);
   ];
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
       <SimpleTour
         isActive={showTour}
         onComplete={handleTourComplete}
@@ -319,27 +319,9 @@ Citizen of Kenya`);
 
       <DonationWidget />
 
-      <div className="bg-yellow-100 border-y-2 border-yellow-300 text-yellow-900 p-3 text-center text-xs font-medium relative z-20">
-        <p className="max-w-3xl mx-auto">
-          This platform operates under <strong>Art 33 (Freedom of Expression)</strong>, <strong>Art 35 (Access to Information)</strong>, and <strong>Art 118(1) (Public Participation)</strong> of the Constitution of Kenya 2010. 
-          No data is stored or shared. All emails are drafted locally on your device.
-        </p>
-        
-        {hasSeenTour && (
-          <button
-            onClick={restartTour}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 flex items-center gap-1 px-3 py-1 bg-yellow-200 hover:bg-yellow-300 text-yellow-800 rounded-full text-xs font-medium transition-colors"
-            title="Restart tour"
-          >
-            <Play className="h-3 w-3" />
-            Tour
-          </button>
-        )}
-      </div>
-
       <section className="h-screen relative overflow-hidden">
         <Aurora
-          colorStops={["#3A29FF", "#FF94B4", "#FF3232"]}
+          colorStops={["#000000", "#DC143C", "#006400"]}
           blend={0.5}
           amplitude={1.0}
           speed={0.5}
@@ -347,7 +329,7 @@ Citizen of Kenya`);
         <div className="absolute inset-0 flex items-center justify-center">
           <RotatingText
             texts={['Object', 'Engage', 'Participate', 'Act Now!']}
-            mainClassName="px-4 sm:px-6 md:px-8 bg-gradient-to-r from-emerald-600 to-blue-600 text-white overflow-hidden py-2 sm:py-3 md:py-4 justify-center rounded-lg text-2xl sm:text-4xl md:text-6xl font-bold"
+            mainClassName="px-4 sm:px-6 md:px-8 bg-gradient-to-r from-green-600 to-red-600 dark:from-green-500 dark:to-red-500 text-white overflow-hidden py-2 sm:py-3 md:py-4 justify-center rounded-lg text-2xl sm:text-4xl md:text-6xl font-bold"
             staggerFrom="last"
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
@@ -360,14 +342,14 @@ Citizen of Kenya`);
         </div>
       </section>
 
-      <section id="hero" className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-emerald-50 min-h-screen">
-        <div className="absolute inset-0 bg-gradient-to-r from-red-600/5 via-transparent to-green-600/5"></div>
+      <section id="hero" className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-emerald-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 min-h-screen transition-colors duration-300">
+        <div className="absolute inset-0 bg-gradient-to-r from-red-600/5 via-transparent to-green-600/5 dark:from-red-500/10 dark:via-transparent dark:to-green-500/10"></div>
         <div className="relative max-w-6xl mx-auto px-4 py-16">
           <div className="text-center">
             <div className={`inline-flex items-center gap-3 px-6 py-3 rounded-full text-sm font-medium mb-6 ${
               shouldShowCounter 
-                ? 'bg-green-50 text-green-700' 
-                : 'bg-red-50 text-red-700'
+                ? 'bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-300' 
+                : 'bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-300'
             }`}>
               <AlertTriangle className="h-5 w-5" />
               {shouldShowCounter ? (
@@ -382,14 +364,14 @@ Citizen of Kenya`);
               )}
             </div>
             
-            <h1 className="text-5xl font-bold text-gray-900 mb-6 leading-tight">
+            <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
               Object to the{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-green-600">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-green-600 dark:from-red-400 dark:to-green-400">
                 Finance Bill 2025
               </span>
             </h1>
             
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
               Exercise your constitutional right to participate in legislative processes.
               Submit your formal objection to protect essential goods and privacy rights.
             </p>
@@ -398,15 +380,15 @@ Citizen of Kenya`);
               {stats.map((stat, index) => (
                 <div
                   key={index}
-                  className="bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl p-3 md:p-6 shadow-sm"
+                  className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700 rounded-xl p-3 md:p-6 shadow-sm"
                 >
                   <div className="flex flex-col items-center gap-2 mb-2 text-center">
-                    <div className="bg-blue-100 p-2 rounded-lg flex-shrink-0">
-                      <stat.icon className="h-4 w-4 md:h-5 md:w-5 text-blue-600" />
+                    <div className="bg-blue-100 dark:bg-blue-900/50 p-2 rounded-lg flex-shrink-0">
+                      <stat.icon className="h-4 w-4 md:h-5 md:w-5 text-blue-600 dark:text-blue-400" />
                     </div>
-                    <h3 className="font-semibold text-gray-900 text-xs md:text-base leading-tight">{stat.label}</h3>
+                    <h3 className="font-semibold text-gray-900 dark:text-white text-xs md:text-base leading-tight">{stat.label}</h3>
                   </div>
-                  <p className="text-xs md:text-sm text-gray-600 text-center leading-tight">{stat.value}</p>
+                  <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 text-center leading-tight">{stat.value}</p>
                 </div>
               ))}
             </div>
@@ -416,8 +398,19 @@ Citizen of Kenya`);
                 <TourStarter onStartTour={startTour} />
               )}
 
+              {hasSeenTour && (
+                <button
+                  onClick={restartTour}
+                  className="mb-4 inline-flex items-center gap-1 px-3 py-1 bg-yellow-200 hover:bg-yellow-300 dark:bg-yellow-700 dark:hover:bg-yellow-600 text-yellow-800 dark:text-yellow-200 rounded-full text-xs font-medium transition-colors"
+                  title="Restart tour"
+                >
+                  <Play className="h-3 w-3" />
+                  Restart Tour
+                </button>
+              )}
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Card className="bg-gradient-to-r from-red-600 to-green-600 border-gray-200 shadow-lg">
+                <Card className="bg-gradient-to-r from-red-600 to-green-600 dark:from-red-500 dark:to-green-500 border-gray-200 dark:border-gray-700 shadow-lg">
                   <CardContent className="pt-6">
                     <div className="flex items-start gap-4">
                       <div className="bg-white/20 p-2 rounded-lg flex-shrink-0 backdrop-blur-sm">
@@ -442,7 +435,7 @@ Citizen of Kenya`);
                   </CardContent>
                 </Card>
 
-                <Card className="bg-gradient-to-r from-blue-600 to-purple-600 border-gray-200 shadow-lg">
+                <Card className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-500 dark:to-purple-500 border-gray-200 dark:border-gray-700 shadow-lg">
                   <CardContent className="pt-6">
                     <div className="flex items-start gap-4">
                       <div className="bg-white/20 p-2 rounded-lg flex-shrink-0 backdrop-blur-sm">
@@ -469,26 +462,26 @@ Citizen of Kenya`);
 
       <div className="max-w-4xl mx-auto px-4 py-12 space-y-8">
         
-        <Card className="bg-gradient-to-r from-blue-50 to-emerald-50 border-blue-200">
+        <Card className="bg-gradient-to-r from-blue-50 to-emerald-50 dark:from-blue-900/30 dark:to-emerald-900/30 border-blue-200 dark:border-blue-700">
           <CardContent className="pt-6">
             <div className="flex items-start gap-4">
-              <div className="bg-blue-600 p-2 rounded-lg flex-shrink-0">
+              <div className="bg-blue-600 dark:bg-blue-500 p-2 rounded-lg flex-shrink-0">
                 <CheckCircle className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900 mb-2">How It Works</h3>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">How It Works</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                   <div className="flex items-center gap-2">
-                    <span className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">1</span>
-                    <span>Enter your name</span>
+                    <span className="bg-blue-600 dark:bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">1</span>
+                    <span className="text-gray-700 dark:text-gray-300">Enter your name</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">2</span>
-                    <span>Review your letter</span>
+                    <span className="bg-blue-600 dark:bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">2</span>
+                    <span className="text-gray-700 dark:text-gray-300">Review your letter</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">3</span>
-                    <span>Open and send via your email</span>
+                    <span className="bg-blue-600 dark:bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">3</span>
+                    <span className="text-gray-700 dark:text-gray-300">Open and send via your email</span>
                   </div>
                 </div>
               </div>
@@ -499,20 +492,20 @@ Citizen of Kenya`);
         <section id="details" className={`transition-all duration-700 ${
           activeSection === 'details' ? 'relative z-30 scale-[1.02]' : 'relative z-20'
         }`}>
-          <Card className="border-2 border-dashed border-blue-300 bg-blue-50/30">
+          <Card className="border-2 border-dashed border-blue-300 dark:border-blue-600 bg-blue-50/30 dark:bg-blue-900/20">
             <CardHeader>
               <CardTitle className="flex items-center gap-3">
-                <div className="bg-blue-600 p-2 rounded-lg">
+                <div className="bg-blue-600 dark:bg-blue-500 p-2 rounded-lg">
                   <User className="h-5 w-5 text-white" />
                 </div>
-                Your Details
+                <span className="text-gray-900 dark:text-white">Your Details</span>
               </CardTitle>
-              <p className="text-gray-600">Only your name is required to prefill the objection letter</p>
+              <p className="text-gray-600 dark:text-gray-400">Only your name is required to prefill the objection letter</p>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div>
-                  <Label htmlFor="userName" className="text-sm font-medium text-gray-700 mb-2 block">
+                  <Label htmlFor="userName" className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">
                     Full Name *
                   </Label>
                   <Input
@@ -521,10 +514,10 @@ Citizen of Kenya`);
                     placeholder="Enter your full name as it should appear in the letter"
                     value={userName}
                     onChange={(e) => setUserName(e.target.value)}
-                    className="text-lg py-3 border-2 focus:border-blue-500 transition-colors"
+                    className="text-lg py-3 border-2 focus:border-blue-500 dark:focus:border-blue-400 transition-colors dark:bg-gray-800 dark:border-gray-600 dark:text-white"
                   />
                 </div>
-                <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3 text-emerald-900 text-sm">
+                <div className="bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-700 rounded-lg p-3 text-emerald-900 dark:text-emerald-300 text-sm">
                   <p>
                     <strong>Privacy & Anonymity Notice:</strong> This site collects <u>no</u> personal data. 
                     All inputs remain on your device until you click "Send." 
@@ -539,20 +532,20 @@ Citizen of Kenya`);
         <section id="recipients" className={`transition-all duration-700 ${
           activeSection === 'recipients' ? 'relative z-30 scale-[1.02]' : 'relative z-20'
         }`}>
-          <Card>
+          <Card className="dark:bg-gray-800 dark:border-gray-700">
             <CardHeader>
               <CardTitle className="flex items-center gap-3">
-                <div className="bg-emerald-600 p-2 rounded-lg">
+                <div className="bg-emerald-600 dark:bg-emerald-500 p-2 rounded-lg">
                   <Mail className="h-5 w-5 text-white" />
                 </div>
-                Send To
+                <span className="text-gray-900 dark:text-white">Send To</span>
               </CardTitle>
-              <p className="text-gray-600">Select who should receive your objection letter</p>
+              <p className="text-gray-600 dark:text-gray-400">Select who should receive your objection letter</p>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="flex items-start space-x-3 p-4 border-2 border-gray-200 rounded-lg hover:border-emerald-300 transition-colors">
+                  <div className="flex items-start space-x-3 p-4 border-2 border-gray-200 dark:border-gray-600 rounded-lg hover:border-emerald-300 dark:hover:border-emerald-500 transition-colors">
                     <Checkbox
                       id="clerk"
                       checked={selectedRecipients.clerk}
@@ -560,13 +553,13 @@ Citizen of Kenya`);
                       className="mt-1"
                     />
                     <Label htmlFor="clerk" className="flex-1 cursor-pointer">
-                      <div className="font-semibold text-gray-900">{recipients.clerk.name}</div>
-                      <div className="text-sm text-gray-600">{recipients.clerk.email}</div>
-                      <div className="text-xs text-emerald-600 mt-1">✓ Recommended</div>
+                      <div className="font-semibold text-gray-900 dark:text-white">{recipients.clerk.name}</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">{recipients.clerk.email}</div>
+                      <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-1">✓ Recommended</div>
                     </Label>
                   </div>
                   
-                  <div className="flex items-start space-x-3 p-4 border-2 border-gray-200 rounded-lg hover:border-emerald-300 transition-colors">
+                  <div className="flex items-start space-x-3 p-4 border-2 border-gray-200 dark:border-gray-600 rounded-lg hover:border-emerald-300 dark:hover:border-emerald-500 transition-colors">
                     <Checkbox
                       id="financeCommittee"
                       checked={selectedRecipients.financeCommittee}
@@ -574,9 +567,9 @@ Citizen of Kenya`);
                       className="mt-1"
                     />
                     <Label htmlFor="financeCommittee" className="flex-1 cursor-pointer">
-                      <div className="font-semibold text-gray-900">{recipients.financeCommittee.name}</div>
-                      <div className="text-sm text-gray-600">{recipients.financeCommittee.email}</div>
-                      <div className="text-xs text-emerald-600 mt-1">✓ Recommended</div>
+                      <div className="font-semibold text-gray-900 dark:text-white">{recipients.financeCommittee.name}</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">{recipients.financeCommittee.email}</div>
+                      <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-1">✓ Recommended</div>
                     </Label>
                   </div>
                 </div>
@@ -588,21 +581,21 @@ Citizen of Kenya`);
         <section id="subject" className={`transition-all duration-700 ${
           activeSection === 'subject' ? 'relative z-30 scale-[1.02]' : 'relative z-20'
         }`}>
-          <Card>
+          <Card className="dark:bg-gray-800 dark:border-gray-700">
             <CardHeader>
               <CardTitle className="flex items-center gap-3">
-                <div className="bg-purple-600 p-2 rounded-lg">
+                <div className="bg-purple-600 dark:bg-purple-500 p-2 rounded-lg">
                   <FileText className="h-5 w-5 text-white" />
                 </div>
-                Email Subject
+                <span className="text-gray-900 dark:text-white">Email Subject</span>
               </CardTitle>
-              <p className="text-gray-600">The subject line for your objection email</p>
+              <p className="text-gray-600 dark:text-gray-400">The subject line for your objection email</p>
             </CardHeader>
             <CardContent>
               <Input
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
-                className="text-sm font-medium py-3 border-2 focus:border-purple-500 transition-colors"
+                className="text-sm font-medium py-3 border-2 focus:border-purple-500 dark:focus:border-purple-400 transition-colors dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               />
             </CardContent>
           </Card>
@@ -611,26 +604,26 @@ Citizen of Kenya`);
         <section id="letter" className={`transition-all duration-700 ${
           activeSection === 'letter' ? 'relative z-30 scale-[1.02]' : 'relative z-20'
         }`}>
-          <Card>
+          <Card className="dark:bg-gray-800 dark:border-gray-700">
             <CardHeader>
               <CardTitle className="flex items-center gap-3">
-                <div className="bg-indigo-600 p-2 rounded-lg">
+                <div className="bg-indigo-600 dark:bg-indigo-500 p-2 rounded-lg">
                   <FileText className="h-5 w-5 text-white" />
                 </div>
-                Your Objection Letter
+                <span className="text-gray-900 dark:text-white">Your Objection Letter</span>
               </CardTitle>
-              <p className="text-gray-600">
+              <p className="text-gray-600 dark:text-gray-400">
                 Review and edit your formal objection letter. The letter cites specific constitutional violations and legal grounds.
               </p>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-                  <div className="flex items-center gap-2 text-amber-700 mb-2">
+                <div className="bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700 rounded-lg p-4">
+                  <div className="flex items-center gap-2 text-amber-700 dark:text-amber-300 mb-2">
                     <AlertTriangle className="h-4 w-4" />
                     <span className="text-sm font-medium">Key Objections Covered</span>
                   </div>
-                  <ul className="text-sm text-amber-700 space-y-1">
+                  <ul className="text-sm text-amber-700 dark:text-amber-300 space-y-1">
                     <li>• VAT on essential goods (Art 43 violation)</li>
                     <li>• Digital lending tax expansion (Art 27 violation)</li>
                     <li>• Privacy rights erosion (Art 31 violation)</li>
@@ -650,7 +643,7 @@ Citizen of Kenya`);
                     setMessageBody(newValue);
                   }}
                   rows={25}
-                  className="text-sm leading-relaxed font-mono resize-none border-2 focus:border-indigo-500 transition-colors"
+                  className="text-sm leading-relaxed font-mono resize-none border-2 focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 />
               </div>
             </CardContent>
@@ -660,38 +653,38 @@ Citizen of Kenya`);
         <section id="send" className={`transition-all duration-700 ${
           activeSection === 'send' ? 'relative z-30 scale-[1.02]' : 'relative z-20'
         }`}>
-          <Card className="bg-gradient-to-r from-emerald-50 to-blue-50 border-2 border-emerald-200">
+          <Card className="bg-gradient-to-r from-emerald-50 to-blue-50 dark:from-emerald-900/30 dark:to-blue-900/30 border-2 border-emerald-200 dark:border-emerald-700">
             <CardContent className="pt-6">
               <div className="text-center space-y-6">
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                     Ready to Submit Your Objection?
                   </h3>
-                  <p className="text-gray-600">
+                  <p className="text-gray-600 dark:text-gray-400">
                     Clicking the button below will open your email app with everything pre-filled.
                     Just review and hit send!
                   </p>
                 </div>
 
-                <div className="bg-white rounded-lg p-4 max-w-md mx-auto">
+                <div className="bg-white dark:bg-gray-800 rounded-lg p-4 max-w-md mx-auto">
                   <div className="space-y-2 text-sm">
                     <div className="flex items-center justify-between">
-                      <span>Your Name:</span>
+                      <span className="text-gray-700 dark:text-gray-300">Your Name:</span>
                       <span
                         className={
-                          userName.trim() ? "text-emerald-600 font-medium" : "text-red-500"
+                          userName.trim() ? "text-emerald-600 dark:text-emerald-400 font-medium" : "text-red-500 dark:text-red-400"
                         }
                       >
                         {userName.trim() ? "✓ Provided" : "✗ Required"}
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span>Recipients:</span>
+                      <span className="text-gray-700 dark:text-gray-300">Recipients:</span>
                       <span
                         className={
                           getSelectedRecipientEmails().length > 0
-                            ? "text-emerald-600 font-medium"
-                            : "text-red-500"
+                            ? "text-emerald-600 dark:text-emerald-400 font-medium"
+                            : "text-red-500 dark:text-red-400"
                         }
                       >
                         {getSelectedRecipientEmails().length > 0
@@ -700,8 +693,8 @@ Citizen of Kenya`);
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span>Letter:</span>
-                      <span className="text-emerald-600 font-medium">✓ Ready</span>
+                      <span className="text-gray-700 dark:text-gray-300">Letter:</span>
+                      <span className="text-emerald-600 dark:text-emerald-400 font-medium">✓ Ready</span>
                     </div>
                   </div>
                 </div>
@@ -709,13 +702,13 @@ Citizen of Kenya`);
                 <Button
                   onClick={handleSendEmail}
                   size="lg"
-                  className="bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 text-white px-4 sm:px-6 md:px-12 py-4 text-sm sm:text-base md:text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 w-full max-w-full"
+                  className="bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 dark:from-emerald-500 dark:to-blue-500 dark:hover:from-emerald-600 dark:hover:to-blue-600 text-white px-4 sm:px-6 md:px-12 py-4 text-sm sm:text-base md:text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 w-full max-w-full"
                 >
                   <Send className="mr-2 sm:mr-3 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 flex-shrink-0" />
                   <span className="truncate text-xs sm:text-sm md:text-base">Open Email & Send Objection</span>
                 </Button>
 
-                <p className="text-xs text-gray-500 max-w-md mx-auto">
+                <p className="text-xs text-gray-500 dark:text-gray-400 max-w-md mx-auto">
                   This will open your default email app (Gmail, Outlook, Apple Mail, etc.) with your objection letter ready to send to the National Assembly.
                 </p>
               </div>
@@ -724,7 +717,7 @@ Citizen of Kenya`);
         </section>
       </div>
 
-      <footer className="bg-gray-900 text-gray-200 py-8 text-xs text-center px-4 max-w-full overflow-x-hidden">
+      <footer className="bg-gray-900 dark:bg-gray-950 text-gray-200 dark:text-gray-300 py-8 text-xs text-center px-4 max-w-full overflow-x-hidden transition-colors duration-300">
         <div className="max-w-6xl mx-auto">
           <p className="break-words max-w-full">
             <strong>
@@ -733,7 +726,7 @@ Citizen of Kenya`);
                 href="https://ceka.lovable.app"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline text-emerald-400 hover:text-emerald-300 break-words"
+                className="underline text-emerald-400 dark:text-emerald-300 hover:text-emerald-300 dark:hover:text-emerald-200 break-words"
               >
                 Civic Education Kenya App (CEKA). 
               </a>
@@ -744,14 +737,22 @@ Citizen of Kenya`);
           <p className="mt-2 italic break-words max-w-full">
             By using this platform, you acknowledge that all content is user-generated. CEKA holds no liability for any outcomes arising from your objection email.
           </p>
-          <div className="mt-4 flex flex-col sm:flex-row items-center justify-center gap-2 text-gray-400">
-            <Scale className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-400 flex-shrink-0" />
+          <div className="mt-4 flex flex-col sm:flex-row items-center justify-center gap-2 text-gray-400 dark:text-gray-500">
+            <Scale className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-400 dark:text-emerald-300 flex-shrink-0" />
             <span className="text-center text-xs sm:text-sm break-words max-w-full">
               Exercise your constitutional right to participate in legislative processes (Art 118(1)).
             </span>
           </div>
         </div>
       </footer>
+
+      {/* Bottom Disclaimer */}
+      <div className="bg-gray-800 dark:bg-gray-950 border-t border-gray-700 dark:border-gray-800 text-gray-300 dark:text-gray-400 p-3 text-center text-xs font-medium transition-colors duration-300">
+        <p className="max-w-3xl mx-auto">
+          This platform operates under <strong>Art 33 (Freedom of Expression)</strong>, <strong>Art 35 (Access to Information)</strong>, and <strong>Art 118(1) (Public Participation)</strong> of the Constitution of Kenya 2010. 
+          No data is stored or shared. All emails are drafted locally on your device.
+        </p>
+      </div>
 
       <Dock 
         items={dockItems}

@@ -1,4 +1,3 @@
-
 import { Renderer, Program, Mesh, Color, Triangle } from "ogl";
 import { useEffect, useRef } from "react";
 
@@ -120,7 +119,7 @@ interface AuroraProps {
 
 export default function Aurora(props: AuroraProps) {
   const {
-    colorStops = ["#3A29FF", "#FF94B4", "#FF3232"],
+    colorStops = ["#000000", "#DC143C", "#006400"], // Kenyan flag colors: Black, Red, Green
     amplitude = 1.0,
     blend = 0.5
   } = props;
