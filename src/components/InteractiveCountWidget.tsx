@@ -125,7 +125,7 @@ const InteractiveCountWidget = () => {
         >
           {/* Swipe hint */}
           {!isExpanded && (
-            <div className="fixed left-0 top-1/2 -translate-y-1/2 bg-blue-500 text-white p-2 rounded-r-lg shadow-lg animate-pulse z-50">
+            <div className="absolute left-full top-1/2 -translate-y-1/2 bg-blue-500 text-white p-2 rounded-r-lg shadow-lg animate-pulse z-50">
               <ChevronRight size={16} />
             </div>
           )}
