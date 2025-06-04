@@ -200,7 +200,7 @@ const InteractiveCountWidget = () => {
         >
           {/* Minimized bar */}
           <div
-            className={`absolute left-full top-1/2 -translate-y-1/2 bg-gradient-to-r from-blue-500 to-purple-500 text-white px-3 py-8 rounded-r-lg shadow-lg cursor-pointer transition-all duration-300 hover:shadow-xl ${
+            className={`fixed left-0 top-1/2 -translate-y-1/2 bg-gradient-to-r from-blue-500 to-purple-500 text-white px-3 py-8 rounded-r-lg shadow-lg cursor-pointer transition-all duration-300 hover:shadow-xl ${
               isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'
             }`}
             onClick={() => {
