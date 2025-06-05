@@ -3,14 +3,19 @@
   position: relative;
   overflow: hidden;
   vertical-align: top;
-  height: 1.2em; /* Base height relative to font size */
+}
+
+.text-rotate-wrapper {
+  display: inline-flex;
+  justify-content: center;
+  height: 100%;
 }
 
 .text-rotate {
   display: flex;
-  justify-content: center;
   position: relative;
-  width: 100%;
+  height: 100%;
+  align-items: center;
 }
 
 .text-rotate-sr-only {
@@ -27,17 +32,23 @@
 
 .text-rotate-word {
   display: inline-flex;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  justify-content: center;
+  position: relative;
+  height: 100%;
+  align-items: center;
+  backface-visibility: hidden;
+}
+
+.text-rotate-lines {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .text-rotate-element {
   display: inline-block;
   will-change: transform, opacity;
   backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
 }
 
 .text-rotate-space {
