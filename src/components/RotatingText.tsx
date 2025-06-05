@@ -8,6 +8,7 @@ import {
   useMemo,
   useState,
   useRef,
+  useLayoutEffect,
 } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -36,6 +37,7 @@ interface RotatingTextProps {
   mainClassName?: string;
   splitLevelClassName?: string;
   elementLevelClassName?: string;
+  fixedHeight?: number | string; // New prop for fixed height
 }
 
 const RotatingText = forwardRef<any, RotatingTextProps>((props, ref) => {
@@ -64,6 +66,7 @@ const RotatingText = forwardRef<any, RotatingTextProps>((props, ref) => {
     mainClassName,
     splitLevelClassName,
     elementLevelClassName,
+    fixedHeight = "1.2em", // Default fixed height
     ...rest
   } = props;
 
@@ -71,27 +74,24 @@ const RotatingText = forwardRef<any, RotatingTextProps>((props, ref) => {
   const [width, setWidth] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const measureRef = useRef<HTMLDivElement>(null);
+  const currentTextRef = useRef<HTMLDivElement>(null);
 
   // Measure text widths for consistent sizing
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!measureRef.current) return;
     
     const measureWidth = () => {
       if (!measureRef.current) return;
       
-      const widths = texts.map(text => {
-        measureRef.current!.textContent = text;
-        return measureRef.current!.getBoundingClientRect().width;
-      });
-      
-      const maxWidth = Math.max(...widths);
-      setWidth(maxWidth);
+      measureRef.current.textContent = texts[currentTextIndex];
+      const newWidth = measureRef.current.getBoundingClientRect().width;
+      setWidth(newWidth);
     };
     
     measureWidth();
     window.addEventListener("resize", measureWidth);
     return () => window.removeEventListener("resize", measureWidth);
-  }, [texts]);
+  }, [texts, currentTextIndex]);
 
   // Timeout for variable durations
   useEffect(() => {
@@ -220,7 +220,11 @@ const RotatingText = forwardRef<any, RotatingTextProps>((props, ref) => {
     <div 
       ref={containerRef}
       className="text-rotate-container"
-      style={{ width: width ? `${width}px` : 'auto' }}
+      style={{ 
+        height: fixedHeight,
+        display: 'inline-flex',
+        position: 'relative',
+      }}
     >
       {/* Hidden measurement element */}
       <div 
@@ -232,71 +236,103 @@ const RotatingText = forwardRef<any, RotatingTextProps>((props, ref) => {
           fontSize: 'inherit',
           fontFamily: 'inherit',
           fontWeight: 'inherit',
-          pointerEvents: 'none'
+          pointerEvents: 'none',
+          height: fixedHeight,
+          lineHeight: fixedHeight,
         }}
       />
       
-      <motion.span
-        className={cn("text-rotate", mainClassName)}
-        {...rest}
-        layout
-        transition={transition}
+      <motion.div
+        className={cn("text-rotate-wrapper")}
+        animate={{ width }}
+        transition={{ 
+          type: "spring", 
+          damping: 30, 
+          stiffness: 100,
+          mass: 0.5,
+          restDelta: 0.001
+        }}
+        style={{
+          height: fixedHeight,
+          minWidth: 0,
+          overflow: 'hidden',
+          display: 'inline-flex',
+          justifyContent: 'center',
+        }}
       >
-        <span className="text-rotate-sr-only">{texts[currentTextIndex]}</span>
-        <AnimatePresence mode={animatePresenceMode} initial={animatePresenceInitial}>
-          <motion.div
-            key={currentTextIndex}
-            className={cn(
-              splitBy === "lines" ? "text-rotate-lines" : "text-rotate"
-            )}
-            layout
-            aria-hidden="true"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            {elements.map((wordObj, wordIndex, array) => {
-              const previousCharsCount = array
-                .slice(0, wordIndex)
-                .reduce((sum, word) => sum + word.characters.length, 0);
-              return (
-                <motion.span
-                  key={wordIndex}
-                  className={cn("text-rotate-word", splitLevelClassName)}
-                  layout
-                  transition={transition}
-                >
-                  {wordObj.characters.map((char, charIndex) => (
-                    <motion.span
-                      key={charIndex}
-                      initial={initial}
-                      animate={animate}
-                      exit={exit}
-                      transition={{
-                        ...transition,
-                        delay: getStaggerDelay(
-                          previousCharsCount + charIndex,
-                          array.reduce(
-                            (sum, word) => sum + word.characters.length,
-                            0
-                          )
-                        ),
-                      }}
-                      className={cn("text-rotate-element", elementLevelClassName)}
-                    >
-                      {char}
-                    </motion.span>
-                  ))}
-                  {wordObj.needsSpace && (
-                    <span className="text-rotate-space"> </span>
-                  )}
-                </motion.span>
-              );
-            })}
-          </motion.div>
-        </AnimatePresence>
-      </motion.span>
+        <motion.span
+          className={cn("text-rotate", mainClassName)}
+          {...rest}
+          layout
+          style={{
+            height: fixedHeight,
+            lineHeight: fixedHeight,
+          }}
+        >
+          <span className="text-rotate-sr-only">{texts[currentTextIndex]}</span>
+          <AnimatePresence mode={animatePresenceMode} initial={animatePresenceInitial}>
+            <motion.div
+              key={currentTextIndex}
+              className={cn(
+                splitBy === "lines" ? "text-rotate-lines" : "text-rotate"
+              )}
+              layout="position"
+              aria-hidden="true"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              style={{
+                height: fixedHeight,
+                lineHeight: fixedHeight,
+              }}
+            >
+              {elements.map((wordObj, wordIndex, array) => {
+                const previousCharsCount = array
+                  .slice(0, wordIndex)
+                  .reduce((sum, word) => sum + word.characters.length, 0);
+                return (
+                  <motion.span
+                    key={wordIndex}
+                    className={cn("text-rotate-word", splitLevelClassName)}
+                    layout
+                    transition={transition}
+                    style={{
+                      height: fixedHeight,
+                      lineHeight: fixedHeight,
+                    }}
+                  >
+                    {wordObj.characters.map((char, charIndex) => (
+                      <motion.span
+                        key={charIndex}
+                        initial={initial}
+                        animate={animate}
+                        exit={exit}
+                        transition={{
+                          ...transition,
+                          delay: getStaggerDelay(
+                            previousCharsCount + charIndex,
+                            array.reduce(
+                              (sum, word) => sum + word.characters.length,
+                              0
+                            )
+                          ),
+                        }}
+                        className={cn("text-rotate-element", elementLevelClassName)}
+                      >
+                        {char}
+                      </motion.span>
+                    ))}
+                    {wordObj.needsSpace && (
+                      <span className="text-rotate-space"> </span>
+                    )}
+                  </motion.span>
+                );
+              })}
+            </motion.div>
+          </AnimatePresence>
+        </motion.span>
+      </motion.div>
     </div>
   );
 });
