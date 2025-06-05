@@ -1,9 +1,16 @@
+.text-rotate-container {
+  display: inline-flex;
+  position: relative;
+  overflow: hidden;
+  vertical-align: top;
+  height: 1.2em; /* Base height relative to font size */
+}
 
 .text-rotate {
   display: flex;
-  flex-wrap: wrap;
-  white-space: pre-wrap;
+  justify-content: center;
   position: relative;
+  width: 100%;
 }
 
 .text-rotate-sr-only {
@@ -20,16 +27,17 @@
 
 .text-rotate-word {
   display: inline-flex;
-}
-
-.text-rotate-lines {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  justify-content: center;
 }
 
 .text-rotate-element {
   display: inline-block;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 .text-rotate-space {
