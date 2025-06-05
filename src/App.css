@@ -18,6 +18,12 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
+* {
+  transform: translate3d(0,0,0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
