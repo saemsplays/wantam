@@ -18,6 +18,9 @@ import Dock from '../components/Dock';
 import InteractiveCountWidget from '../components/InteractiveCountWidget';
 import Aurora from '../components/Aurora';
 import RotatingText from '../components/RotatingText';
+import SplashScreen from '../components/SplashScreen';
+import EmergencyReportingSystem from '../components/EmergencyReportingSystem';
+import BillsFAB from '../components/BillsFAB';
 
 const Index = () => {
   const [userName, setUserName] = useState('');
@@ -270,9 +273,16 @@ Citizen of Kenya`);
       icon: <Heart size={18} />, 
       label: 'Support', 
       onClick: () => {
-        const donationWidget = document.querySelector('[style*="999"]') as HTMLElement;
-        if (donationWidget) {
-          donationWidget.click();
+        // Directly trigger donation widget
+        const donationButton = document.querySelector('[data-donation-trigger]') as HTMLElement;
+        if (donationButton) {
+          donationButton.click();
+        } else {
+          // Fallback: scroll to find and click donation widget
+          const donationWidget = document.querySelector('[style*="999"]') as HTMLElement;
+          if (donationWidget) {
+            donationWidget.click();
+          }
         }
       }
     },
@@ -280,9 +290,7 @@ Citizen of Kenya`);
       icon: <Flag size={18} />, 
       label: 'Report', 
       onClick: () => {
-        const subject = 'Report Issue - CEKA Platform';
-        const body = 'Hi CEKA Team,\n\nI would like to report the following issue:\n\n[Please describe the issue here]\n\nBest regards,';
-        window.location.href = `mailto:report@ceka.lovable.app?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        setIsReportingOpen(true);
       }
     },
     { 
@@ -297,8 +305,12 @@ Citizen of Kenya`);
     },
   ];
 
+  const [isReportingOpen, setIsReportingOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
+      <SplashScreen />
+      
       <SimpleTour
         isActive={showTour}
         onComplete={handleTourComplete}
@@ -320,33 +332,39 @@ Citizen of Kenya`);
 
       <DonationWidget />
 
-      <section className="h-screen relative overflow-hidden">
-  <Aurora
-    colorStops={["#000000", "#DC143C", "#006400"]}
-    blend={0.5}
-    amplitude={1.0}
-    speed={0.5}
-  />
-  <div className="absolute inset-0 flex items-center justify-center">
-    <div className="flex items-center space-x-4 text-2xl sm:text-4xl md:text-6xl font-bold">
-      <span className="text-red-600">Reject</span>
-      <div className="px-4 sm:px-6 md:px-8 bg-gradient-to-r from-green-600 to-red-600 dark:from-green-500 dark:to-red-500 text-white overflow-hidden py-2 sm:py-3 md:py-4 justify-center rounded-lg">
-        <RotatingText
-          texts={["lies", "looting","incompetence", "anti-privacy", "abductions", "Finance Bill 2025"]}
-          durations={[2000, 2000, 2000, 2000, 2000, 5000]}
-          staggerFrom="last"
-          initial={{ y: "100%" }}
-          animate={{ y: 0 }}
-          exit={{ y: "-120%" }}
-          staggerDuration={0.025}
-          splitLevelClassName="overflow-hidden pb-1 sm:pb-2 md:pb-3"
-          transition={{ type: "spring", damping: 30, stiffness: 400 }}
-        />
-      </div>
-    </div>
-  </div>
-</section>
+      <EmergencyReportingSystem 
+        isOpen={isReportingOpen} 
+        onClose={() => setIsReportingOpen(false)} 
+      />
 
+      <BillsFAB />
+
+      <section className="h-screen relative overflow-hidden">
+        <Aurora
+          colorStops={["#000000", "#DC143C", "#006400"]}
+          blend={0.5}
+          amplitude={1.0}
+          speed={0.5}
+        />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="flex items-center space-x-4 text-2xl sm:text-4xl md:text-6xl font-bold">
+            <span className="text-red-600">Reject</span>
+            <div className="px-4 sm:px-6 md:px-8 bg-gradient-to-r from-green-600 to-red-600 dark:from-green-500 dark:to-red-500 text-white overflow-hidden py-2 sm:py-3 md:py-4 justify-center rounded-lg">
+              <RotatingText
+                texts={["lies", "looting","incompetence", "anti-privacy", "abductions", "Finance Bill 2025"]}
+                durations={[2000, 2000, 2000, 2000, 2000, 5000]}
+                staggerFrom="last"
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                exit={{ y: "-120%" }}
+                staggerDuration={0.025}
+                splitLevelClassName="overflow-hidden pb-1 sm:pb-2 md:pb-3"
+                transition={{ type: "spring", damping: 30, stiffness: 400 }}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
 
       <section id="hero" className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-emerald-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 min-h-screen transition-colors duration-300">
         <div className="absolute inset-0 bg-gradient-to-r from-red-600/5 via-transparent to-green-600/5 dark:from-red-500/10 dark:via-transparent dark:to-green-500/10"></div>
