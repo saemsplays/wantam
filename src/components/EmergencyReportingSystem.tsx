@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Shield, Phone, AlertTriangle, X, ExternalLink, 
@@ -17,6 +16,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
   const [copiedItems, setCopiedItems] = useState<Record<string, boolean>>({});
   const [searchTerm, setSearchTerm] = useState('');
   const [isMobile, setIsMobile] = useState(false);
+  const [filteredResources, setFilteredResources] = useState<any>(null);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -34,8 +34,45 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
       setCurrentSection('main');
       setCurrentCategory('');
       setSearchTerm('');
+      setFilteredResources(null);
     }
   }, [isOpen]);
+
+  // Enhanced search functionality
+  useEffect(() => {
+    if (searchTerm.trim()) {
+      const filtered: any = {};
+      Object.keys(resources).forEach(sectionKey => {
+        const section = resources[sectionKey as keyof typeof resources];
+        const filteredSection: any = {};
+        
+        Object.keys(section).forEach(categoryKey => {
+          const category = section[categoryKey as keyof typeof section];
+          
+          // Search in title, organizations, and services
+          const searchLower = searchTerm.toLowerCase();
+          const titleMatch = category.title?.toLowerCase().includes(searchLower);
+          const orgMatch = category.organizations?.some((org: any) => 
+            org.name?.toLowerCase().includes(searchLower) ||
+            org.description?.toLowerCase().includes(searchLower) ||
+            org.services?.some((service: string) => service.toLowerCase().includes(searchLower))
+          );
+          
+          if (titleMatch || orgMatch) {
+            filteredSection[categoryKey] = category;
+          }
+        });
+        
+        if (Object.keys(filteredSection).length > 0) {
+          filtered[sectionKey] = filteredSection;
+        }
+      });
+      
+      setFilteredResources(filtered);
+    } else {
+      setFilteredResources(null);
+    }
+  }, [searchTerm]);
 
   const resources = {
     'local-ngos': {
@@ -610,139 +647,181 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
     </div>
   );
 
-  const MainDashboard = () => (
-    <div className="space-y-6">
-      <div className="text-center space-y-2">
-        <div className="bg-red-100 w-14 h-14 rounded-full flex items-center justify-center mx-auto">
-          <Shield className="w-8 h-8 text-red-600" />
+  const MainDashboard = () => {
+    const displayResources = filteredResources || resources;
+    const hasSearchResults = filteredResources && Object.keys(filteredResources).length > 0;
+    const noSearchResults = filteredResources && Object.keys(filteredResources).length === 0;
+
+    return (
+      <div className="space-y-6">
+        <div className="text-center space-y-2">
+          <div className="bg-red-100 w-14 h-14 rounded-full flex items-center justify-center mx-auto">
+            <Shield className="w-8 h-8 text-red-600" />
+          </div>
+          <h3 className="text-xl font-bold text-gray-900">Emergency Reporting Hub</h3>
+          <p className="text-sm text-gray-600">
+            Comprehensive resources for human rights violations and emergency situations
+          </p>
         </div>
-        <h3 className="text-xl font-bold text-gray-900">Emergency Reporting Hub</h3>
-        <p className="text-sm text-gray-600">
-          Comprehensive resources for human rights violations and emergency situations
-        </p>
-      </div>
 
-      <div className="relative">
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <Search className="h-4 w-4 text-gray-400" />
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <Search className="h-4 w-4 text-gray-400" />
+          </div>
+          <Input
+            type="text"
+            placeholder="Search resources..."
+            className="pl-10"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
         </div>
-        <Input
-          type="text"
-          placeholder="Search resources..."
-          className="pl-10"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
 
-      <div className="grid grid-cols-2 gap-3">
-        <Button
-          variant="outline"
-          onClick={() => setCurrentSection('emergency-support')}
-          className="p-4 h-auto bg-red-50 border-red-200 hover:bg-red-100 text-left flex flex-col items-start"
-        >
-          <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center mb-2">
-            <Zap className="w-4 h-4 text-red-600" />
+        {noSearchResults && (
+          <div className="text-center py-8">
+            <p className="text-gray-500">No resources found matching "{searchTerm}"</p>
+            <Button
+              variant="outline"
+              onClick={() => setSearchTerm('')}
+              className="mt-2"
+            >
+              Clear search
+            </Button>
           </div>
-          <div className="text-sm font-bold text-red-800">Emergency</div>
-          <div className="text-xs text-red-600 mt-1">Immediate danger & crisis support</div>
-        </Button>
+        )}
 
-        <Button
-          variant="outline"
-          onClick={() => setCurrentSection('local-ngos')}
-          className="p-4 h-auto bg-blue-50 border-blue-200 hover:bg-blue-100 text-left flex flex-col items-start"
-        >
-          <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mb-2">
-            <MapPin className="w-4 h-4 text-blue-600" />
+        {!noSearchResults && (
+          <div className="grid grid-cols-2 gap-3">
+            {hasSearchResults ? (
+              // Show filtered results
+              Object.keys(displayResources).map(sectionKey => (
+                <Button
+                  key={sectionKey}
+                  variant="outline"
+                  onClick={() => setCurrentSection(sectionKey)}
+                  className={`p-4 h-auto border rounded-lg hover:shadow-md transition-all text-left flex flex-col items-start ${getSectionColor(sectionKey)}`}
+                >
+                  <div className="w-8 h-8 rounded-full bg-current bg-opacity-20 flex items-center justify-center mb-2">
+                    {getSectionIcon(sectionKey)}
+                  </div>
+                  <div className="text-sm font-bold capitalize">{sectionKey.replace(/-/g, ' ')}</div>
+                  <div className="text-xs opacity-80 mt-1">
+                    {Object.keys(displayResources[sectionKey]).length} matches
+                  </div>
+                </Button>
+              ))
+            ) : (
+              // Show default categories
+              <>
+                <Button
+                  variant="outline"
+                  onClick={() => setCurrentSection('emergency-support')}
+                  className="p-4 h-auto bg-red-50 border-red-200 hover:bg-red-100 text-left flex flex-col items-start"
+                >
+                  <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center mb-2">
+                    <Zap className="w-4 h-4 text-red-600" />
+                  </div>
+                  <div className="text-sm font-bold text-red-800">Emergency</div>
+                  <div className="text-xs text-red-600 mt-1">Immediate danger & crisis support</div>
+                </Button>
+
+                <Button
+                  variant="outline"
+                  onClick={() => setCurrentSection('local-ngos')}
+                  className="p-4 h-auto bg-blue-50 border-blue-200 hover:bg-blue-100 text-left flex flex-col items-start"
+                >
+                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mb-2">
+                    <MapPin className="w-4 h-4 text-blue-600" />
+                  </div>
+                  <div className="text-sm font-bold text-blue-800">Local NGOs</div>
+                  <div className="text-xs text-blue-600 mt-1">Kenyan human rights organizations</div>
+                </Button>
+
+                <Button
+                  variant="outline"
+                  onClick={() => setCurrentSection('international-orgs')}
+                  className="p-4 h-auto bg-purple-50 border-purple-200 hover:bg-purple-100 text-left flex flex-col items-start"
+                >
+                  <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mb-2">
+                    <Globe className="w-4 h-4 text-purple-600" />
+                  </div>
+                  <div className="text-sm font-bold text-purple-800">International</div>
+                  <div className="text-xs text-purple-600 mt-1">UN bodies & global organizations</div>
+                </Button>
+
+                <Button
+                  variant="outline"
+                  onClick={() => setCurrentSection('legal-support')}
+                  className="p-4 h-auto bg-green-50 border-green-200 hover:bg-green-100 text-left flex flex-col items-start"
+                >
+                  <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mb-2">
+                    <Scale className="w-4 h-4 text-green-600" />
+                  </div>
+                  <div className="text-sm font-bold text-green-800">Legal Aid</div>
+                  <div className="text-xs text-green-600 mt-1">Medical & legal documentation</div>
+                </Button>
+
+                <Button
+                  variant="outline"
+                  onClick={() => setCurrentSection('secure-channels')}
+                  className="p-4 h-auto bg-yellow-50 border-yellow-200 hover:bg-yellow-100 text-left flex flex-col items-start"
+                >
+                  <div className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center mb-2">
+                    <Shield className="w-4 h-4 text-yellow-600" />
+                  </div>
+                  <div className="text-sm font-bold text-yellow-800">Secure Channels</div>
+                  <div className="text-xs text-yellow-600 mt-1">Safe reporting methods</div>
+                </Button>
+
+                <Button
+                  variant="outline"
+                  onClick={() => setCurrentSection('darkweb-options')}
+                  className="p-4 h-auto bg-gray-100 border-gray-300 hover:bg-gray-200 text-left flex flex-col items-start"
+                >
+                  <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center mb-2">
+                    <Globe className="w-4 h-4 text-gray-700" />
+                  </div>
+                  <div className="text-sm font-bold text-gray-800">Dark Web Options</div>
+                  <div className="text-xs text-gray-600 mt-1">High-risk anonymous reporting</div>
+                </Button>
+              </>
+            )}
           </div>
-          <div className="text-sm font-bold text-blue-800">Local NGOs</div>
-          <div className="text-xs text-blue-600 mt-1">Kenyan human rights organizations</div>
-        </Button>
+        )}
 
-        <Button
-          variant="outline"
-          onClick={() => setCurrentSection('international-orgs')}
-          className="p-4 h-auto bg-purple-50 border-purple-200 hover:bg-purple-100 text-left flex flex-col items-start"
-        >
-          <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mb-2">
-            <Globe className="w-4 h-4 text-purple-600" />
-          </div>
-          <div className="text-sm font-bold text-purple-800">International</div>
-          <div className="text-xs text-purple-600 mt-1">UN bodies & global organizations</div>
-        </Button>
-
-        <Button
-          variant="outline"
-          onClick={() => setCurrentSection('legal-support')}
-          className="p-4 h-auto bg-green-50 border-green-200 hover:bg-green-100 text-left flex flex-col items-start"
-        >
-          <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mb-2">
-            <Scale className="w-4 h-4 text-green-600" />
-          </div>
-          <div className="text-sm font-bold text-green-800">Legal Aid</div>
-          <div className="text-xs text-green-600 mt-1">Medical & legal documentation</div>
-        </Button>
-
-        <Button
-          variant="outline"
-          onClick={() => setCurrentSection('secure-channels')}
-          className="p-4 h-auto bg-yellow-50 border-yellow-200 hover:bg-yellow-100 text-left flex flex-col items-start"
-        >
-          <div className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center mb-2">
-            <Shield className="w-4 h-4 text-yellow-600" />
-          </div>
-          <div className="text-sm font-bold text-yellow-800">Secure Channels</div>
-          <div className="text-xs text-yellow-600 mt-1">Safe reporting methods</div>
-        </Button>
-
-        <Button
-          variant="outline"
-          onClick={() => setCurrentSection('darkweb-options')}
-          className="p-4 h-auto bg-gray-100 border-gray-300 hover:bg-gray-200 text-left flex flex-col items-start"
-        >
-          <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center mb-2">
-            <Globe className="w-4 h-4 text-gray-700" />
-          </div>
-          <div className="text-sm font-bold text-gray-800">Dark Web Options</div>
-          <div className="text-xs text-gray-600 mt-1">High-risk anonymous reporting</div>
-        </Button>
-      </div>
-
-      <div className="bg-red-50 border border-red-100 rounded-lg p-3">
-        <div className="flex items-start space-x-2">
-          <AlertTriangle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
-          <div className="text-xs text-red-700">
-            <span className="font-medium">Important:</span> If you're in immediate danger, call <span className="font-bold">112</span> or <span className="font-bold">999</span> first. Only use this system when safe to do so.
+        <div className="bg-red-50 border border-red-100 rounded-lg p-3">
+          <div className="flex items-start space-x-2">
+            <AlertTriangle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
+            <div className="text-xs text-red-700">
+              <span className="font-medium">Important:</span> If you're in immediate danger, call <span className="font-bold">112</span> or <span className="font-bold">999</span> first. Only use this system when safe to do so.
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const SectionView = () => {
-    const sectionData = resources[currentSection as keyof typeof resources];
+    const sectionData = (filteredResources && filteredResources[currentSection]) || resources[currentSection as keyof typeof resources];
     const categories = Object.keys(sectionData);
 
     return (
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setCurrentSection('main')}
-              className="p-1.5 h-auto"
-            >
-              <ArrowLeft className="w-5 h-5" />
-            </Button>
-            <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
-              {getSectionIcon(currentSection)}
-            </div>
-            <h3 className="text-lg font-bold text-gray-900 capitalize">
-              {currentSection.replace(/-/g, ' ')}
-            </h3>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setCurrentSection('main')}
+            className="p-1.5 h-auto"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </Button>
+          <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
+            {getSectionIcon(currentSection)}
           </div>
+          <h3 className="text-lg font-bold text-gray-900 capitalize">
+            {currentSection.replace(/-/g, ' ')}
+          </h3>
         </div>
 
         <div className="grid gap-3">
@@ -882,7 +961,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
 
       {isPrivacyMode && (
         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 pointer-events-none">
-          <div className="bg-gray-900 text-white px-4 py-2 rounded-lg text-sm">
+          <div className="bg-gray-900 text-white px-4 py-2 rounded-lg text-sm opacity-30">
             Hover to view content
           </div>
         </div>

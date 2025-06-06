@@ -68,7 +68,7 @@ const SplashScreen = () => {
               className="w-24 h-24 mb-6 rounded-full flex items-center justify-center"
             >
               <img 
-                src={isDark ? "/lovable-uploads/27af6617-a419-4143-b51c-095ee3f5b9b8.png" : "/lovable-uploads/6845c6a8-11df-45c9-96b7-460d7fe99350.png"}
+                src={isDark ? "/lovable-uploads/6845c6a8-11df-45c9-96b7-460d7fe99350.png" : "/lovable-uploads/27af6617-a419-4143-b51c-095ee3f5b9b8.png"}
                 alt="CEKA Logo" 
                 className="w-full h-full object-contain"
               />
