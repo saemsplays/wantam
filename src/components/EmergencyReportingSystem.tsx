@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Shield, Phone, AlertTriangle, X, ExternalLink, 
@@ -478,7 +479,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
           },
           {
             name: 'Safe House Networks',
-            contact: 'Via KHRC: +254 722 203 867',
+            phone: '+254 722 203 867',
             description: 'Human rights defenders safe house network'
           }
         ],
@@ -514,7 +515,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
         organizations: [
           {
             name: 'Torture Survivors Support',
-            contact: 'Via KHRC: +254 20 273 2097',
+            phone: '+254 20 273 2097',
             services: ['Trauma counseling', 'Survivor support groups', 'Long-term therapy']
           },
           {
