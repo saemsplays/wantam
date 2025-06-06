@@ -291,8 +291,8 @@ Citizen of Kenya`);
   const shouldShowCounter = totalUsers >= 1000;
   const displayCount = showFullCount
     ? totalUsers.toLocaleString()
-    : `${Math.floor(totalUsers / 1000)}K+`;
-
+    : `${Math.round(totalUsers / 1000)}K+`;
+  
   const stats = [
     { icon: Shield, label: "Constitutional Articles", value: "Art 33, Art 35, Art 118(1)" },
     { icon: Scale, label: "Legal Foundation", value: "Constitution of Kenya 2010" },
