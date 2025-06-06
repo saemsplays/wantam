@@ -21,7 +21,7 @@ export const ShareButton: React.FC = () => {
       name: 'X (Twitter)',
       icon: Twitter,
       color: 'bg-black',
-      message: '🚨 Your constitutional rights matter! Join the Finance Bill objection movement. Exercise your Article 118(1) rights for public participation. #RejectFinanceBill2025 #CEKA',
+      message: 'Hi #KOT #KenyansOnTwitter. You\'ve got to see this app #RFB254 by #CEKA. They\'ve really outdone themselves with this one! #RejectFinanceBill2025 #CivicEducationKenya',
       action: () => {
         const text = encodeURIComponent('🚨 Your constitutional rights matter! Join the Finance Bill objection movement. Exercise your Article 118(1) rights for public participation. #RejectFinanceBill2025 #CEKA');
         const url = encodeURIComponent('https://rejectfinancebill2025.lovable.app');
@@ -48,7 +48,7 @@ export const ShareButton: React.FC = () => {
       color: 'bg-gradient-to-r from-emerald-600 to-blue-600',
       message: 'Follow us for updates',
       action: () => {
-        window.open('https://linktr.ee/ceka', '_blank');
+        window.open('https://linktr.ee/civiceducationke', '_blank');
       }
     }
   ];
