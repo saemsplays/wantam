@@ -54,7 +54,7 @@ export const ShareButton: React.FC = () => {
   ];
 
   return (
-    <div className="fixed left-4 bottom-20 md:bottom-4 z-50">
+    <div className="fixed left-4 bottom-20 md:bottom-4 z-40">
       <div className="relative">
         <motion.button
           onClick={() => setIsOpen(!isOpen)}
