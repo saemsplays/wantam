@@ -5,12 +5,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Send, Mail, FileText, CheckCircle, User, AlertTriangle, Shield, Scale, Users, Play, RotateCcw, ArrowUpRight, Home, Archive, Settings, HelpCircle, Lightbulb, Heart, Flag, ExternalLink } from "lucide-react";
+import { Send, Mail, FileText, CheckCircle, User, AlertTriangle, Shield, Scale, Users, Play, RotateCcw, ArrowUpRight, Home, Archive, Settings, HelpCircle, Lightbulb, Heart, Flag, ExternalLink, Radio } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { ScrollProgressTracker } from '../components/ScrollProgressTracker';
 import { SimpleTour } from '../components/SimpleTour';
-import { ScrollToTop } from '../components/ScrollToTop';
 import { TourStarter } from '../components/TourStarter';
 import { BillsSidebar } from '../components/BillsSidebar';
 import DonationWidget from '../components/DonationWidget';
@@ -21,8 +20,12 @@ import RotatingText from '../components/RotatingText';
 import SplashScreen from '../components/SplashScreen';
 import EmergencyReportingSystem from '../components/EmergencyReportingSystem';
 import BillsFAB from '../components/BillsFAB';
+import { FloatingActionButtons } from '../components/FloatingActionButtons';
+import { DarkModeToggle } from '../components/DarkModeToggle';
+import { OfflineRadioSystem } from '../components/OfflineRadioSystem';
 
 const Index = () => {
+  // ... keep existing code (state variables and useEffect hooks)
   const [userName, setUserName] = useState('');
   const [selectedRecipients, setSelectedRecipients] = useState({
     clerk: true,
@@ -72,6 +75,11 @@ Citizen of Kenya`);
   // Tour state
   const [showTour, setShowTour] = useState(false);
   const [hasSeenTour, setHasSeenTour] = useState(false);
+
+  // New state for floating action buttons
+  const [isReportingOpen, setIsReportingOpen] = useState(false);
+  const [isRadioOpen, setIsRadioOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   // Section definitions with updated percentages including Introduction
   const sections = [
@@ -133,6 +141,17 @@ Citizen of Kenya`);
     }
   }, []);
 
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // ... keep existing code (handlers and helper functions)
   const handleTourComplete = () => {
     setShowTour(false);
     setHasSeenTour(true);
@@ -238,6 +257,30 @@ Citizen of Kenya`);
     });
   };
 
+  // Floating action button handlers
+  const handleReportClick = () => {
+    setIsReportingOpen(true);
+  };
+
+  const handleSupportClick = () => {
+    const donationButton = document.querySelector('[data-donation-trigger]') as HTMLElement;
+    if (donationButton) {
+      donationButton.click();
+    }
+  };
+
+  const handleMenuClick = () => {
+    document.getElementById('details')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleScrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleRadioClick = () => {
+    setIsRadioOpen(true);
+  };
+
   const totalUsers = userCount.viewers + userCount.emailsSent;
   const shouldShowCounter = totalUsers >= 1000;
   const displayCount = showFullCount ? totalUsers.toLocaleString() : "1K+";
@@ -272,26 +315,12 @@ Citizen of Kenya`);
     { 
       icon: <Heart size={18} />, 
       label: 'Support', 
-      onClick: () => {
-        // Directly trigger donation widget
-        const donationButton = document.querySelector('[data-donation-trigger]') as HTMLElement;
-        if (donationButton) {
-          donationButton.click();
-        } else {
-          // Fallback: scroll to find and click donation widget
-          const donationWidget = document.querySelector('[style*="999"]') as HTMLElement;
-          if (donationWidget) {
-            donationWidget.click();
-          }
-        }
-      }
+      onClick: handleSupportClick
     },
     { 
       icon: <Flag size={18} />, 
       label: 'Report', 
-      onClick: () => {
-        setIsReportingOpen(true);
-      }
+      onClick: handleReportClick
     },
     { 
       icon: <ExternalLink size={18} />, 
@@ -305,11 +334,11 @@ Citizen of Kenya`);
     },
   ];
 
-  const [isReportingOpen, setIsReportingOpen] = useState(false);
-
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
       <SplashScreen />
+      
+      <DarkModeToggle />
       
       <SimpleTour
         isActive={showTour}
@@ -328,8 +357,6 @@ Citizen of Kenya`);
 
       <InteractiveCountWidget />
 
-      <ScrollToTop />
-
       <DonationWidget />
 
       <EmergencyReportingSystem 
@@ -337,8 +364,23 @@ Citizen of Kenya`);
         onClose={() => setIsReportingOpen(false)} 
       />
 
+      <OfflineRadioSystem
+        isOpen={isRadioOpen}
+        onClose={() => setIsRadioOpen(false)}
+      />
+
+      <FloatingActionButtons
+        onReportClick={handleReportClick}
+        onSupportClick={handleSupportClick}
+        onMenuClick={handleMenuClick}
+        onScrollToTop={handleScrollToTop}
+        onRadioClick={handleRadioClick}
+        isMobile={isMobile}
+      />
+
       <BillsFAB />
 
+      {/* ... keep existing code (sections content) */}
       <section className="h-screen relative overflow-hidden">
         <Aurora
           colorStops={["#000000", "#DC143C", "#006400"]}
@@ -792,7 +834,6 @@ Citizen of Kenya`);
         </p>
       </div>
 
-  
       <div className="absolute bottom-0 left-0 right-0">
         <Dock 
           items={dockItems}

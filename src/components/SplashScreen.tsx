@@ -6,6 +6,7 @@ import { Shield, Scale, Users } from 'lucide-react';
 const SplashScreen = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
     // Check if device is mobile
@@ -13,8 +14,22 @@ const SplashScreen = () => {
       setIsMobile(window.innerWidth < 768);
     };
     
+    // Check if dark mode is active
+    const checkDarkMode = () => {
+      setIsDark(document.documentElement.classList.contains('dark'));
+    };
+    
     checkMobile();
+    checkDarkMode();
+    
     window.addEventListener('resize', checkMobile);
+    
+    // Watch for dark mode changes
+    const observer = new MutationObserver(checkDarkMode);
+    observer.observe(document.documentElement, { 
+      attributes: true, 
+      attributeFilter: ['class'] 
+    });
 
     const timer = setTimeout(() => {
       setIsVisible(false);
@@ -23,6 +38,7 @@ const SplashScreen = () => {
     return () => {
       clearTimeout(timer);
       window.removeEventListener('resize', checkMobile);
+      observer.disconnect();
     };
   }, []);
 
@@ -49,9 +65,13 @@ const SplashScreen = () => {
                 damping: 20,
                 delay: 0.2
               }}
-              className="w-24 h-24 mb-6 bg-gradient-to-br from-red-600 to-green-600 rounded-full flex items-center justify-center"
+              className="w-24 h-24 mb-6 rounded-full flex items-center justify-center"
             >
-              <Shield className="w-12 h-12 text-white" />
+              <img 
+                src={isDark ? "/lovable-uploads/27af6617-a419-4143-b51c-095ee3f5b9b8.png" : "/lovable-uploads/6845c6a8-11df-45c9-96b7-460d7fe99350.png"}
+                alt="CEKA Logo" 
+                className="w-full h-full object-contain"
+              />
             </motion.div>
             
             <motion.div
