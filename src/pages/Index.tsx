@@ -340,6 +340,8 @@ Citizen of Kenya`);
       <SplashScreen />
       
       <DarkModeToggle />
+
+      <ShareButton />
       
       <SimpleTour
         isActive={showTour}
