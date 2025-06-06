@@ -54,19 +54,6 @@ export const FloatingActionButtons: React.FC<FloatingActionButtonsProps> = ({
       >
         <Radio className="w-5 h-5" />
       </motion.button>
-
-      {/* MenuFAB */}
-      <motion.button
-        variants={buttonVariants}
-        initial="initial"
-        whileHover="hover"
-        whileTap="tap"
-        onClick={onMenuClick}
-        className={`${buttonSize} ${spacing} bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg transition-colors duration-200 flex items-center justify-center`}
-        title="Bills Menu"
-      >
-        <Menu className="w-5 h-5" />
-      </motion.button>
     </div>
   );
 };
