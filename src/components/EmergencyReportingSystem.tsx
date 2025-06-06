@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Shield, Phone, AlertTriangle, X, ExternalLink, 
@@ -49,17 +50,19 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
         Object.keys(section).forEach(categoryKey => {
           const category = section[categoryKey as keyof typeof section];
           
-          // Search in title, organizations, and services
-          const searchLower = searchTerm.toLowerCase();
-          const titleMatch = category.title?.toLowerCase().includes(searchLower);
-          const orgMatch = category.organizations?.some((org: any) => 
-            org.name?.toLowerCase().includes(searchLower) ||
-            org.description?.toLowerCase().includes(searchLower) ||
-            org.services?.some((service: string) => service.toLowerCase().includes(searchLower))
-          );
-          
-          if (titleMatch || orgMatch) {
-            filteredSection[categoryKey] = category;
+          // Ensure category exists and has the expected structure
+          if (category && typeof category === 'object') {
+            const searchLower = searchTerm.toLowerCase();
+            const titleMatch = category.title?.toLowerCase().includes(searchLower);
+            const orgMatch = category.organizations?.some((org: any) => 
+              org.name?.toLowerCase().includes(searchLower) ||
+              org.description?.toLowerCase().includes(searchLower) ||
+              org.services?.some((service: string) => service.toLowerCase().includes(searchLower))
+            );
+            
+            if (titleMatch || orgMatch) {
+              filteredSection[categoryKey] = category;
+            }
           }
         });
         
@@ -803,7 +806,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
 
   const SectionView = () => {
     const sectionData = (filteredResources && filteredResources[currentSection]) || resources[currentSection as keyof typeof resources];
-    const categories = Object.keys(sectionData);
+    const categories = Object.keys(sectionData || {});
 
     return (
       <div className="space-y-4">
@@ -838,9 +841,9 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
                 className={`p-4 h-auto border rounded-lg hover:shadow-md transition-all text-left flex justify-between items-center ${getSectionColor(currentSection)}`}
               >
                 <div>
-                  <h4 className="font-semibold mb-1">{categoryData.title}</h4>
+                  <h4 className="font-semibold mb-1">{categoryData?.title || category}</h4>
                   <p className="text-xs opacity-80">
-                    {categoryData.organizations?.length || categoryData.contacts?.length || 0} resources
+                    {categoryData?.organizations?.length || categoryData?.contacts?.length || 0} resources
                   </p>
                 </div>
                 <ChevronRight className="w-5 h-5 text-gray-400" />
@@ -858,6 +861,8 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
     ) as keyof typeof resources;
     const sectionData = resources[sectionKey];
     const categoryData = sectionData[currentCategory as keyof typeof sectionData];
+
+    if (!categoryData) return null;
 
     return (
       <div className="space-y-4">
@@ -915,7 +920,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
   };
 
   const content = (
-    <div className="space-y-4">
+    <div className="space-y-4 relative">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
@@ -960,8 +965,8 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
       </div>
 
       {isPrivacyMode && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 pointer-events-none">
-          <div className="bg-gray-900 text-white px-4 py-2 rounded-lg text-sm opacity-30">
+        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-5 pointer-events-none">
+          <div className="bg-gray-900 text-white px-4 py-2 rounded-lg text-sm opacity-20">
             Hover to view content
           </div>
         </div>

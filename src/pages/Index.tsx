@@ -1,11 +1,12 @@
+
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import CountUp from '../components/CountUp';
 import InteractiveCountWidget from '../components/InteractiveCountWidget';
 import LetterGlitch from '../components/LetterGlitch';
 import RotatingText from '../components/RotatingText';
-import ScrollProgressTracker from '../components/ScrollProgressTracker';
-import { Dock } from '../components/Dock';
+import { ScrollProgressTracker } from '../components/ScrollProgressTracker';
+import Dock from '../components/Dock';
 import { FloatingActionButtons } from '../components/FloatingActionButtons';
 import { DarkModeToggle } from '../components/DarkModeToggle';
 import { ShareButton } from '../components/ShareButton';
@@ -20,6 +21,7 @@ const Index = () => {
   const [showEmergencyReport, setShowEmergencyReport] = useState(false);
   const [showOfflineRadio, setShowOfflineRadio] = useState(false);
   const [showDonation, setShowDonation] = useState(false);
+  const [activeSection, setActiveSection] = useState('hero');
 
   useEffect(() => {
     const checkMobile = () => {
@@ -29,6 +31,27 @@ const Index = () => {
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ['hero', 'bills-section'];
+      const scrollPosition = window.scrollY + window.innerHeight / 2;
+
+      for (const sectionId of sections) {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          const { offsetTop, offsetHeight } = element;
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(sectionId);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const scrollToTop = () => {
@@ -43,10 +66,15 @@ const Index = () => {
     }
   };
 
+  const sections = [
+    { id: 'hero', title: 'Introduction', position: 0 },
+    { id: 'bills-section', title: 'Understanding Bills', position: 50 }
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-emerald-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative overflow-x-hidden">
       <SplashScreen />
-      <ScrollProgressTracker />
+      <ScrollProgressTracker activeSection={activeSection} sections={sections} />
       <DarkModeToggle />
       <ShareButton />
       <ScrollToTop />
@@ -78,7 +106,7 @@ const Index = () => {
       
       <main className="relative z-10">
         {/* Hero Section */}
-        <section className="min-h-screen flex items-center justify-center px-4 pt-16 pb-8">
+        <section id="hero" className="min-h-screen flex items-center justify-center px-4 pt-16 pb-8">
           <div className="max-w-6xl mx-auto text-center">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -91,7 +119,13 @@ const Index = () => {
                   Reject Finance Bill
                 </span>
                 <br />
-                <LetterGlitch text="2025" className="text-gray-900 dark:text-gray-100" />
+                <LetterGlitch
+                  glitchColors={['#ef4444', '#f97316', '#22c55e']}
+                  glitchSpeed={3}
+                  centerVignette={false}
+                  outerVignette={false}
+                  smooth={true}
+                />
               </h1>
               
               <p className="text-xl md:text-2xl text-gray-700 dark:text-gray-300 mb-8 max-w-4xl mx-auto leading-relaxed">
@@ -100,7 +134,12 @@ const Index = () => {
                 <span className="font-semibold text-blue-600 dark:text-blue-400"> public participation</span>.
               </p>
               
-              <RotatingText />
+              <RotatingText texts={[
+                "Your Voice Matters",
+                "Exercise Democracy", 
+                "Reject Finance Bill 2025",
+                "Public Participation Rights"
+              ]} />
             </motion.div>
 
             <motion.div
@@ -111,21 +150,21 @@ const Index = () => {
             >
               <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
                 <div className="text-3xl md:text-4xl font-bold text-red-600 mb-2">
-                  <CountUp end={57} />
+                  <CountUp target={57} duration={2000} />
                 </div>
                 <p className="text-gray-600 dark:text-gray-400">Reports Submitted</p>
               </div>
               
               <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
                 <div className="text-3xl md:text-4xl font-bold text-green-600 mb-2">
-                  <CountUp end={1450} />
+                  <CountUp target={1450} duration={2000} />
                 </div>
                 <p className="text-gray-600 dark:text-gray-400">Active Participants</p>
               </div>
               
               <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
                 <div className="text-3xl md:text-4xl font-bold text-blue-600 mb-2">
-                  21%
+                  30%
                 </div>
                 <p className="text-gray-600 dark:text-gray-400">Implementation Progress</p>
               </div>
@@ -218,7 +257,11 @@ const Index = () => {
         </section>
       </main>
 
-      <Dock />
+      <Dock 
+        isMobile={isMobile}
+        onRadioClick={() => setShowOfflineRadio(true)}
+        onSupportClick={() => setShowDonation(true)}
+      />
       
       <EmergencyReportingSystem 
         isOpen={showEmergencyReport} 
