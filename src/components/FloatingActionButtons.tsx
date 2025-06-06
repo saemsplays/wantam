@@ -28,7 +28,7 @@ export const FloatingActionButtons: React.FC<FloatingActionButtonsProps> = ({
   };
 
   return (
-    <div className="fixed right-8 bottom-40 z-40 flex flex-col items-center">
+    <div className="fixed right-8 bottom-44 z-40 flex flex-col items-center">
       {/* Report FAB */}
       <motion.button
         variants={buttonVariants}
