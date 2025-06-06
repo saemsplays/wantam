@@ -1,6 +1,6 @@
 
 import { WebPlugin } from '@capacitor/core';
-import type { P2pCommunicationPlugin, P2pPeer, P2pMessage } from './definitions';
+import type { P2pCommunicationPlugin, P2pPeer, P2pMessage, PluginListenerHandle } from './definitions';
 
 export class P2pCommunicationWeb extends WebPlugin implements P2pCommunicationPlugin {
   private peers: P2pPeer[] = [];
@@ -60,6 +60,17 @@ export class P2pCommunicationWeb extends WebPlugin implements P2pCommunicationPl
       this.notifyListeners('messageReceived', { message: mockResponse });
     }, 1000);
     return { success: true };
+  }
+
+    async addListener(
+    eventName: string,
+    listenerFunc: (data: any) => void
+  ): Promise<PluginListenerHandle> {
+    return super.addListener(eventName, listenerFunc);
+  }
+
+  async removeAllListeners(): Promise<void> {
+    return super.removeAllListeners();
   }
 
   async connectToPeer(options: { peerId: string; connectionType: 'wifi' | 'bluetooth' }): Promise<{ success: boolean }> {
