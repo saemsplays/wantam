@@ -9,6 +9,7 @@ interface FloatingActionButtonsProps {
   onMenuClick: () => void;
   onScrollToTop: () => void;
   onRadioClick?: () => void;
+  isMobile?: boolean;
 }
 
 export const FloatingActionButtons: React.FC<FloatingActionButtonsProps> = ({
@@ -16,9 +17,10 @@ export const FloatingActionButtons: React.FC<FloatingActionButtonsProps> = ({
   onSupportClick,
   onMenuClick,
   onScrollToTop,
-  onRadioClick
+  onRadioClick,
+  isMobile = false
 }) => {
-  const buttonSize = "w-8 h-8";
+  const buttonSize = "w-12 h-12";
   const spacing = "mb-3";
 
   const buttonVariants = {
@@ -28,7 +30,7 @@ export const FloatingActionButtons: React.FC<FloatingActionButtonsProps> = ({
   };
 
   return (
-    <div className="fixed right-8 bottom-4 z-40 flex flex-col items-center">
+    <div className="fixed right-4 bottom-4 z-40 flex flex-col items-center">
       {/* Report FAB */}
       <motion.button
         variants={buttonVariants}
@@ -64,11 +66,23 @@ export const FloatingActionButtons: React.FC<FloatingActionButtonsProps> = ({
         whileTap="tap"
         onClick={isMobile ? onRadioClick : onMenuClick}
         className={`${buttonSize} ${spacing} bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg transition-colors duration-200 flex items-center justify-center`}
-        title="Radio Comms"
+        title={isMobile ? "Offline Radio" : "Bills Menu"}
       >
-        <Radio className="w-5 h-5" />}
+        {isMobile ? <Radio className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
       </motion.button>
 
+      {/* Scroll to Top FAB */}
+      <motion.button
+        variants={buttonVariants}
+        initial="initial"
+        whileHover="hover"
+        whileTap="tap"
+        onClick={onScrollToTop}
+        className={`${buttonSize} bg-gray-600 hover:bg-gray-700 text-white rounded-full shadow-lg transition-colors duration-200 flex items-center justify-center`}
+        title="Scroll to Top"
+      >
+        <ArrowUp className="w-5 h-5" />
+      </motion.button>
     </div>
   );
 };
