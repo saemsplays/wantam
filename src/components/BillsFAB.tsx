@@ -5,11 +5,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const bills = [
-  { id: 'finance-2025', name: 'Finance Bill 2025', path: '/', color: 'bg-red-500' },
-  { id: 'budget-2025', name: 'Budget Bill 2025', path: '/budget-2025', color: 'bg-blue-500' },
-  { id: 'tax-2025', name: 'Tax Bill 2025', path: '/tax-2025', color: 'bg-green-500' },
-  { id: 'investment-2025', name: 'Investment Bill 2025', path: '/investment-2025', color: 'bg-purple-500' },
-  { id: 'digital-2025', name: 'Digital Economy Bill 2025', path: '/digital-2025', color: 'bg-orange-500' }
+  { id: 'finance-2025', name: 'Finance Bill 2025', path: '/', color: 'bg-gradient-to-r from-red-600 to-green-600' },
+  { id: 'budget-2025', name: 'Budget Bill 2025', path: '/budget-2025', color: 'bg-gradient-to-r from-black to-red-600' },
+  { id: 'tax-2025', name: 'Tax Bill 2025', path: '/tax-2025', color: 'bg-gradient-to-r from-green-600 to-black' },
+  { id: 'investment-2025', name: 'Investment Bill 2025', path: '/investment-2025', color: 'bg-gradient-to-r from-red-600 to-black' },
+  { id: 'digital-2025', name: 'Digital Economy Bill 2025', path: '/digital-2025', color: 'bg-gradient-to-r from-green-600 to-red-600' }
 ];
 
 const BillsFAB = () => {

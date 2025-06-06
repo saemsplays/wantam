@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Shield, Menu, Radio } from 'lucide-react';
+import { Shield, Radio } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface FloatingActionButtonsProps {
@@ -9,6 +9,7 @@ interface FloatingActionButtonsProps {
   onMenuClick: () => void;
   onScrollToTop: () => void;
   onRadioClick?: () => void;
+  isReportOpen?: boolean;
 }
 
 export const FloatingActionButtons: React.FC<FloatingActionButtonsProps> = ({
@@ -17,6 +18,7 @@ export const FloatingActionButtons: React.FC<FloatingActionButtonsProps> = ({
   onMenuClick,
   onScrollToTop,
   onRadioClick,
+  isReportOpen = false,
 }) => {
   const buttonSize = "w-12 h-12";
   const spacing = "mb-3";
@@ -29,27 +31,29 @@ export const FloatingActionButtons: React.FC<FloatingActionButtonsProps> = ({
 
   return (
     <div className="fixed right-8 bottom-44 transform -translate-y-[5px] z-40 flex flex-col items-center">
-      {/* Report FAB */}
       <motion.button
         variants={buttonVariants}
         initial="initial"
         whileHover="hover"
         whileTap="tap"
         onClick={onReportClick}
-        className={`${buttonSize} ${spacing} bg-red-600 hover:bg-red-700 text-white rounded-full shadow-lg transition-colors duration-200 flex items-center justify-center`}
+        className={`${buttonSize} ${spacing} ${
+          isReportOpen 
+            ? 'bg-red-700 hover:bg-red-800' 
+            : 'bg-red-600 hover:bg-red-700'
+        } text-white rounded-full shadow-lg transition-colors duration-200 flex items-center justify-center`}
         title="Report Emergency"
       >
         <Shield className="w-5 h-5" />
       </motion.button>
 
-      {/* Radio FAB */}
       <motion.button
         variants={buttonVariants}
         initial="initial"
         whileHover="hover"
         whileTap="tap"
         onClick={onRadioClick}
-        className={`${buttonSize} ${spacing} bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg transition-colors duration-200 flex items-center justify-center`}
+        className={`${buttonSize} ${spacing} bg-gradient-to-r from-green-600 to-black hover:from-green-700 hover:to-gray-900 text-white rounded-full shadow-lg transition-colors duration-200 flex items-center justify-center`}
         title="Offline Radio"
       >
         <Radio className="w-5 h-5" />

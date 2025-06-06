@@ -10,7 +10,7 @@ export const ShareButton: React.FC = () => {
     {
       name: 'Instagram',
       icon: Instagram,
-      color: 'bg-gradient-to-r from-purple-500 to-pink-500',
+      color: 'bg-gradient-to-r from-red-600 to-green-600',
       message: '🚨 Your constitutional rights matter! Join the Finance Bill objection movement. Exercise your Article 118(1) rights for public participation. #RejectFinanceBill2025 #CEKA',
       action: () => {
         navigator.clipboard.writeText('🚨 Your constitutional rights matter! Join the Finance Bill objection movement. Exercise your Article 118(1) rights for public participation. #RejectFinanceBill2025 #CEKA\n\nrejectfinancebill2025.lovable.app');
@@ -20,7 +20,7 @@ export const ShareButton: React.FC = () => {
     {
       name: 'X (Twitter)',
       icon: Twitter,
-      color: 'bg-black',
+      color: 'bg-gradient-to-r from-black to-red-600',
       message: 'Hi #KOT #KenyansOnTwitter. You\'ve got to see this app #RFB254 by #CEKA. They\'ve really outdone themselves with this one! #RejectFinanceBill2025 #CivicEducationKenya',
       action: () => {
         const text = encodeURIComponent('🚨 Your constitutional rights matter! Join the Finance Bill objection movement. Exercise your Article 118(1) rights for public participation. #RejectFinanceBill2025 #CEKA');
@@ -31,11 +31,13 @@ export const ShareButton: React.FC = () => {
     {
       name: 'TikTok',
       icon: () => (
-        <div className="w-5 h-5 bg-white rounded-sm flex items-center justify-center">
-          <span className="text-black font-bold text-xs">T</span>
-        </div>
+        <img 
+          src="/lovable-uploads/2cc19d59-6197-421d-a11f-b1e74b3072e4.png" 
+          alt="TikTok" 
+          className="w-5 h-5"
+        />
       ),
-      color: 'bg-black',
+      color: 'bg-gradient-to-r from-green-600 to-black',
       message: '💪 Exercise your constitutional rights! Join the Finance Bill resistance. Your voice matters in democracy! #RejectFinanceBill2025 #CEKA #ConstitutionalRights',
       action: () => {
         navigator.clipboard.writeText('💪 Exercise your constitutional rights! Join the Finance Bill resistance. Your voice matters in democracy! #RejectFinanceBill2025 #CEKA #ConstitutionalRights\n\nrejectfinancebill2025.lovable.app');
@@ -58,7 +60,7 @@ export const ShareButton: React.FC = () => {
       <div className="relative">
         <motion.button
           onClick={() => setIsOpen(!isOpen)}
-          className="w-12 h-12 bg-gradient-to-r from-emerald-600 to-blue-600 bg-gradient-to-r hover:from-emerald-700 hover:to-blue-700 text-white rounded-full shadow-lg transition-colors duration-200 flex items-center justify-center"
+          className="w-12 h-12 bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 text-white rounded-full shadow-lg transition-colors duration-200 flex items-center justify-center"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
           title="Share"

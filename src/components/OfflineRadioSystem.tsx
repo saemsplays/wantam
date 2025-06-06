@@ -54,9 +54,8 @@ export const OfflineRadioSystem: React.FC<OfflineRadioSystemProps> = ({ isOpen, 
   const toggleRecording = () => {
     setIsRecording(!isRecording);
     if (!isRecording) {
-      // Start recording
       setIsTransmitting(true);
-      setTimeout(() => setIsTransmitting(false), 3000); // Demo transmission
+      setTimeout(() => setIsTransmitting(false), 3000);
     }
   };
 
@@ -66,7 +65,6 @@ export const OfflineRadioSystem: React.FC<OfflineRadioSystemProps> = ({ isOpen, 
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -75,19 +73,19 @@ export const OfflineRadioSystem: React.FC<OfflineRadioSystemProps> = ({ isOpen, 
             onClick={onClose}
           />
 
-          {/* Slide-in Panel */}
           <motion.div
             ref={modalRef}
             initial={{ x: '-100%' }}
             animate={{ x: 0 }}
             exit={{ x: '-100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed left-0 top-0 h-full w-80 bg-white dark:bg-gray-900 shadow-2xl z-50 flex flex-col"
+            className="fixed left-0 top-0 h-full w-80 bg-white dark:bg-gray-900 shadow-2xl z-50 flex flex-col rounded-r-2xl overflow-hidden"
           >
-            {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-green-50 to-red-50 dark:from-green-900/20 dark:to-red-900/20">
               <div className="flex items-center space-x-3">
-                <Radio className="w-6 h-6 text-blue-600" />
+                <div className="w-8 h-8 bg-gradient-to-r from-green-600 to-black rounded-lg flex items-center justify-center">
+                  <Radio className="w-4 h-4 text-white" />
+                </div>
                 <h2 className="text-lg font-bold text-gray-900 dark:text-white">Offline Radio</h2>
               </div>
               <button
@@ -98,22 +96,19 @@ export const OfflineRadioSystem: React.FC<OfflineRadioSystemProps> = ({ isOpen, 
               </button>
             </div>
 
-            {/* Radio Interface */}
             <div className="p-4 border-b border-gray-200 dark:border-gray-700">
               <div className="flex flex-col items-center space-y-4">
-                {/* Large Radio Button */}
                 <motion.button
                   onClick={toggleRecording}
                   className={`w-32 h-32 rounded-full flex items-center justify-center transition-all duration-300 ${
                     isRecording 
-                      ? 'bg-red-600 shadow-lg shadow-red-500/50' 
+                      ? 'bg-gradient-to-r from-red-600 to-green-600 shadow-lg shadow-red-500/50' 
                       : 'bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600'
                   }`}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   <div className="relative">
-                    {/* Radio mesh pattern */}
                     <div className="w-20 h-20 border-4 border-gray-600 dark:border-gray-300 rounded-full flex items-center justify-center">
                       <div className="grid grid-cols-6 gap-1">
                         {Array.from({ length: 36 }).map((_, i) => (
@@ -127,7 +122,6 @@ export const OfflineRadioSystem: React.FC<OfflineRadioSystemProps> = ({ isOpen, 
                       </div>
                     </div>
                     
-                    {/* Center icon */}
                     <div className="absolute inset-0 flex items-center justify-center">
                       {isRecording ? (
                         <Mic className="w-8 h-8 text-white" />
@@ -138,7 +132,6 @@ export const OfflineRadioSystem: React.FC<OfflineRadioSystemProps> = ({ isOpen, 
                   </div>
                 </motion.button>
 
-                {/* Status */}
                 <div className="text-center">
                   <div className={`text-sm font-medium ${
                     isRecording ? 'text-red-600' : 'text-gray-600 dark:text-gray-400'
@@ -155,9 +148,7 @@ export const OfflineRadioSystem: React.FC<OfflineRadioSystemProps> = ({ isOpen, 
               </div>
             </div>
 
-            {/* Chat Area */}
             <div className="flex-1 flex flex-col">
-              {/* Messages */}
               <div className="flex-1 overflow-y-auto p-4 space-y-3">
                 <div className="text-xs text-gray-500 dark:text-gray-400 text-center mb-4">
                   Peer-to-peer communication active
@@ -180,7 +171,6 @@ export const OfflineRadioSystem: React.FC<OfflineRadioSystemProps> = ({ isOpen, 
                 ))}
               </div>
 
-              {/* Input Area */}
               <div className="p-4 border-t border-gray-200 dark:border-gray-700">
                 <div className="flex space-x-2">
                   <input
@@ -189,12 +179,12 @@ export const OfflineRadioSystem: React.FC<OfflineRadioSystemProps> = ({ isOpen, 
                     onChange={(e) => setCurrentMessage(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                     placeholder="Type a message..."
-                    className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                   />
                   <button
                     onClick={handleSendMessage}
                     disabled={!currentMessage.trim()}
-                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-lg transition-colors"
+                    className="px-4 py-2 bg-gradient-to-r from-green-600 to-black hover:from-green-700 hover:to-gray-900 disabled:bg-gray-400 text-white rounded-lg transition-colors"
                   >
                     <Send className="w-4 h-4" />
                   </button>

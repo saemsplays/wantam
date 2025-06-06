@@ -25,6 +25,8 @@ import { FloatingActionButtons } from '../components/FloatingActionButtons';
 import { DarkModeToggle } from '../components/DarkModeToggle';
 import { OfflineRadioSystem } from '../components/OfflineRadioSystem';
 import { ShareButton } from '../components/ShareButton';
+import { BillsDockPopup } from '../components/BillsDockPopup';
+import { Home as HomeIcon, Archive as ArchiveIcon, Settings as SettingsIcon, HelpCircle as HelpCircleIcon, Lightbulb as LightbulbIcon, Heart as HeartIcon, Flag as FlagIcon, ExternalLink as ExternalLinkIcon, Radio as RadioIcon, FileText as FileTextIcon, Users as UsersIcon } from "lucide-react";
 
 const Index = () => {
   const [userName, setUserName] = useState('');
@@ -81,6 +83,10 @@ Citizen of Kenya`);
   const [isReportingOpen, setIsReportingOpen] = useState(false);
   const [isRadioOpen, setIsRadioOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+
+  // Bills dock popup state
+  const [billsDockOpen, setBillsDockOpen] = useState(false);
+  const [billsDockOrigin, setBillsDockOrigin] = useState<HTMLElement | null>(null);
 
   // Section definitions with updated percentages including Introduction
   const sections = [
@@ -259,7 +265,7 @@ Citizen of Kenya`);
 
   // Floating action button handlers
   const handleReportClick = () => {
-    setIsReportingOpen(true);
+    setIsReportingOpen(prev => !prev);
   };
 
   const handleSupportClick = () => {
@@ -297,33 +303,32 @@ Citizen of Kenya`);
 
   const dockItems = [
     { 
-      icon: <FileText size={18} />, 
+      icon: <FileTextIcon size={18} />, 
       label: 'Bills', 
-      onClick: () => {
-        document.getElementById('details')?.scrollIntoView({ behavior: 'smooth' });
+      onClick: (event: React.MouseEvent<HTMLElement>) => {
+        setBillsDockOrigin(event.currentTarget as HTMLElement);
+        setBillsDockOpen(true);
       }
     },
     { 
-      icon: <Lightbulb size={18} />, 
-      label: 'Suggest', 
+      icon: <RadioIcon size={18} />, 
+      label: 'Radio', 
       onClick: () => {
-        const subject = 'Suggestion for CEKA Platform';
-        const body = 'Hi CEKA Team,\n\nI have a suggestion for improving the platform:\n\n[Your suggestion here]\n\nBest regards,';
-        window.location.href = `mailto:suggestions@ceka.lovable.app?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        setIsRadioOpen(true);
       }
     },
     { 
-      icon: <Heart size={18} />, 
+      icon: <HeartIcon size={18} />, 
       label: 'Support', 
       onClick: handleSupportClick
     },
     { 
-      icon: <Flag size={18} />, 
+      icon: <FlagIcon size={18} />, 
       label: 'Report', 
       onClick: handleReportClick
     },
     { 
-      icon: <ExternalLink size={18} />, 
+      icon: <UsersIcon size={18} />, 
       label: 'CEKA', 
       onClick: () => {
         const confirmed = confirm('You are about to visit the main CEKA platform. Would you like to proceed?');
@@ -371,6 +376,12 @@ Citizen of Kenya`);
         onClose={() => setIsRadioOpen(false)}
       />
 
+      <BillsDockPopup 
+        isOpen={billsDockOpen}
+        onClose={() => setBillsDockOpen(false)}
+        originElement={billsDockOrigin}
+      />
+
       <ScrollToTop />
 
       <FloatingActionButtons
@@ -379,6 +390,7 @@ Citizen of Kenya`);
         onMenuClick={handleMenuClick}
         onScrollToTop={handleScrollToTop}
         onRadioClick={handleRadioClick}
+        isReportOpen={isReportingOpen}
       />
 
       <BillsFAB />

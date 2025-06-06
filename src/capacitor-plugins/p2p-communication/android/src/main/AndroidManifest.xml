@@ -1,0 +1,35 @@
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ceka.p2pcommunication">
+
+    <!-- Wi-Fi Direct Permissions -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    
+    <!-- Bluetooth Permissions -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    
+    <!-- Android 12+ Bluetooth Permissions -->
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" 
+        android:usesPermissionFlags="neverForLocation" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    
+    <!-- Network State -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    
+    <!-- Wi-Fi Direct Feature -->
+    <uses-feature 
+        android:name="android.hardware.wifi.direct" 
+        android:required="true" />
+        
+    <!-- Bluetooth Feature -->
+    <uses-feature 
+        android:name="android.hardware.bluetooth" 
+        android:required="true" />
+
+</manifest>

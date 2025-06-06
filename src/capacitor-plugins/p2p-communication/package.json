@@ -1,0 +1,39 @@
+
+{
+  "name": "p2p-communication-plugin",
+  "version": "1.0.0",
+  "description": "Capacitor plugin for P2P communication via Wi-Fi Direct and Bluetooth",
+  "main": "dist/plugin.cjs.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
+  "unpkg": "dist/plugin.js",
+  "files": [
+    "android/src/main/",
+    "android/build.gradle",
+    "dist/",
+    "ios/Plugin/",
+    "P2pCommunicationPlugin.podspec"
+  ],
+  "author": "CEKA Team",
+  "license": "MIT",
+  "dependencies": {
+    "@capacitor/core": "^5.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^5.0.0",
+    "@capacitor/ios": "^5.0.0",
+    "@capacitor/docgen": "^0.0.18",
+    "typescript": "^4.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ceka/p2p-communication-plugin.git"
+  },
+  "keywords": [
+    "capacitor",
+    "plugin",
+    "p2p",
+    "wifi-direct",
+    "bluetooth"
+  ]
+}
