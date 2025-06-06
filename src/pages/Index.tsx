@@ -27,6 +27,8 @@ import { OfflineRadioSystem } from '../components/OfflineRadioSystem';
 import { ShareButton } from '../components/ShareButton';
 import { BillsDockPopup } from '../components/BillsDockPopup';
 import { Home as HomeIcon, Archive as ArchiveIcon, Settings as SettingsIcon, HelpCircle as HelpCircleIcon, Lightbulb as LightbulbIcon, Heart as HeartIcon, Flag as FlagIcon, ExternalLink as ExternalLinkIcon, Radio as RadioIcon, FileText as FileTextIcon, Users as UsersIcon } from "lucide-react";
+import { registerPlugin } from '@capacitor/core';  // Should now resolve
+import type { P2pCommunicationPlugin } from './definitions';
 
 const Index = () => {
   const [userName, setUserName] = useState('');
