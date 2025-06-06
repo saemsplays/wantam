@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Shield, Heart, Menu, ArrowUp, Radio } from 'lucide-react';
+import { Shield, Menu, Radio } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface FloatingActionButtonsProps {
@@ -44,20 +44,6 @@ export const FloatingActionButtons: React.FC<FloatingActionButtonsProps> = ({
         <Shield className="w-5 h-5" />
       </motion.button>
 
-      {/* Support FAB */}
-      <motion.button
-        variants={buttonVariants}
-        initial="initial"
-        whileHover="hover"
-        whileTap="tap"
-        onClick={onSupportClick}
-        className={`${buttonSize} ${spacing} bg-green-600 hover:bg-green-700 text-white rounded-full shadow-lg transition-colors duration-200 flex items-center justify-center`}
-        title="Support CEKA"
-        data-donation-trigger
-      >
-        <Heart className="w-5 h-5" />
-      </motion.button>
-
       {/* Menu/Radio FAB (conditional based on mobile) */}
       <motion.button
         variants={buttonVariants}
@@ -69,19 +55,6 @@ export const FloatingActionButtons: React.FC<FloatingActionButtonsProps> = ({
         title={isMobile ? "Offline Radio" : "Bills Menu"}
       >
         {isMobile ? <Radio className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-      </motion.button>
-
-      {/* Scroll to Top FAB */}
-      <motion.button
-        variants={buttonVariants}
-        initial="initial"
-        whileHover="hover"
-        whileTap="tap"
-        onClick={onScrollToTop}
-        className={`${buttonSize} bg-gray-600 hover:bg-gray-700 text-white rounded-full shadow-lg transition-colors duration-200 flex items-center justify-center`}
-        title="Scroll to Top"
-      >
-        <ArrowUp className="w-5 h-5" />
       </motion.button>
     </div>
   );
