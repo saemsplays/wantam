@@ -369,7 +369,14 @@ Citizen of Kenya`);
         onClose={() => setIsRadioOpen(false)}
       />
 
-     
+      <FloatingActionButtons
+        onReportClick={handleReportClick}
+        onSupportClick={handleSupportClick}
+        onMenuClick={handleMenuClick}
+        onScrollToTop={handleScrollToTop}
+        onRadioClick={handleRadioClick}
+        isMobile={isMobile}
+      />
 
       <BillsFAB />
 
