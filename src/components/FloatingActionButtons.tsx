@@ -9,7 +9,6 @@ interface FloatingActionButtonsProps {
   onMenuClick: () => void;
   onScrollToTop: () => void;
   onRadioClick?: () => void;
-  isMobile?: boolean;
 }
 
 export const FloatingActionButtons: React.FC<FloatingActionButtonsProps> = ({
@@ -18,7 +17,6 @@ export const FloatingActionButtons: React.FC<FloatingActionButtonsProps> = ({
   onMenuClick,
   onScrollToTop,
   onRadioClick,
-  isMobile = false
 }) => {
   const buttonSize = "w-12 h-12";
   const spacing = "mb-3";
