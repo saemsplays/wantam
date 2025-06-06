@@ -54,11 +54,11 @@ export const ShareButton: React.FC = () => {
   ];
 
   return (
-    <div className="fixed left-4 bottom-20 md:bottom-4 z-40">
+    <div className="fixed left-4 bottom-20 md:bottom-4 z-50">
       <div className="relative">
         <motion.button
           onClick={() => setIsOpen(!isOpen)}
-          className="w-12 h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg transition-colors duration-200 flex items-center justify-center"
+          className="w-12 h-12 bg-blue-600 hover:bg-gradient-to-r from-emerald-600 to-blue-600 text-white rounded-full shadow-lg transition-colors duration-200 flex items-center justify-center"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
           title="Share"
