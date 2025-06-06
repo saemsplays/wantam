@@ -13,7 +13,6 @@ export const ShareButton: React.FC = () => {
       color: 'bg-gradient-to-r from-purple-500 to-pink-500',
       message: '🚨 Your constitutional rights matter! Join the Finance Bill objection movement. Exercise your Article 118(1) rights for public participation. #RejectFinanceBill2025 #CEKA',
       action: () => {
-        // Instagram doesn't support direct sharing with text, so we copy to clipboard
         navigator.clipboard.writeText('🚨 Your constitutional rights matter! Join the Finance Bill objection movement. Exercise your Article 118(1) rights for public participation. #RejectFinanceBill2025 #CEKA\n\nrejectfinancebill2025.lovable.app');
         alert('Text copied! Open Instagram and paste in your story or post.');
       }
@@ -39,7 +38,6 @@ export const ShareButton: React.FC = () => {
       color: 'bg-black',
       message: '💪 Exercise your constitutional rights! Join the Finance Bill resistance. Your voice matters in democracy! #RejectFinanceBill2025 #CEKA #ConstitutionalRights',
       action: () => {
-        // TikTok doesn't have direct sharing API, copy to clipboard
         navigator.clipboard.writeText('💪 Exercise your constitutional rights! Join the Finance Bill resistance. Your voice matters in democracy! #RejectFinanceBill2025 #CEKA #ConstitutionalRights\n\nrejectfinancebill2025.lovable.app');
         alert('Text copied! Open TikTok and paste in your video description.');
       }

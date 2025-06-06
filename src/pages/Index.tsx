@@ -24,9 +24,9 @@ import { ScrollToTop } from '../components/ScrollToTop';
 import { FloatingActionButtons } from '../components/FloatingActionButtons';
 import { DarkModeToggle } from '../components/DarkModeToggle';
 import { OfflineRadioSystem } from '../components/OfflineRadioSystem';
+import { ShareButton } from '../components/ShareButton';
 
 const Index = () => {
-  // ... keep existing code (state variables and useEffect hooks)
   const [userName, setUserName] = useState('');
   const [selectedRecipients, setSelectedRecipients] = useState({
     clerk: true,
@@ -152,7 +152,6 @@ Citizen of Kenya`);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // ... keep existing code (handlers and helper functions)
   const handleTourComplete = () => {
     setShowTour(false);
     setHasSeenTour(true);
@@ -385,7 +384,6 @@ Citizen of Kenya`);
 
       <BillsFAB />
 
-      {/* ... keep existing code (sections content) */}
       <section className="h-screen relative overflow-hidden">
         <Aurora
           colorStops={["#000000", "#DC143C", "#006400"]}
