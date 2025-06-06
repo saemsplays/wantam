@@ -50,7 +50,7 @@ const BillsFAB = () => {
                 <FileText className="w-4 h-4" />
                 <span className="text-sm font-medium">{bill.name}</span>
                 {bill.path === location.pathname && (
-                  <div className="w-2 h-2 bg-white-100 rounded-full" />
+                  <div className="w-2 h-2 bg-white opacity-50 rounded-full" />
                 )}
               </motion.button>
             ))}
