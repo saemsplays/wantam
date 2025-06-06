@@ -60,7 +60,7 @@ const BillsFAB = () => {
 
       <motion.button
         onClick={() => setIsExpanded(!isExpanded)}
-        className={`w-14 h-14 ${getCurrentBill().color} text-white rounded-full shadow-lg hover:shadow-xl transition-all transform hover:scale-110 flex items-center justify-center`}
+        className={`w-12 h-12 ${getCurrentBill().color} text-white rounded-full shadow-lg hover:shadow-xl transition-all transform hover:scale-110 flex items-center justify-center`}
         whileTap={{ scale: 0.95 }}
       >
         <motion.div
