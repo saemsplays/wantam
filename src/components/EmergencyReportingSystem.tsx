@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Shield, Phone, AlertTriangle, X, ExternalLink, 
@@ -898,7 +897,12 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
   const CategoryDetailView = () => {
     const sectionKey = Object.keys(resources).find(key => 
       Object.keys(resources[key]).includes(currentCategory)
-    ) as keyof typeof resources;
+    );
+    
+    if (!sectionKey) {
+      return <div>Section not found</div>;
+    }
+    
     const sectionData = resources[sectionKey];
     const categoryData = sectionData[currentCategory];
 
