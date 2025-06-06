@@ -20,7 +20,6 @@ import RotatingText from '../components/RotatingText';
 import SplashScreen from '../components/SplashScreen';
 import EmergencyReportingSystem from '../components/EmergencyReportingSystem';
 import BillsFAB from '../components/BillsFAB';
-import { ScrollToTop } from '../components/ScrollToTop';
 import { FloatingActionButtons } from '../components/FloatingActionButtons';
 import { DarkModeToggle } from '../components/DarkModeToggle';
 import { OfflineRadioSystem } from '../components/OfflineRadioSystem';
@@ -369,8 +368,6 @@ Citizen of Kenya`);
         isOpen={isRadioOpen}
         onClose={() => setIsRadioOpen(false)}
       />
-
-      <ScrollToTop />
 
       <FloatingActionButtons
         onReportClick={handleReportClick}
