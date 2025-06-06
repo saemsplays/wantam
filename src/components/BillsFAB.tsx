@@ -27,7 +27,7 @@ const BillsFAB = () => {
   };
 
   return (
-    <div className="fixed left-4 bottom-36 z-40">
+    <div className="fixed left-4 bottom-36 transform -translate-y-[25%] z-40">
       <AnimatePresence>
         {isExpanded && (
           <motion.div
