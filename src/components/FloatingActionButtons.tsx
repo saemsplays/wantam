@@ -44,21 +44,6 @@ export const FloatingActionButtons: React.FC<FloatingActionButtonsProps> = ({
         <Shield className="w-5 h-5" />
       </motion.button>
 
-      {/* Radio FAB (only on mobile, replaces menu) */}
-      {isMobile && onRadioClick && (
-        <motion.button
-          variants={buttonVariants}
-          initial="initial"
-          whileHover="hover"
-          whileTap="tap"
-          onClick={onRadioClick}
-          className={`${buttonSize} ${spacing} bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg transition-colors duration-200 flex items-center justify-center`}
-          title="Offline Radio"
-        >
-          <Radio className="w-5 h-5" />
-        </motion.button>
-      )}
-
       {/* Support FAB */}
       <motion.button
         variants={buttonVariants}
@@ -73,20 +58,18 @@ export const FloatingActionButtons: React.FC<FloatingActionButtonsProps> = ({
         <Heart className="w-5 h-5" />
       </motion.button>
 
-      {/* Menu FAB (only on desktop) */}
-      {!isMobile && (
-        <motion.button
-          variants={buttonVariants}
-          initial="initial"
-          whileHover="hover"
-          whileTap="tap"
-          onClick={onMenuClick}
-          className={`${buttonSize} ${spacing} bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg transition-colors duration-200 flex items-center justify-center`}
-          title="Bills Menu"
-        >
-          <Menu className="w-5 h-5" />
-        </motion.button>
-      )}
+      {/* Menu/Radio FAB (conditional based on mobile) */}
+      <motion.button
+        variants={buttonVariants}
+        initial="initial"
+        whileHover="hover"
+        whileTap="tap"
+        onClick={isMobile ? onRadioClick : onMenuClick}
+        className={`${buttonSize} ${spacing} bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg transition-colors duration-200 flex items-center justify-center`}
+        title={isMobile ? "Offline Radio" : "Bills Menu"}
+      >
+        {isMobile ? <Radio className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+      </motion.button>
 
       {/* Scroll to Top FAB */}
       <motion.button
