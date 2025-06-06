@@ -135,7 +135,7 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
       data-donation-trigger
       className={`fixed z-50 transition-all duration-500 ease-out ${
         isExpanded 
-          ? 'bottom-1/2 right-1/2 transform translate-x-1/2 translate-y-1/2' 
+          ? 'bottom-1/2 right-1/2 transform translate-x-[45%] translate-y-1/2' 
           : 'bottom-36 right-8'
       }`}
       style={{ zIndex: 999, opacity }}
