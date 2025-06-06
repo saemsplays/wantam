@@ -9,45 +9,6 @@ import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
-interface Organization {
-  name: string;
-  description: string;
-  contact?: {
-    website?: string;
-    email?: string;
-    phone?: string;
-    mobile?: string;
-  };
-  phone?: string;
-  services?: string[];
-  process?: string;
-  security?: string;
-  setup?: string;
-  usage?: string;
-  examples?: string[];
-  risks?: string;
-  note?: string;
-  access?: string;
-}
-
-interface CategoryData {
-  title: string;
-  warning?: string;
-  organizations?: Organization[];
-  contacts?: Organization[];
-  immediateSteps?: string[];
-  process?: string;
-  steps?: string[];
-}
-
-interface ResourceSection {
-  [key: string]: CategoryData;
-}
-
-interface Resources {
-  [sectionKey: string]: ResourceSection;
-}
-
 const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   const [currentSection, setCurrentSection] = useState('main');
   const [currentCategory, setCurrentCategory] = useState('');
@@ -55,7 +16,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
   const [copiedItems, setCopiedItems] = useState<Record<string, boolean>>({});
   const [searchTerm, setSearchTerm] = useState('');
   const [isMobile, setIsMobile] = useState(false);
-  const [filteredResources, setFilteredResources] = useState<Resources | null>(null);
+  const [filteredResources, setFilteredResources] = useState<any>(null);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -80,26 +41,25 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
   // Enhanced search functionality
   useEffect(() => {
     if (searchTerm.trim()) {
-      const filtered: Resources = {};
+      const filtered: any = {};
       Object.keys(resources).forEach(sectionKey => {
-        const section = resources[sectionKey];
-        const filteredSection: ResourceSection = {};
+        const section = resources[sectionKey as keyof typeof resources];
+        const filteredSection: any = {};
         
         Object.keys(section).forEach(categoryKey => {
-          const category = section[categoryKey];
+          const category = section[categoryKey as keyof typeof section];
           
-          if (category && typeof category === 'object') {
-            const searchLower = searchTerm.toLowerCase();
-            const titleMatch = category.title?.toLowerCase().includes(searchLower);
-            const orgMatch = category.organizations?.some((org: Organization) => 
-              org.name?.toLowerCase().includes(searchLower) ||
-              org.description?.toLowerCase().includes(searchLower) ||
-              org.services?.some((service: string) => service.toLowerCase().includes(searchLower))
-            );
-            
-            if (titleMatch || orgMatch) {
-              filteredSection[categoryKey] = category;
-            }
+          // Search in title, organizations, and services
+          const searchLower = searchTerm.toLowerCase();
+          const titleMatch = category.title?.toLowerCase().includes(searchLower);
+          const orgMatch = category.organizations?.some((org: any) => 
+            org.name?.toLowerCase().includes(searchLower) ||
+            org.description?.toLowerCase().includes(searchLower) ||
+            org.services?.some((service: string) => service.toLowerCase().includes(searchLower))
+          );
+          
+          if (titleMatch || orgMatch) {
+            filteredSection[categoryKey] = category;
           }
         });
         
@@ -114,7 +74,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
     }
   }, [searchTerm]);
 
-  const resources: Resources = {
+  const resources = {
     'local-ngos': {
       'torture': {
         title: 'Torture Documentation & Support',
@@ -559,7 +519,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
     return colors[section] || 'bg-gray-50 border-gray-200 text-gray-800';
   };
 
-  const ContactCard = ({ org, compact = false }: { org: Organization; compact?: boolean }) => (
+  const ContactCard = ({ org, compact = false }: { org: any; compact?: boolean }) => (
     <div className={`bg-white border border-gray-200 rounded-lg ${compact ? 'p-3' : 'p-4'} space-y-3 shadow-sm transition-all hover:shadow-md`}>
       <div className="space-y-2">
         <h4 className={`font-semibold text-gray-900 ${compact ? 'text-sm' : 'text-base'}`}>{org.name}</h4>
@@ -842,8 +802,8 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
   };
 
   const SectionView = () => {
-    const sectionData = (filteredResources && filteredResources[currentSection]) || resources[currentSection];
-    const categories = Object.keys(sectionData || {});
+    const sectionData = (filteredResources && filteredResources[currentSection]) || resources[currentSection as keyof typeof resources];
+    const categories = Object.keys(sectionData);
 
     return (
       <div className="space-y-4">
@@ -866,8 +826,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
 
         <div className="grid gap-3">
           {categories.map(category => {
-            const categoryData = sectionData[category];
-
+            const categoryData = sectionData[category as keyof typeof sectionData];
             return (
               <Button
                 key={category}
@@ -879,9 +838,9 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
                 className={`p-4 h-auto border rounded-lg hover:shadow-md transition-all text-left flex justify-between items-center ${getSectionColor(currentSection)}`}
               >
                 <div>
-                  <h4 className="font-semibold mb-1">{categoryData?.title || category}</h4>
+                  <h4 className="font-semibold mb-1">{categoryData.title}</h4>
                   <p className="text-xs opacity-80">
-                    {categoryData?.organizations?.length || categoryData?.contacts?.length || 0} resources
+                    {categoryData.organizations?.length || categoryData.contacts?.length || 0} resources
                   </p>
                 </div>
                 <ChevronRight className="w-5 h-5 text-gray-400" />
@@ -895,14 +854,10 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
 
   const CategoryDetailView = () => {
     const sectionKey = Object.keys(resources).find(key => 
-      Object.keys(resources[key]).includes(currentCategory)
-    );
-    if (!sectionKey) return null;
-    
+      Object.keys(resources[key as keyof typeof resources]).includes(currentCategory)
+    ) as keyof typeof resources;
     const sectionData = resources[sectionKey];
-    const categoryData = sectionData[currentCategory];
-
-    if (!categoryData) return null;
+    const categoryData = sectionData[currentCategory as keyof typeof sectionData];
 
     return (
       <div className="space-y-4">
@@ -946,11 +901,11 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
           )}
 
           <div className="space-y-3">
-            {categoryData.organizations?.map((org: Organization, idx: number) => (
+            {categoryData.organizations?.map((org: any, idx: number) => (
               <ContactCard key={idx} org={org} />
             ))}
             
-            {categoryData.contacts?.map((contact: Organization, idx: number) => (
+            {categoryData.contacts?.map((contact: any, idx: number) => (
               <ContactCard key={idx} org={contact} compact />
             ))}
           </div>
@@ -960,7 +915,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
   };
 
   const content = (
-    <div className="space-y-4 relative">
+    <div className="space-y-4">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
@@ -1005,8 +960,8 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
       </div>
 
       {isPrivacyMode && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-5 pointer-events-none">
-          <div className="bg-gray-900 text-white px-4 py-2 rounded-lg text-sm opacity-20">
+        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 pointer-events-none">
+          <div className="bg-gray-900 text-white px-4 py-2 rounded-lg text-sm opacity-30">
             Hover to view content
           </div>
         </div>
