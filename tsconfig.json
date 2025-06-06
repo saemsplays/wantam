@@ -8,11 +8,6 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-      "paths": {
-      "@capacitor/*": ["node_modules/@capacitor/*"],
-      "@/*": ["./src/*"]
-    },
-    "moduleResolution": "node"
     },
     "noImplicitAny": false,
     "noUnusedParameters": false,
