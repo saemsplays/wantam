@@ -289,7 +289,9 @@ Citizen of Kenya`);
 
   const totalUsers = userCount.viewers + userCount.emailsSent;
   const shouldShowCounter = totalUsers >= 1000;
-  const displayCount = showFullCount ? totalUsers.toLocaleString() : "1K+";
+  const displayCount = showFullCount
+    ? totalUsers.toLocaleString()
+    : `${Math.floor(totalUsers / 1000)}K+`;
 
   const stats = [
     { icon: Shield, label: "Constitutional Articles", value: "Art 33, Art 35, Art 118(1)" },
