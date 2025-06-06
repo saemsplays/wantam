@@ -120,6 +120,7 @@ const Index = () => {
                 </span>
                 <br />
                 <LetterGlitch
+                  text="Stand for Democracy"
                   glitchColors={['#ef4444', '#f97316', '#22c55e']}
                   glitchSpeed={3}
                   centerVignette={false}
@@ -150,14 +151,14 @@ const Index = () => {
             >
               <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
                 <div className="text-3xl md:text-4xl font-bold text-red-600 mb-2">
-                  <CountUp target={57} duration={2000} />
+                  <CountUp to={57} duration={2000} />
                 </div>
                 <p className="text-gray-600 dark:text-gray-400">Reports Submitted</p>
               </div>
               
               <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
                 <div className="text-3xl md:text-4xl font-bold text-green-600 mb-2">
-                  <CountUp target={1450} duration={2000} />
+                  <CountUp to={1450} duration={2000} />
                 </div>
                 <p className="text-gray-600 dark:text-gray-400">Active Participants</p>
               </div>
@@ -258,9 +259,18 @@ const Index = () => {
       </main>
 
       <Dock 
-        isMobile={isMobile}
-        onRadioClick={() => setShowOfflineRadio(true)}
-        onSupportClick={() => setShowDonation(true)}
+        items={[
+          {
+            icon: isMobile ? '📻' : '📊',
+            label: isMobile ? 'Radio' : 'Bills',
+            onClick: isMobile ? () => setShowOfflineRadio(true) : handleMenuClick
+          },
+          {
+            icon: '❤️',
+            label: 'Support',
+            onClick: () => setShowDonation(true)
+          }
+        ]}
       />
       
       <EmergencyReportingSystem 

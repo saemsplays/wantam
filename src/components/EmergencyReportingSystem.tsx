@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Shield, Phone, AlertTriangle, X, ExternalLink, 
@@ -10,6 +9,45 @@ import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
+interface Organization {
+  name: string;
+  description: string;
+  contact?: {
+    website?: string;
+    email?: string;
+    phone?: string;
+    mobile?: string;
+  };
+  phone?: string;
+  services?: string[];
+  process?: string;
+  security?: string;
+  setup?: string;
+  usage?: string;
+  examples?: string[];
+  risks?: string;
+  note?: string;
+  access?: string;
+}
+
+interface CategoryData {
+  title: string;
+  warning?: string;
+  organizations?: Organization[];
+  contacts?: Organization[];
+  immediateSteps?: string[];
+  process?: string;
+  steps?: string[];
+}
+
+interface ResourceSection {
+  [key: string]: CategoryData;
+}
+
+interface Resources {
+  [sectionKey: string]: ResourceSection;
+}
+
 const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   const [currentSection, setCurrentSection] = useState('main');
   const [currentCategory, setCurrentCategory] = useState('');
@@ -17,7 +55,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
   const [copiedItems, setCopiedItems] = useState<Record<string, boolean>>({});
   const [searchTerm, setSearchTerm] = useState('');
   const [isMobile, setIsMobile] = useState(false);
-  const [filteredResources, setFilteredResources] = useState<any>(null);
+  const [filteredResources, setFilteredResources] = useState<Resources | null>(null);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -42,19 +80,18 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
   // Enhanced search functionality
   useEffect(() => {
     if (searchTerm.trim()) {
-      const filtered: any = {};
+      const filtered: Resources = {};
       Object.keys(resources).forEach(sectionKey => {
-        const section = resources[sectionKey as keyof typeof resources];
-        const filteredSection: any = {};
+        const section = resources[sectionKey];
+        const filteredSection: ResourceSection = {};
         
         Object.keys(section).forEach(categoryKey => {
-          const category = section[categoryKey as keyof typeof section];
+          const category = section[categoryKey];
           
-          // Ensure category exists and has the expected structure
           if (category && typeof category === 'object') {
             const searchLower = searchTerm.toLowerCase();
             const titleMatch = category.title?.toLowerCase().includes(searchLower);
-            const orgMatch = category.organizations?.some((org: any) => 
+            const orgMatch = category.organizations?.some((org: Organization) => 
               org.name?.toLowerCase().includes(searchLower) ||
               org.description?.toLowerCase().includes(searchLower) ||
               org.services?.some((service: string) => service.toLowerCase().includes(searchLower))
@@ -77,7 +114,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
     }
   }, [searchTerm]);
 
-  const resources = {
+  const resources: Resources = {
     'local-ngos': {
       'torture': {
         title: 'Torture Documentation & Support',
@@ -522,7 +559,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
     return colors[section] || 'bg-gray-50 border-gray-200 text-gray-800';
   };
 
-  const ContactCard = ({ org, compact = false }: { org: any; compact?: boolean }) => (
+  const ContactCard = ({ org, compact = false }: { org: Organization; compact?: boolean }) => (
     <div className={`bg-white border border-gray-200 rounded-lg ${compact ? 'p-3' : 'p-4'} space-y-3 shadow-sm transition-all hover:shadow-md`}>
       <div className="space-y-2">
         <h4 className={`font-semibold text-gray-900 ${compact ? 'text-sm' : 'text-base'}`}>{org.name}</h4>
@@ -805,7 +842,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
   };
 
   const SectionView = () => {
-    const sectionData = (filteredResources && filteredResources[currentSection]) || resources[currentSection as keyof typeof resources];
+    const sectionData = (filteredResources && filteredResources[currentSection]) || resources[currentSection];
     const categories = Object.keys(sectionData || {});
 
     return (
@@ -829,7 +866,8 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
 
         <div className="grid gap-3">
           {categories.map(category => {
-            const categoryData = sectionData[category as keyof typeof sectionData];
+            const categoryData = sectionData[category];
+
             return (
               <Button
                 key={category}
@@ -857,10 +895,12 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
 
   const CategoryDetailView = () => {
     const sectionKey = Object.keys(resources).find(key => 
-      Object.keys(resources[key as keyof typeof resources]).includes(currentCategory)
-    ) as keyof typeof resources;
+      Object.keys(resources[key]).includes(currentCategory)
+    );
+    if (!sectionKey) return null;
+    
     const sectionData = resources[sectionKey];
-    const categoryData = sectionData[currentCategory as keyof typeof sectionData];
+    const categoryData = sectionData[currentCategory];
 
     if (!categoryData) return null;
 
@@ -906,11 +946,11 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
           )}
 
           <div className="space-y-3">
-            {categoryData.organizations?.map((org: any, idx: number) => (
+            {categoryData.organizations?.map((org: Organization, idx: number) => (
               <ContactCard key={idx} org={org} />
             ))}
             
-            {categoryData.contacts?.map((contact: any, idx: number) => (
+            {categoryData.contacts?.map((contact: Organization, idx: number) => (
               <ContactCard key={idx} org={contact} compact />
             ))}
           </div>
