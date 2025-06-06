@@ -379,7 +379,6 @@ Citizen of Kenya`);
         onMenuClick={handleMenuClick}
         onScrollToTop={handleScrollToTop}
         onRadioClick={handleRadioClick}
-        isMobile={isMobile}
       />
 
       <BillsFAB />
