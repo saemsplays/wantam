@@ -83,7 +83,7 @@ export const OfflineRadioSystem: React.FC<OfflineRadioSystemProps> = ({ isOpen, 
           >
             <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-green-50 to-red-50 dark:from-green-900/20 dark:to-red-900/20">
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gradient-to-r from-green-600 to-red-600 rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-gradient-to-r from-green-600 to-black rounded-lg flex items-center justify-center">
                   <Radio className="w-4 h-4 text-white" />
                 </div>
                 <h2 className="text-lg font-bold text-gray-900 dark:text-white">Offline Radio</h2>
@@ -184,7 +184,7 @@ export const OfflineRadioSystem: React.FC<OfflineRadioSystemProps> = ({ isOpen, 
                   <button
                     onClick={handleSendMessage}
                     disabled={!currentMessage.trim()}
-                    className="px-4 py-2 bg-gradient-to-r from-green-600 to-red-600 hover:from-green-700 hover:to-red-700 disabled:bg-gray-400 text-white rounded-lg transition-colors"
+                    className="px-4 py-2 bg-gradient-to-r from-green-600 to-black hover:from-green-700 hover:to-gray-900 disabled:bg-gray-400 text-white rounded-lg transition-colors"
                   >
                     <Send className="w-4 h-4" />
                   </button>
