@@ -1060,7 +1060,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
   if (isMobile) {
     return (
       <Sheet open={isOpen} onOpenChange={onClose}>
-       <SheetContent side="bottom" className="h-[85vh] w-6 overflow-hidden">
+       <SheetContent side="bottom" className="h-[85vh] overflow-hidden">
           <div className="h-full overflow-y-auto p-6">
             {content}
           </div>
