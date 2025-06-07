@@ -34,6 +34,9 @@ const Index = () => {
     clerk: true,
     financeCommittee: true
   });
+
+  const [isDonationWidgetVisible, setIsDonationWidgetVisible] = useState(false);
+
   const [subject, setSubject] = useState(
     'RE: MEMORANDUM OF OBJECTION TO THE FINANCE BILL 2025 (NATIONAL ASSEMBLY BILLS NO. 19 OF 2025)'
   );
@@ -275,6 +278,16 @@ Citizen of Kenya`);
     }
   };
 
+  // Add this new handler specifically for the dock
+const handleDockSupportClick = () => {
+  setIsDonationWidgetVisible(true);
+};
+
+// Add the close handler
+const handleCloseDonationWidget = () => {
+  setIsDonationWidgetVisible(false);
+};
+
   const handleMenuClick = () => {
     document.getElementById('details')?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -327,7 +340,7 @@ Citizen of Kenya`);
     { 
       icon: <HeartIcon size={18} />, 
       label: 'Support', 
-      onClick: handleSupportClick // Updated to properly trigger donation widget
+      onClick: handleDockSupportClick // Updated to properly trigger donation widget
     },
     { 
       icon: <FlagIcon size={18} />, 
@@ -848,7 +861,7 @@ Citizen of Kenya`);
       </footer>
 
       {/* Bottom Disclaimer */}
-      <div className="bg-gray-800 dark:bg-gray-950 border-t border-gray-700 dark:border-gray-800 text-gray-300 dark:text-gray-400 p-3 text-center text-xs font-medium transition-colors duration-300">
+      <div className="bg-gray-800 dark:bg-gray-950 border-t border-gray-700 dark:border-gray-800 text-gray-300 dark:text-gray-400 p-3 pb-20 text-center text-xs font-medium transition-colors duration-300">
         <p className="max-w-3xl mx-auto">
           This platform operates under <strong>Art 33 (Freedom of Expression)</strong>, <strong>Art 35 (Access to Information)</strong>, and <strong>Art 118(1) (Public Participation)</strong> of the Constitution of Kenya 2010. 
           No data is stored or shared. All emails are drafted locally on your device.
@@ -863,6 +876,12 @@ Citizen of Kenya`);
           magnification={70}
           />
       </div>
+
+      <DonationWidget 
+  isVisible={isDonationWidgetVisible}
+  onClose={handleCloseDonationWidget}
+/>
+      
     </div>
   );
 };
