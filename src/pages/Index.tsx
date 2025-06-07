@@ -277,19 +277,12 @@ Citizen of Kenya`);
     }
   };
 
-  const handleDockSupportClick = () => {
-  // First, trigger the existing donation button click
-    const donationButton = document.querySelector('[data-donation-trigger]') as HTMLElement;
-    if (donationButton) {
-      donationButton.click();
-    }
-    // Then also show your custom donation widget
-    setIsDonationWidgetVisible(true);
-  };
-  // Add the close handler
-  const handleCloseDonationWidget = () => {
-    setIsDonationWidgetVisible(false);
-  };
+  const handleDockSupportClick = handleSupportClick;
+
+// Add the close handler
+const handleCloseDonationWidget = () => {
+  setIsDonationWidgetVisible(false);
+};
 
   const handleMenuClick = () => {
     document.getElementById('details')?.scrollIntoView({ behavior: 'smooth' });
@@ -326,14 +319,12 @@ Citizen of Kenya`);
   useEffect(() => {
     window.scrollTo(0, window.innerHeight * 0.02);
   }, []);
-  
+
   const dockItems = [
     { 
-    icon: <FileTextIcon size={18} />, 
-    label: 'Bills', 
-    onClick: async () => {
-      const { default: BillsComponent } = await import('../components/BillsComponent');
-      setActiveComponent(() => BillsComponent);
+      icon: <FileTextIcon size={18} />, 
+      label: 'Bills', 
+      onClick: handleBillsClick // Updated to use unified Bills navigation
     },
     { 
       icon: <RadioIcon size={18} />, 
@@ -342,12 +333,10 @@ Citizen of Kenya`);
         setIsRadioOpen(true);
       }
     },
-   { 
-    icon: <HeartIcon size={18} />, 
-    label: 'Support', 
-    onClick: async () => {
-      const { default: DonationWidget } = await import('../components/DonationWidget');
-      setActiveComponent(() => DonationWidget);
+    { 
+      icon: <HeartIcon size={18} />, 
+      label: 'Support', 
+      onClick: handleDockSupportClick // Updated to properly trigger donation widget
     },
     { 
       icon: <FlagIcon size={18} />, 
@@ -420,12 +409,7 @@ Citizen of Kenya`);
         isReportOpen={isReportingOpen}
       />
 
-      <BillsFAB  
-        isOpen={billsDockOpen}
-        onClose={() => setBillsDockOpen(false)}
-        originElement={billsDockOrigin}
-      />
-
+      <BillsFAB />
 
       <section className="h-screen relative overflow-hidden">
         <Aurora
