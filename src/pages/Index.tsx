@@ -1,14 +1,14 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { FileText, Heart, Flag, Radio, Settings } from 'lucide-react';
-import { DonationWidget } from '../components/DonationWidget';
+import DonationWidget from '../components/DonationWidget';
 import EmergencyReportingSystem from '../components/EmergencyReportingSystem';
 import BillsFAB from '../components/BillsFAB';
 import { ShareButton } from '../components/ShareButton';
-import ScrollToTop from '../components/ScrollToTop';
+import { ScrollToTop } from '../components/ScrollToTop';
 import UserCountSidebar from '../components/UserCountSidebar';
-import DarkModeToggle from '../components/DarkModeToggle';
-import { InteractiveCountWidget } from '../components/InteractiveCountWidget';
+import { DarkModeToggle } from '../components/DarkModeToggle';
+import InteractiveCountWidget from '../components/InteractiveCountWidget';
 import Dock from '../components/Dock';
 import { BillsDockPopup } from '../components/BillsDockPopup';
 import { OfflineRadioSystem } from '../components/OfflineRadioSystem';
