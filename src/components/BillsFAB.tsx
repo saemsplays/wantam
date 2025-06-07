@@ -43,7 +43,7 @@ export const BillsDockPopup: React.FC<BillsDockPopupProps> = ({ isOpen, onClose,
 
   const originPos = getOriginPosition();
 
-  return (
+ return (
     <div className="fixed left-4 bottom-36 z-50">
       <AnimatePresence>
         {isExpanded && (
