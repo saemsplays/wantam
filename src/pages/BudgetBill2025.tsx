@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Shield, Radio, FileText, Heart, Users, ArrowLeft } from 'lucide-react';
@@ -133,8 +134,8 @@ const BudgetBill2025: React.FC = () => {
         <ScrollToTop />
         <UserCountSidebar />
         <ScrollProgressTracker 
-          activeSection="main" 
-          sections={['hero', 'about', 'action']} 
+          activeSection="hero" 
+          sections={["hero", "about", "action"]} 
         />
       </div>
 

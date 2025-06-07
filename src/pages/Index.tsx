@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Shield, Radio, FileText, Heart, Users } from 'lucide-react';
@@ -13,11 +14,12 @@ import { TourStarter } from '../components/TourStarter';
 import { BillsDockPopup } from '../components/BillsDockPopup';
 import { ClearModeToggle, ClearMode } from '../components/ClearModeToggle';
 import UserCountSidebar from '../components/UserCountSidebar';
-import BillsFAB from '../components/BillsFAB';
+import { BillsFAB } from '../components/BillsFAB';
 import ShareButton from '../components/ShareButton';
 import { ScrollToTop } from '../components/ScrollToTop';
 import { DarkModeToggle } from '../components/DarkModeToggle';
 import { ScrollProgressTracker } from '../components/ScrollProgressTracker';
+import Dock from '../components/Dock';
 
 const Index: React.FC = () => {
   const [showDonation, setShowDonation] = useState(false);
@@ -120,7 +122,12 @@ const Index: React.FC = () => {
         }}
         className="transition-opacity duration-500"
       >
-        <FloatingActionButtons />
+        <FloatingActionButtons 
+          onReportClick={() => setShowEmergencySystem(true)}
+          onSupportClick={() => setShowDonation(true)}
+          onMenuClick={() => {}}
+          onScrollToTop={() => window.scrollTo(0, 0)}
+        />
         <ShareButton />
         <ScrollToTop />
         <UserCountSidebar />
@@ -227,7 +234,7 @@ const Index: React.FC = () => {
         </motion.div>
       </section>
 
-      <BillsDockPopup isVisible={showBillsPopup} onClose={() => setShowBillsPopup(false)} />
+      <BillsDockPopup isOpen={showBillsPopup} onClose={() => setShowBillsPopup(false)} originElement={null} />
 
       <Dock
         items={dockItems}
@@ -250,8 +257,8 @@ const Index: React.FC = () => {
         />
 
         <ScrollProgressTracker 
-          activeSection="main" 
-          sections={['hero', 'about', 'action']} 
+          activeSection="hero" 
+          sections={["hero", "about", "action"]} 
         />
 
       <TourStarter onStartTour={() => {}} />

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { FileText, ChevronUp, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -78,10 +79,9 @@ export const BillsFAB: React.FC = () => {
         </AnimatePresence>
       </div>
 
-      <BillsSidebar 
-        isOpen={showSidebar} 
-        onClose={() => setShowSidebar(false)} 
-      />
+      {showSidebar && (
+        <BillsSidebar onClose={() => setShowSidebar(false)} />
+      )}
     </>
   );
 };

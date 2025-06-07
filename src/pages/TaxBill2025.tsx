@@ -124,11 +124,19 @@ const TaxBill2025: React.FC = () => {
         }}
         className="transition-opacity duration-500"
       >
-        <FloatingActionButtons />
+        <FloatingActionButtons 
+          onReportClick={() => setShowEmergencySystem(true)}
+          onSupportClick={() => setShowDonation(true)}
+          onMenuClick={() => {}}
+          onScrollToTop={() => window.scrollTo(0, 0)}
+        />
         <ShareButton />
         <ScrollToTop />
         <UserCountSidebar />
-        <ScrollProgressTracker />
+        <ScrollProgressTracker 
+          activeSection="hero" 
+          sections={["hero", "about", "action"]} 
+        />
       </div>
 
       {/* First Section */}
@@ -257,8 +265,12 @@ const TaxBill2025: React.FC = () => {
       />
 
       {/* Tour System */}
-      <TourStarter />
-      <JoyrideTour />
+      <TourStarter onStartTour={() => {}} />
+      <JoyrideTour 
+        isActive={false}
+        onComplete={() => {}}
+        onSkip={() => {}}
+      />
     </div>
   );
 };
