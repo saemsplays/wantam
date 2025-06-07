@@ -35,7 +35,9 @@ export const DarkModeToggle: React.FC = () => {
       <motion.button
         onClick={toggleDarkMode}
         className="relative w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300"
-        style={{ opacity: 0.05 }}
+        style={{
+          opacity: 0.05,
+        }}
         whileHover={{
           opacity: 0.7,
           scale: 1.1,
@@ -50,9 +52,9 @@ export const DarkModeToggle: React.FC = () => {
           {isDark ? (
             <motion.div
               key="moon"
-              initial={{ rotate: -90, opacity: 0 }}
+              initial={{ rotate: -90, opacity: 0.7 }}
               animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: 90, opacity: 0 }}
+              exit={{ rotate: 90, opacity: 0.7 }}
               transition={{ duration: 0.3 }}
             >
               <Moon className="w-6 h-6 text-gray-800 dark:text-gray-200" />
@@ -60,9 +62,9 @@ export const DarkModeToggle: React.FC = () => {
           ) : (
             <motion.div
               key="sun"
-              initial={{ rotate: 90, opacity: 0 }}
+              initial={{ rotate: 90, opacity: 0.7 }}
               animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: -90, opacity: 0 }}
+              exit={{ rotate: -90, opacity: 0.7 }}
               transition={{ duration: 0.3 }}
             >
               <Sun className="w-6 h-6 text-yellow-500" />
