@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
@@ -26,7 +25,7 @@ import { ScrollToTop } from '../components/ScrollToTop';
 import { FloatingActionButtons } from '../components/FloatingActionButtons';
 import { DarkModeToggle } from '../components/DarkModeToggle';
 import { OfflineRadioSystem } from '../components/OfflineRadioSystem';
-import { ShareButton } from '../components/ShareButton';
+import ShareButton from '../components/ShareButton';
 import { BillsDockPopup } from '../components/BillsDockPopup';
 import { ClearModeToggle, ClearMode } from '../components/ClearModeToggle'; // Added ClearModeToggle
 import { UserCountSidebar } from '../components/UserCountSidebar'; // Added UserCountSidebar
