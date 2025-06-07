@@ -35,12 +35,13 @@ const BudgetBill2025: React.FC = () => {
   ];
 
   const sections = [
-    { id: 'intro', label: 'Introduction' },
-    { id: 'content', label: 'Content' },
-    { id: 'action', label: 'Action' }
+    { id: 'intro', title: 'Introduction', position: 0 },
+    { id: 'content', title: 'Content', position: 1 },
+    { id: 'action', title: 'Action', position: 2 }
   ];
 
   // Handle scroll for opacity control
+
   useEffect(() => {
     const handleScroll = () => {
       const firstSectionHeight = window.innerHeight;
@@ -55,7 +56,6 @@ const BudgetBill2025: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Calculate opacity based on clear mode and scroll position
   const getElementOpacity = () => {
     if (isInFirstSection) return 0;
     

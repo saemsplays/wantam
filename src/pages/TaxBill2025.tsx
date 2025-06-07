@@ -35,9 +35,9 @@ const TaxBill2025: React.FC = () => {
   ];
 
   const sections = [
-    { id: 'intro', label: 'Introduction' },
-    { id: 'content', label: 'Content' },
-    { id: 'action', label: 'Action' }
+    { id: 'intro', title: 'Introduction', position: 0 },
+    { id: 'content', title: 'Content', position: 1 },
+    { id: 'action', title: 'Action', position: 2 }
   ];
 
   // Handle scroll for opacity control
@@ -55,7 +55,6 @@ const TaxBill2025: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Calculate opacity based on clear mode and scroll position
   const getElementOpacity = () => {
     if (isInFirstSection) return 0;
     
@@ -154,7 +153,6 @@ const TaxBill2025: React.FC = () => {
         </div>
       </section>
 
-      {/* Main Content */}
       <section className="min-h-screen py-20 px-4 max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -171,7 +169,6 @@ const TaxBill2025: React.FC = () => {
           </p>
         </motion.div>
 
-        {/* Tax-specific issues */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           {[
             {
@@ -224,7 +221,6 @@ const TaxBill2025: React.FC = () => {
           ))}
         </div>
 
-        {/* Call to Action - Tax-specific */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -250,7 +246,6 @@ const TaxBill2025: React.FC = () => {
         </motion.div>
       </section>
 
-      {/* Dock */}
       <Dock
         items={dockItems}
         className="fixed bottom-4 left-1/2 transform -translate-x-1/2"
@@ -259,7 +254,6 @@ const TaxBill2025: React.FC = () => {
         distance={200}
       />
 
-      {/* Modals and Widgets */}
       <DonationWidget isVisible={showDonation} onTimedOut={() => setShowDonation(false)} />
       
       <EmergencyReportingSystem 
@@ -272,7 +266,6 @@ const TaxBill2025: React.FC = () => {
         onClose={() => setShowRadioSystem(false)} 
       />
 
-      {/* Tour System */}
       <TourStarter onStartTour={() => setTourActive(true)} />
       <JoyrideTour 
         isActive={tourActive} 

@@ -19,7 +19,7 @@ import { ScrollProgressTracker } from '../components/ScrollProgressTracker';
 import { OfflineRadioSystem } from '../components/OfflineRadioSystem';
 import { BillsFAB } from '../components/BillsFAB';
 import { BillsSidebar } from '../components/BillsSidebar';
-import ToastNotification from '../components/ToastNotification';
+import { ToastNotification } from '../components/ToastNotification';
 import InteractiveCountWidget from '../components/InteractiveCountWidget';
 import SplashScreen from '../components/SplashScreen';
 import LetterGlitch from '../components/LetterGlitch';
@@ -35,6 +35,7 @@ const Index: React.FC = () => {
   const [toastMessage, setToastMessage] = useState('');
   const [showBillsSidebar, setShowBillsSidebar] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
+  const [tourActive, setTourActive] = useState(false);
 
   const rotatingTexts = [
     "Object to the Finance Bill 2025",
@@ -44,10 +45,10 @@ const Index: React.FC = () => {
   ];
 
   const sections = [
-    { id: 'intro', label: 'Introduction' },
-    { id: 'features', label: 'Features' },
-    { id: 'about', label: 'About' },
-    { id: 'bills', label: 'Bills' }
+    { id: 'intro', title: 'Introduction', position: 0 },
+    { id: 'features', title: 'Features', position: 1 },
+    { id: 'about', title: 'About', position: 2 },
+    { id: 'bills', title: 'Bills', position: 3 }
   ];
 
   useEffect(() => {
@@ -64,7 +65,6 @@ const Index: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Calculate opacity based on clear mode and scroll position
   const getElementOpacity = () => {
     if (isInFirstSection) return 0;
     
@@ -295,7 +295,7 @@ const Index: React.FC = () => {
             className="mb-12"
           >
             <h2 className="text-4xl md:text-6xl font-bold mb-6 text-gray-900 dark:text-gray-100">
-              About <LetterGlitch text="CEKA" />
+              About <LetterGlitch />
             </h2>
             <p className="text-xl text-gray-700 dark:text-gray-300 leading-relaxed mb-8">
               Civic Education Kenya App (CEKA) empowers citizens to actively participate in democratic processes through constitutional awareness, bill analysis, and civic engagement tools.
@@ -444,8 +444,12 @@ const Index: React.FC = () => {
       </AnimatePresence>
 
       {/* Tour System */}
-      <TourStarter />
-      <JoyrideTour />
+      <TourStarter onStartTour={() => setTourActive(true)} />
+      <JoyrideTour 
+        isActive={tourActive} 
+        onComplete={() => setTourActive(false)}
+        onSkip={() => setTourActive(false)}
+      />
     </div>
   );
 };

@@ -35,12 +35,11 @@ const InvestmentBill2025: React.FC = () => {
   ];
 
   const sections = [
-    { id: 'intro', label: 'Introduction' },
-    { id: 'content', label: 'Content' },
-    { id: 'action', label: 'Action' }
+    { id: 'intro', title: 'Introduction', position: 0 },
+    { id: 'content', title: 'Content', position: 1 },
+    { id: 'action', title: 'Action', position: 2 }
   ];
 
-  // Handle scroll for opacity control
   useEffect(() => {
     const handleScroll = () => {
       const firstSectionHeight = window.innerHeight;
@@ -55,7 +54,6 @@ const InvestmentBill2025: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Calculate opacity based on clear mode and scroll position
   const getElementOpacity = () => {
     if (isInFirstSection) return 0;
     
@@ -147,14 +145,12 @@ const InvestmentBill2025: React.FC = () => {
         <ScrollProgressTracker activeSection={sections[0]} sections={sections} />
       </div>
 
-      {/* First Section */}
       <section className="min-h-screen flex items-center justify-center relative">
         <div className="text-center px-4 max-w-4xl mx-auto">
           <RotatingText texts={rotatingTexts} />
         </div>
       </section>
 
-      {/* Main Content */}
       <section className="min-h-screen py-20 px-4 max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -248,7 +244,6 @@ const InvestmentBill2025: React.FC = () => {
         </motion.div>
       </section>
 
-      {/* Dock */}
       <Dock
         items={dockItems}
         className="fixed bottom-4 left-1/2 transform -translate-x-1/2"
@@ -257,7 +252,6 @@ const InvestmentBill2025: React.FC = () => {
         distance={200}
       />
 
-      {/* Modals and Widgets */}
       <DonationWidget isVisible={showDonation} onTimedOut={() => setShowDonation(false)} />
       
       <EmergencyReportingSystem 
@@ -270,7 +264,6 @@ const InvestmentBill2025: React.FC = () => {
         onClose={() => setShowRadioSystem(false)} 
       />
 
-      {/* Tour System */}
       <TourStarter onStartTour={() => setTourActive(true)} />
       <JoyrideTour 
         isActive={tourActive} 
