@@ -3,6 +3,12 @@ import { FileText, X, ChevronUp } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+interface BillsDockPopupProps {
+  isOpen: boolean;
+  onClose: () => void;
+  originElement: HTMLElement | null;
+}
+
 const bills = [
   { id: 'finance-2025', name: 'Finance Bill 2025', path: '/', color: 'bg-gradient-to-r from-red-600 to-green-600' },
   { id: 'budget-2025', name: 'Budget Bill 2025', path: '/budget-2025', color: 'bg-gradient-to-r from-black to-red-600' },
@@ -11,19 +17,29 @@ const bills = [
   { id: 'digital-2025', name: 'Digital Economy Bill 2025', path: '/digital-2025', color: 'bg-gradient-to-r from-green-600 to-red-600' }
 ];
 
-const BillsFAB = () => {
-  const [isExpanded, setIsExpanded] = useState(false);
+export const BillsDockPopup: React.FC<BillsDockPopupProps> = ({ isOpen, onClose, originElement }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
   const handleBillSelect = (path: string) => {
     navigate(path);
-    setIsExpanded(false);
+    onClose();
   };
 
   const getCurrentBill = () => {
     return bills.find(bill => bill.path === location.pathname) || bills[0];
   };
+
+  const getOriginPosition = () => {
+    if (!originElement) return { x: 0, y: 0 };
+    const rect = originElement.getBoundingClientRect();
+    return {
+      x: rect.left + rect.width / 2,
+      y: rect.top + rect.height / 2
+    };
+  };
+
+  const originPos = getOriginPosition();
 
   return (
     <div className="fixed left-4 bottom-36 z-50">
