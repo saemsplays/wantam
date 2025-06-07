@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -20,7 +21,6 @@ import { OfflineRadioSystem } from '../components/OfflineRadioSystem';
 import { BillsFAB } from '../components/BillsFAB';
 import { BillsSidebar } from '../components/BillsSidebar';
 import { ToastNotification } from '../components/ToastNotification';
-import InteractiveCountWidget from '../components/InteractiveCountWidget';
 import SplashScreen from '../components/SplashScreen';
 import LetterGlitch from '../components/LetterGlitch';
 
@@ -401,12 +401,6 @@ const Index: React.FC = () => {
           </button>
         </motion.div>
       </section>
-
-      {/* Interactive Count Widget */}
-      <InteractiveCountWidget 
-        isVisible={donationVisible} 
-        onComplete={() => setDonationVisible(false)} 
-      />
 
       {/* Dock */}
       <Dock
