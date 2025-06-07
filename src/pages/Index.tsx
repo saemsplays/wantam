@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { FloatingActionButtons } from "../components/FloatingActionButtons";
 import { ShareButton } from "../components/ShareButton";
@@ -77,6 +76,14 @@ const Index = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const rotatingTexts = [
+    "Unite for Democracy",
+    "Defend Our Rights", 
+    "Fight for Justice",
+    "Stand Together",
+    "Protect Our Future"
+  ];
+
   return (
     <div className="min-h-screen bg-background text-foreground relative overflow-x-hidden">
       {/* Fixed Elements */}
@@ -111,7 +118,7 @@ const Index = () => {
             <h1 className="text-4xl md:text-6xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-kenyan-red via-kenyan-green to-kenyan-black">
               Reject Finance Bill 2025
             </h1>
-            <RotatingText />
+            <RotatingText texts={rotatingTexts} />
             <p className="mt-6 text-lg md:text-xl text-gray-700 dark:text-gray-300">
               Join thousands of Kenyans in exercising your constitutional right to participate in the legislative process.
             </p>
@@ -153,8 +160,8 @@ const Index = () => {
       />
       
       <DonationWidget 
-        isOpen={isDonationOpen} 
-        onClose={() => setIsDonationOpen(false)} 
+        isVisible={isDonationOpen} 
+        onTimedOut={() => setIsDonationOpen(false)} 
       />
       
       <OfflineRadioSystem 
