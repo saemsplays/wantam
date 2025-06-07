@@ -144,7 +144,7 @@ const BudgetBill2025: React.FC = () => {
         <ShareButton />
         <ScrollToTop />
         <UserCountSidebar />
-        <ScrollProgressTracker activeSection={sections[0]} sections={sections} />
+        <ScrollProgressTracker activeSection={sections[0].id} sections={sections} />
       </div>
 
       {/* First Section */}

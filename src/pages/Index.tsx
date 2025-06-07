@@ -199,7 +199,7 @@ const Index: React.FC = () => {
         <ShareButton />
         <ScrollToTop />
         <UserCountSidebar />
-        <ScrollProgressTracker activeSection={sections[0]} sections={sections} />
+        <ScrollProgressTracker activeSection={sections[0].id} sections={sections} />
       </div>
 
       {/* First Section - Hero */}
@@ -295,7 +295,13 @@ const Index: React.FC = () => {
             className="mb-12"
           >
             <h2 className="text-4xl md:text-6xl font-bold mb-6 text-gray-900 dark:text-gray-100">
-              About <LetterGlitch />
+              About <LetterGlitch 
+                glitchColors={["#2b4539", "#61dca3", "#61b3dc"]}
+                glitchSpeed={50}
+                centerVignette={false}
+                outerVignette={true}
+                smooth={true}
+              />
             </h2>
             <p className="text-xl text-gray-700 dark:text-gray-300 leading-relaxed mb-8">
               Civic Education Kenya App (CEKA) empowers citizens to actively participate in democratic processes through constitutional awareness, bill analysis, and civic engagement tools.
@@ -429,7 +435,7 @@ const Index: React.FC = () => {
         onClose={() => setShowRadioSystem(false)} 
       />
 
-      <ScrollProgressTracker activeSection={sections[0]} sections={sections} />
+      <ScrollProgressTracker activeSection={sections[0].id} sections={sections} />
 
       <BillsSidebar isOpen={showBillsSidebar} onClose={() => setShowBillsSidebar(false)} />
 

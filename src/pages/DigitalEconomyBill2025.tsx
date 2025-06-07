@@ -142,7 +142,7 @@ const DigitalEconomyBill2025: React.FC = () => {
         <ShareButton />
         <ScrollToTop />
         <UserCountSidebar />
-        <ScrollProgressTracker activeSection={sections[0]} sections={sections} />
+        <ScrollProgressTracker activeSection={sections[0].id} sections={sections} />
       </div>
 
       <section className="min-h-screen flex items-center justify-center relative">
