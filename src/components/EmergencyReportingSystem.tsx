@@ -729,7 +729,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
     const displayResources = filteredResources || resources;
     
     return (
-      <div className="space-y-6">
+      <div className="space-y-6 rounded-3xl bg-white p-8 shadow-2xl border border-gray-200/50 backdrop-blur-sm">
         <div className="text-center space-y-2">
           <div className="bg-red-100 w-14 h-14 rounded-full flex items-center justify-center mx-auto">
             <Shield className="w-8 h-8 text-red-600" />
