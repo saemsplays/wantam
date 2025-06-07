@@ -9,10 +9,10 @@ import Aurora from '../components/Aurora';
 import RotatingText from '../components/RotatingText';
 import { JoyrideTour } from '../components/JoyrideTour';
 import { FloatingActionButtons } from '../components/FloatingActionButtons';
-import UserCountSidebar from '../components/UserCountSidebar';
+import { UserCountSidebar } from '../components/UserCountSidebar';
 import { DarkModeToggle } from '../components/DarkModeToggle';
 import { ClearModeToggle, ClearMode } from '../components/ClearModeToggle';
-import ShareButton from '../components/ShareButton';
+import { ShareButton } from '../components/ShareButton';
 import { ScrollToTop } from '../components/ScrollToTop';
 import { TourStarter } from '../components/TourStarter';
 import { ScrollProgressTracker } from '../components/ScrollProgressTracker';
@@ -25,7 +25,6 @@ const InvestmentBill2025: React.FC = () => {
   const [clearMode, setClearMode] = useState<ClearMode>('normal');
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isInFirstSection, setIsInFirstSection] = useState(true);
-  const [tourActive, setTourActive] = useState(false);
 
   const rotatingTexts = [
     "Object to the Investment Bill 2025",
@@ -34,12 +33,7 @@ const InvestmentBill2025: React.FC = () => {
     "Demand Inclusive Growth"
   ];
 
-  const sections = [
-    { id: 'intro', title: 'Introduction', position: 0 },
-    { id: 'content', title: 'Content', position: 1 },
-    { id: 'action', title: 'Action', position: 2 }
-  ];
-
+  // Handle scroll for opacity control
   useEffect(() => {
     const handleScroll = () => {
       const firstSectionHeight = window.innerHeight;
@@ -54,6 +48,7 @@ const InvestmentBill2025: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Calculate opacity based on clear mode and scroll position
   const getElementOpacity = () => {
     if (isInFirstSection) return 0;
     
@@ -69,10 +64,6 @@ const InvestmentBill2025: React.FC = () => {
   const getElementInteractivity = () => {
     if (isInFirstSection || clearMode === 'ultra-clear') return 'none';
     return 'auto';
-  };
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const dockItems = [
@@ -132,25 +123,21 @@ const InvestmentBill2025: React.FC = () => {
         }}
         className="transition-opacity duration-500"
       >
-        <FloatingActionButtons 
-          onReportClick={() => setShowEmergencySystem(true)}
-          onSupportClick={() => setShowDonation(true)}
-          onMenuClick={() => {}}
-          onScrollToTop={scrollToTop}
-          onRadioClick={() => setShowRadioSystem(true)}
-        />
+        <FloatingActionButtons />
         <ShareButton />
         <ScrollToTop />
         <UserCountSidebar />
-        <ScrollProgressTracker activeSection={sections[0].id} sections={sections} />
+        <ScrollProgressTracker />
       </div>
 
+      {/* First Section */}
       <section className="min-h-screen flex items-center justify-center relative">
         <div className="text-center px-4 max-w-4xl mx-auto">
           <RotatingText texts={rotatingTexts} />
         </div>
       </section>
 
+      {/* Main Content */}
       <section className="min-h-screen py-20 px-4 max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -244,6 +231,7 @@ const InvestmentBill2025: React.FC = () => {
         </motion.div>
       </section>
 
+      {/* Dock */}
       <Dock
         items={dockItems}
         className="fixed bottom-4 left-1/2 transform -translate-x-1/2"
@@ -252,6 +240,7 @@ const InvestmentBill2025: React.FC = () => {
         distance={200}
       />
 
+      {/* Modals and Widgets */}
       <DonationWidget isVisible={showDonation} onTimedOut={() => setShowDonation(false)} />
       
       <EmergencyReportingSystem 
@@ -264,12 +253,9 @@ const InvestmentBill2025: React.FC = () => {
         onClose={() => setShowRadioSystem(false)} 
       />
 
-      <TourStarter onStartTour={() => setTourActive(true)} />
-      <JoyrideTour 
-        isActive={tourActive} 
-        onComplete={() => setTourActive(false)}
-        onSkip={() => setTourActive(false)}
-      />
+      {/* Tour System */}
+      <TourStarter />
+      <JoyrideTour />
     </div>
   );
 };

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Shield, Radio, FileText, Heart, Users, ArrowLeft } from 'lucide-react';
@@ -9,10 +10,10 @@ import Aurora from '../components/Aurora';
 import RotatingText from '../components/RotatingText';
 import { JoyrideTour } from '../components/JoyrideTour';
 import { FloatingActionButtons } from '../components/FloatingActionButtons';
-import UserCountSidebar from '../components/UserCountSidebar';
+import { UserCountSidebar } from '../components/UserCountSidebar';
 import { DarkModeToggle } from '../components/DarkModeToggle';
 import { ClearModeToggle, ClearMode } from '../components/ClearModeToggle';
-import ShareButton from '../components/ShareButton';
+import { ShareButton } from '../components/ShareButton';
 import { ScrollToTop } from '../components/ScrollToTop';
 import { TourStarter } from '../components/TourStarter';
 import { ScrollProgressTracker } from '../components/ScrollProgressTracker';
@@ -25,7 +26,6 @@ const BudgetBill2025: React.FC = () => {
   const [clearMode, setClearMode] = useState<ClearMode>('normal');
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isInFirstSection, setIsInFirstSection] = useState(true);
-  const [tourActive, setTourActive] = useState(false);
 
   const rotatingTexts = [
     "Object to the Budget Bill 2025",
@@ -34,14 +34,7 @@ const BudgetBill2025: React.FC = () => {
     "Protect Public Resources"
   ];
 
-  const sections = [
-    { id: 'intro', title: 'Introduction', position: 0 },
-    { id: 'content', title: 'Content', position: 1 },
-    { id: 'action', title: 'Action', position: 2 }
-  ];
-
   // Handle scroll for opacity control
-
   useEffect(() => {
     const handleScroll = () => {
       const firstSectionHeight = window.innerHeight;
@@ -56,6 +49,7 @@ const BudgetBill2025: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Calculate opacity based on clear mode and scroll position
   const getElementOpacity = () => {
     if (isInFirstSection) return 0;
     
@@ -71,10 +65,6 @@ const BudgetBill2025: React.FC = () => {
   const getElementInteractivity = () => {
     if (isInFirstSection || clearMode === 'ultra-clear') return 'none';
     return 'auto';
-  };
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const dockItems = [
@@ -134,17 +124,11 @@ const BudgetBill2025: React.FC = () => {
         }}
         className="transition-opacity duration-500"
       >
-        <FloatingActionButtons 
-          onReportClick={() => setShowEmergencySystem(true)}
-          onSupportClick={() => setShowDonation(true)}
-          onMenuClick={() => {}}
-          onScrollToTop={scrollToTop}
-          onRadioClick={() => setShowRadioSystem(true)}
-        />
+        <FloatingActionButtons />
         <ShareButton />
         <ScrollToTop />
         <UserCountSidebar />
-        <ScrollProgressTracker activeSection={sections[0].id} sections={sections} />
+        <ScrollProgressTracker />
       </div>
 
       {/* First Section */}
@@ -273,12 +257,8 @@ const BudgetBill2025: React.FC = () => {
       />
 
       {/* Tour System */}
-      <TourStarter onStartTour={() => setTourActive(true)} />
-      <JoyrideTour 
-        isActive={tourActive} 
-        onComplete={() => setTourActive(false)}
-        onSkip={() => setTourActive(false)}
-      />
+      <TourStarter />
+      <JoyrideTour />
     </div>
   );
 };

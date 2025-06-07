@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Shield, Radio } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -17,7 +16,7 @@ export const FloatingActionButtons: React.FC<FloatingActionButtonsProps> = ({
   onSupportClick,
   onMenuClick,
   onScrollToTop,
-  onRadioClick = () => {},
+  onRadioClick,
   isReportOpen = false,
 }) => {
   const buttonSize = "w-12 h-12";

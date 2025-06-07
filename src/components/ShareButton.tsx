@@ -81,68 +81,64 @@ const ShareButton: React.FC = () => {
   ];
 
   return (
-    <>
-      <div className="fixed bottom-20 right-4 z-50">
-        <div className="relative flex flex-col items-end">
-          {/* Share Options - Horizontal layout */}
-          {isExpanded && (
-            <div className="flex flex-row gap-2 mb-3 pr-1 transition-all duration-300 ease-in-out">
-              {shareOptions.map((option, index) => (
-                <button
-                  key={option.name}
-                  onClick={option.action}
-                  className={`p-3 rounded-full text-white shadow-lg transition-all duration-200 hover:scale-110 transform ${option.color}`}
-                  title={option.name}
-                  style={{
-                    animationDelay: `${index * 0.1}s`,
-                    animation: isExpanded ? 'slideIn 0.3s ease-out forwards' : 'slideOut 0.3s ease-in forwards'
-                  }}
-                >
-                  <option.icon />
-                </button>
-              ))}
-            </div>
-          )}
+    <div className="fixed bottom-20 right-4 z-50">
+      <div className="relative flex flex-col items-end">
+        {/* Share Options - Horizontal layout */}
+        {isExpanded && (
+          <div className="flex flex-row gap-2 mb-3 pr-1 transition-all duration-300 ease-in-out">
+            {shareOptions.map((option, index) => (
+              <button
+                key={option.name}
+                onClick={option.action}
+                className={`p-3 rounded-full text-white shadow-lg transition-all duration-200 hover:scale-110 transform ${option.color}`}
+                title={option.name}
+                style={{
+                  animationDelay: `${index * 0.1}s`,
+                  animation: isExpanded ? 'slideIn 0.3s ease-out forwards' : 'slideOut 0.3s ease-in forwards'
+                }}
+              >
+                <option.icon />
+              </button>
+            ))}
+          </div>
+        )}
 
-          {/* Main Share Button */}
-          <button
-            onClick={() => setIsExpanded(!isExpanded)}
-            className={`p-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg transition-all duration-200 hover:scale-110 transform ${isExpanded ? 'rotate-180' : 'rotate-0'}`}
-          >
-            <div className="relative">
-              <Users className="h-6 w-6" />
-              <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
-            </div>
-          </button>
-        </div>
+        {/* Main Share Button */}
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className={`p-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg transition-all duration-200 hover:scale-110 transform ${isExpanded ? 'rotate-180' : 'rotate-0'}`}
+        >
+          <div className="relative">
+            <Users className="h-6 w-6" />
+            <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
+          </div>
+        </button>
       </div>
 
-      <style>
-        {`
-          @keyframes slideIn {
-            from {
-              opacity: 0;
-              transform: translateX(20px);
-            }
-            to {
-              opacity: 1;
-              transform: translateX(0);
-            }
+      <style jsx>{`
+        @keyframes slideIn {
+          from {
+            opacity: 0;
+            transform: translateX(20px);
           }
-          
-          @keyframes slideOut {
-            from {
-              opacity: 1;
-              transform: translateX(0);
-            }
-            to {
-              opacity: 0;
-              transform: translateX(20px);
-            }
+          to {
+            opacity: 1;
+            transform: translateX(0);
           }
-        `}
-      </style>
-    </>
+        }
+        
+        @keyframes slideOut {
+          from {
+            opacity: 1;
+            transform: translateX(0);
+          }
+          to {
+            opacity: 0;
+            transform: translateX(20px);
+          }
+        }
+      `}</style>
+    </div>
   );
 };
 
