@@ -71,21 +71,21 @@ export const ShareButton: React.FC = () => {
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.2 }}
-              className="absolute bottom-16 left-0 flex flex-col space-y-2"
+              className="absolute bottom-0 left-16 flex space-x-2"
             >
               {shareOptions.map((option, index) => {
                 const IconComponent = option.icon;
                 return (
                   <motion.button
                     key={option.name}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ delay: index * 0.1 }}
+                    initial={{ opacity: 0, x: -20, scale: 0.8 }}
+                    animate={{ opacity: 1, x: 0, scale: 1 }}
+                    exit={{ opacity: 0, x: -20, scale: 0.8 }}
+                    transition={{ delay: index * 0.1, duration: 0.2 }}
                     onClick={() => {
                       option.action();
                       setIsOpen(false);
@@ -96,7 +96,7 @@ export const ShareButton: React.FC = () => {
                     whileTap={{ scale: 0.95 }}
                   >
                     <IconComponent />
-                    <div className="absolute left-12 top-1/2 transform -translate-y-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                    <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
                       {option.name}
                     </div>
                   </motion.button>

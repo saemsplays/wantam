@@ -46,6 +46,8 @@ const BillsFAB = () => {
                 onClick={() => handleBillSelect(bill.path)}
                 className={`flex items-center space-x-3 px-4 py-3 ${bill.color} text-white rounded-full shadow-lg hover:shadow-xl transition-all transform hover:scale-105 whitespace-nowrap`}
                 disabled={bill.path === location.pathname}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
                 <FileText className="w-4 h-4" />
                 <span className="text-sm font-medium">{bill.name}</span>

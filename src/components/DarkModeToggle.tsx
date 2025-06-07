@@ -34,12 +34,10 @@ export const DarkModeToggle: React.FC = () => {
     <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50">
       <motion.button
         onClick={toggleDarkMode}
-        className="relative w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
-        style={{
-          opacity: isDark ? 0.7 : 0.05,
-        }}
+        className="relative w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300"
+        style={{ opacity: 0.05 }}
         whileHover={{
-          opacity: 0.9,
+          opacity: 0.7,
           scale: 1.1,
         }}
         whileTap={{
