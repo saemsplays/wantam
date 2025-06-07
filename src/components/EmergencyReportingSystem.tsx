@@ -854,7 +854,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
                   onClick={() => setCurrentSection('darkweb-options')}
                   className="p-4 h-auto bg-gray-100 border-gray-300 hover:bg-gray-200 text-left flex flex-col items-start"
                 >
-                  <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center mb-2 overflow-hidden">
+                  <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center mb-2 overflow-hidden rounded-xl">
                     <Globe className="w-4 h-4 text-gray-700" />
                   </div>
                   <div className="text-sm font-bold text-gray-800 break-words">Dark Web Options</div>
