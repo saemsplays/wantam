@@ -3,7 +3,7 @@ import { FileText, X, ChevronUp } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-interface BillsDockPopupProps {
+interface BillsFABProps {
   isOpen: boolean;
   onClose: () => void;
   originElement: HTMLElement | null;
@@ -17,7 +17,7 @@ const bills = [
   { id: 'digital-2025', name: 'Digital Economy Bill 2025', path: '/digital-2025', color: 'bg-gradient-to-r from-green-600 to-red-600' }
 ];
 
-export const BillsDockPopup: React.FC<BillsDockPopupProps> = ({ isOpen, onClose, originElement }) => {
+export const BillsFAB: React.FC<BillsFABProps> = ({ isOpen, onClose, originElement }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
