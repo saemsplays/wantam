@@ -159,7 +159,7 @@ export const EmergencyReportingSystem: React.FC<EmergencyReportingSystemProps> =
             <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-red-50 dark:bg-red-900/20">
               <div className="flex items-center space-x-3">
                 <Shield className="w-6 h-6 text-red-600 dark:text-red-400" />
-                <h2 className="text-lg font-bold text-gray-900 dark:text-white">Emergency Reporting Hub</h2>
+                <h2 className="text-lg font-bold text-red-900 dark:text-red-100">Emergency Reporting Hub</h2>
               </div>
               <button
                 onClick={onClose}
@@ -197,7 +197,7 @@ export const EmergencyReportingSystem: React.FC<EmergencyReportingSystemProps> =
                         <AlertTriangle className="w-4 h-4" />
                         <span className="text-sm font-medium">Emergency Notice</span>
                       </div>
-                      <p className="text-xs text-red-600 dark:text-red-400 max-w-full truncate">
+                      <p className="text-xs text-red-600 dark:text-red-400 max-w-full">
                         For life-threatening emergencies, call 999 immediately
                       </p>
                     </div>
@@ -211,15 +211,15 @@ export const EmergencyReportingSystem: React.FC<EmergencyReportingSystemProps> =
                         onClick={() => handleEmergencySelect(emergency)}
                       >
                         <div className="flex items-center justify-between">
-                          <div className="flex-1">
-                            <h3 className="font-medium text-gray-900 dark:text-white text-sm max-w-full truncate">
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-medium text-gray-900 dark:text-white text-sm truncate max-w-full">
                               {emergency.title}
                             </h3>
-                            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 max-w-full truncate">
+                            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 truncate max-w-full">
                               {emergency.organizations.length} organizations available
                             </p>
                           </div>
-                          <ChevronRight className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                          <ChevronRight className="w-4 h-4 text-gray-400 flex-shrink-0 ml-2" />
                         </div>
                       </motion.div>
                     ))}
@@ -242,7 +242,7 @@ export const EmergencyReportingSystem: React.FC<EmergencyReportingSystemProps> =
                         <ArrowLeft className="w-4 h-4" />
                         <span className="text-sm">Back</span>
                       </button>
-                      <h3 className="font-semibold text-gray-900 dark:text-white text-base max-w-full truncate">
+                      <h3 className="font-semibold text-gray-900 dark:text-white text-base truncate max-w-full">
                         {selectedEmergency.title}
                       </h3>
                     </div>
@@ -254,7 +254,7 @@ export const EmergencyReportingSystem: React.FC<EmergencyReportingSystemProps> =
                             <AlertTriangle className="w-4 h-4" />
                             <span className="text-sm font-medium">Warning</span>
                           </div>
-                          <p className="text-xs text-red-600 dark:text-red-400 max-w-full truncate">
+                          <p className="text-xs text-red-600 dark:text-red-400">
                             {selectedEmergency.warning}
                           </p>
                         </div>
@@ -268,8 +268,8 @@ export const EmergencyReportingSystem: React.FC<EmergencyReportingSystemProps> =
                           <ul className="space-y-1">
                             {selectedEmergency.immediateSteps.map((step, index) => (
                               <li key={index} className="text-xs text-blue-600 dark:text-blue-400 flex items-start gap-2">
-                                <span className="text-blue-500 mt-1">•</span>
-                                <span className="max-w-full truncate">{step}</span>
+                                <span className="text-blue-500 mt-1 flex-shrink-0">•</span>
+                                <span className="truncate max-w-full">{step}</span>
                               </li>
                             ))}
                           </ul>
@@ -282,7 +282,7 @@ export const EmergencyReportingSystem: React.FC<EmergencyReportingSystemProps> =
                         </h4>
                         {selectedEmergency.organizations.map((org, index) => (
                           <div key={index} className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-3">
-                            <h5 className="font-medium text-gray-900 dark:text-white text-sm mb-2 max-w-full truncate">
+                            <h5 className="font-medium text-gray-900 dark:text-white text-sm mb-2 truncate max-w-full">
                               {org.name}
                             </h5>
                             <div className="space-y-2">
@@ -294,7 +294,7 @@ export const EmergencyReportingSystem: React.FC<EmergencyReportingSystemProps> =
                                 return (
                                   <div key={key} className="flex items-center gap-2">
                                     <IconComponent className="w-3 h-3 text-gray-400 flex-shrink-0" />
-                                    <span className="text-xs text-gray-600 dark:text-gray-400 max-w-full truncate">
+                                    <span className="text-xs text-gray-600 dark:text-gray-400 truncate max-w-full">
                                       {String(value)}
                                     </span>
                                   </div>

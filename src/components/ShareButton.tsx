@@ -37,7 +37,7 @@ export const ShareButton: React.FC = () => {
           className="w-5 h-5"
         />
       ),
-      color: 'bg-gradient-to-r from-green-600 to-black',
+      color: 'bg-gradient-to-r from-green-600 to-red-600',
       message: '💪 Exercise your constitutional rights! Join the Finance Bill resistance. Your voice matters in democracy! #RejectFinanceBill2025 #CEKA #ConstitutionalRights',
       action: () => {
         navigator.clipboard.writeText('💪 Exercise your constitutional rights! Join the Finance Bill resistance. Your voice matters in democracy! #RejectFinanceBill2025 #CEKA #ConstitutionalRights\n\nrejectfinancebill2025.lovable.app');
@@ -56,7 +56,7 @@ export const ShareButton: React.FC = () => {
   ];
 
   return (
-    <div className="fixed left-4 bottom-20 md:bottom-4 style={{ zIndex: 9999 }}>
+    <div className="fixed left-4 bottom-20 md:bottom-4 z-40">
       <div className="relative">
         <motion.button
           onClick={() => setIsOpen(!isOpen)}
