@@ -34,7 +34,11 @@ const DigitalEconomyBill2025: React.FC = () => {
     "Demand Digital Justice"
   ];
 
-  const sections = ['intro', 'content', 'action'];
+  const sections = [
+    { id: 'intro', label: 'Introduction' },
+    { id: 'content', label: 'Content' },
+    { id: 'action', label: 'Action' }
+  ];
 
   // Handle scroll for opacity control
   useEffect(() => {

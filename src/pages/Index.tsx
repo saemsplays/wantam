@@ -1,103 +1,55 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Send, Mail, FileText, CheckCircle, User, AlertTriangle, Shield, Scale, Users, Play, RotateCcw, ArrowUpRight, Home, Archive, Settings, HelpCircle, Lightbulb, Heart, Flag, ExternalLink, Radio } from "lucide-react";
-import { toast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
-import { ScrollProgressTracker } from '../components/ScrollProgressTracker';
-import { SimpleTour } from '../components/SimpleTour';
-import { TourStarter } from '../components/TourStarter';
-import { BillsSidebar } from '../components/BillsSidebar';
-import DonationWidget from '../components/DonationWidget';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { MessageCircle, Play, Pause, Volume2, VolumeX, Shield, Radio, Heart, Users, FileText, Wifi, Mail, Clock, Timer, Calendar, MapPin, AlertTriangle, MessageSquare, Zap, CheckCircle, Info, XCircle, ArrowDown, ChevronDown, ExternalLink, Download, Share2, Bell, Star, Sparkles, Flame, Target, BookOpen } from 'lucide-react';
 import Dock from '../components/Dock';
-import InteractiveCountWidget from '../components/InteractiveCountWidget';
+import DonationWidget from '../components/DonationWidget';
+import EmergencyReportingSystem from '../components/EmergencyReportingSystem';
 import Aurora from '../components/Aurora';
 import RotatingText from '../components/RotatingText';
-import SplashScreen from '../components/SplashScreen';
-import EmergencyReportingSystem from '../components/EmergencyReportingSystem';
-import { BillsFAB } from '../components/BillsFAB';
-import { ScrollToTop } from '../components/ScrollToTop';
+import { JoyrideTour } from '../components/JoyrideTour';
 import { FloatingActionButtons } from '../components/FloatingActionButtons';
+import UserCountSidebar from '../components/UserCountSidebar';
 import { DarkModeToggle } from '../components/DarkModeToggle';
-import { OfflineRadioSystem } from '../components/OfflineRadioSystem';
+import { ClearModeToggle, ClearMode } from '../components/ClearModeToggle';
 import ShareButton from '../components/ShareButton';
-import { BillsDockPopup } from '../components/BillsDockPopup';
-import { ClearModeToggle, ClearMode } from '../components/ClearModeToggle'; // Added ClearModeToggle
-import UserCountSidebar from '../components/UserCountSidebar'; // Added UserCountSidebar
+import { ScrollToTop } from '../components/ScrollToTop';
+import { TourStarter } from '../components/TourStarter';
+import { ScrollProgressTracker } from '../components/ScrollProgressTracker';
+import { OfflineRadioSystem } from '../components/OfflineRadioSystem';
+import { BillsFAB } from '../components/BillsFAB';
+import { BillsSidebar } from '../components/BillsSidebar';
+import ToastNotification from '../components/ToastNotification';
+import InteractiveCountWidget from '../components/InteractiveCountWidget';
+import SplashScreen from '../components/SplashScreen';
+import LetterGlitch from '../components/LetterGlitch';
 
-const Index = () => {
-  const [showSplash, setShowSplash] = useState(true); // Added splash screen state
-  const [userName, setUserName] = useState('');
-  const [selectedRecipients, setSelectedRecipients] = useState({
-    clerk: true,
-    financeCommittee: true
-  });
-  const [subject, setSubject] = useState(
-    'RE: MEMORANDUM OF OBJECTION TO THE FINANCE BILL 2025 (NATIONAL ASSEMBLY BILLS NO. 19 OF 2025)'
-  );
-  const [messageBody, setMessageBody] = useState(`Dear Clerk of the National Assembly and Members of the Finance Committee,
-
-The above subject refers;
-
-Following the invitation by the National Assembly to submit comments on the above. Recognizing the Sovereignty of the People and Supremacy of the Constitution as under Chapter 1 of the Constitution of Kenya 2010, Rights and Fundamental Freedoms as provided under Chapter 4 of the Bill of Rights, Leadership and Integrity of State Officers as under Chapter 6, the Role of the Legislature under Chapter 8.
-
-Pursuant to Articles 10(2), 118(1) of the Constitution 2010 that mandates Public Participation in any Legislative Process I wish to submit my Memoranda as follows:
-
-1. REJECTION OF SECTION A, PART I OF THE 1ST SCHEDULE OF THE VALUE ADDED TAX ACT
-
-This amendment is incompatible with the economic and social rights guaranteed under Article 43 of the Constitution of Kenya 2010.
-Removing zero-rated status from essential goods will increase the cost of living and disproportionately burden low-income households.
-The agricultural sector, a key economic driver, will be negatively affected, harming Kenyan households that rely on agriculture for income.
-
-2. REJECTION OF AMENDMENTS TO SECTIONS 2 & 5 OF THE EXCISE DUTY ACT
-
-These amendments violate the non-discrimination protections under Article 27 of the Constitution of Kenya 2010.
-Expanding digital lending tax to include services offered by non-resident persons over the internet will adversely affect Kenyans who depend on digital loans for essential expenses.
-While aiming to create fair competition, these changes will increase borrowing costs, making credit less accessible and leading to financial exclusion for low and middle-income Kenyans.
-
-3. REJECTION OF AMENDMENTS TO SECTION 59A OF THE TAX PROCEDURES ACT
-
-The deletion of subsection 1B is unconstitutional as it infringes on the right to privacy guaranteed under Article 31 of the Constitution of Kenya 2010.
-This amendment would grant the Commissioner unrestricted authority to access personal and private data, including M-Pesa financial records, without necessary safeguards.
-There are inadequate protections against potential overreach by the Kenya Revenue Authority, creating a risk of unauthorized access to citizens' private financial information.
-
-In conclusion, I call for the withdrawal of this Bill as it is made in Bad Faith, ignorant to the Current Economic Needs and Political Wills of the People of Kenya, Will Entrench the Abuse of Power by the Revenue Authorities, A Dubious Attempt to Sneak in Tyranny, Reinforce Poverty, Promote Marginalization and at the end of it Will Deny Kenyans the Transformative Agenda of Vision 2030. I thus pray that you Reject it for the sake of a better Kenya.
-
-Yours Faithfully,
-
-[USER_NAME_PLACEHOLDER]
-
-Citizen of Kenya`);
-
-  const [userCount, setUserCount] = useState({ viewers: 0, emailsSent: 0 });
-  const [showFullCount, setShowFullCount] = useState(false);
-  const [activeSection, setActiveSection] = useState('hero');
-  const [showTour, setShowTour] = useState(false);
-  const [hasSeenTour, setHasSeenTour] = useState(false);
-  const [isReportingOpen, setIsReportingOpen] = useState(false);
-  const [isRadioOpen, setIsRadioOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [billsDockOpen, setBillsDockOpen] = useState(false);
-  const [billsDockOrigin, setBillsDockOrigin] = useState<HTMLElement | null>(null);
-  
-  // New state variables for scroll effects
+const Index: React.FC = () => {
+  const [showDonation, setShowDonation] = useState(false);
+  const [showEmergencySystem, setShowEmergencySystem] = useState(false);
+  const [showRadioSystem, setShowRadioSystem] = useState(false);
+  const [clearMode, setClearMode] = useState<ClearMode>('normal');
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isInFirstSection, setIsInFirstSection] = useState(true);
-  const [clearMode, setClearMode] = useState<ClearMode>('normal');
+  const [donationVisible, setDonationVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [showBillsSidebar, setShowBillsSidebar] = useState(false);
+  const [showSplash, setShowSplash] = useState(true);
 
-  const rotatingTexts = [ // Added rotating texts
+  const rotatingTexts = [
     "Object to the Finance Bill 2025",
-    "Protect Your Rights",
-    "Make Your Voice Heard",
-    "Stand for Justice"
+    "Exercise your Constitutional Rights",
+    "Demand Transparency in Governance",
+    "Fight for Financial Justice"
   ];
 
-  // Added scroll effect for opacity control
+  const sections = [
+    { id: 'intro', label: 'Introduction' },
+    { id: 'features', label: 'Features' },
+    { id: 'about', label: 'About' },
+    { id: 'bills', label: 'Bills' }
+  ];
+
   useEffect(() => {
     const handleScroll = () => {
       const firstSectionHeight = window.innerHeight;
@@ -114,9 +66,9 @@ Citizen of Kenya`);
 
   // Calculate opacity based on clear mode and scroll position
   const getElementOpacity = () => {
-    if (isInFirstSection) return 0; // Ultra clear in first section
+    if (isInFirstSection) return 0;
     
-    const baseOpacity = Math.min(scrollProgress * 2, 1); // Gradual increase
+    const baseOpacity = Math.min(scrollProgress * 2, 1);
     
     switch (clearMode) {
       case 'clear': return baseOpacity * 0.1;
@@ -130,773 +82,371 @@ Citizen of Kenya`);
     return 'auto';
   };
 
-  const sections = [
-    { id: 'start', title: 'Beginning', position: 0 },
-    { id: 'hero', title: 'Introduction', position: 0 },
-    { id: 'gpt-card', title: 'Finance Bill GPT', position: 0 },
-    { id: 'details', title: 'Your Details', position: 44 },
-    { id: 'recipients', title: 'Send To', position: 53 },
-    { id: 'subject', title: 'Email Subject', position: 60 },
-    { id: 'letter', title: 'Your Objection Letter', position: 73 },
-    { id: 'send', title: 'Ready To Submit Your Objection?', position: 96 }
-  ];
-
-  useEffect(() => {
-    const trackPageView = async () => {
-      try {
-        await supabase.rpc('increment_user_action', { action_type_param: 'page_view' });
-      } catch (error) {
-        console.error('Error tracking page view:', error);
-      }
-    };
-
-    trackPageView();
-  }, []);
-
-  useEffect(() => {
-    const fetchCounts = async () => {
-      try {
-        const response = await supabase
-          .from('user_counts')
-          .select('viewers, emails_sent')
-          .limit(1);
-        
-        if (response.error) throw response.error;
-        
-        const data = response.data?.[0];
-        if (data) {
-          setUserCount({
-            viewers: data.viewers || 0,
-            emailsSent: data.emails_sent || 0
-          });
-        }
-      } catch (error) {
-        console.error('Error fetching counts:', error);
-      }
-    };
-
-    fetchCounts();
-    const interval = setInterval(fetchCounts, 5 * 60 * 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    const tourSeen = localStorage.getItem('finance-bill-tour-seen');
-    if (tourSeen) {
-      setHasSeenTour(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  const handleTourComplete = () => {
-    setShowTour(false);
-    setHasSeenTour(true);
-    localStorage.setItem('finance-bill-tour-seen', 'true');
-  };
-
-  const handleTourSkip = () => {
-    setShowTour(false);
-    setHasSeenTour(true);
-    localStorage.setItem('finance-bill-tour-seen', 'true');
-  };
-
-  const startTour = () => {
-    setShowTour(true);
-  };
-
-  const restartTour = () => {
-    setShowTour(true);
-  };
-
-  const recipients = {
-    clerk: {
-      name: "Clerk of the National Assembly",
-      email: "cna@parliament.go.ke"
-    },
-    financeCommittee: {
-      name: "Finance Committee of the National Assembly", 
-      email: "financecommitteena@parliament.go.ke"
-    }
-  };
-
-  const handleRecipientChange = (recipient: string, checked: boolean) => {
-    setSelectedRecipients(prev => ({
-      ...prev,
-      [recipient]: checked
-    }));
-  };
-
-  const getSelectedRecipientEmails = () => {
-    const emails: string[] = [];
-    if (selectedRecipients.clerk) emails.push(recipients.clerk.email);
-    if (selectedRecipients.financeCommittee) emails.push(recipients.financeCommittee.email);
-    return emails;
-  };
-
-  const isDesktop = () => {
-    return !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-  };
-
-  const handleSendEmail = async () => {
-    if (!userName.trim()) {
-      toast({
-        title: "Name Required",
-        description: "Please enter your full name to complete the objection letter",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    if (!selectedRecipients.clerk && !selectedRecipients.financeCommittee) {
-      toast({
-        title: "Select Recipients",
-        description: "Please select at least one recipient",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    try {
-      await supabase.rpc('increment_user_action', { action_type_param: 'email_sent' });
-    } catch (error) {
-      console.error('Error tracking email sent:', error);
-    }
-
-    const selectedEmails = getSelectedRecipientEmails();
-    const to = selectedEmails.join(',');
-    const encodedSubject = encodeURIComponent(subject);
-    const personalizedMessage = messageBody.replace('[USER_NAME_PLACEHOLDER]', userName.trim());
-    const encodedBody = encodeURIComponent(personalizedMessage);
-    
-    if (isDesktop()) {
-      const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&su=${encodedSubject}&body=${encodedBody}`;
-      const outlookUrl = `https://outlook.live.com/mail/0/deeplink/compose?to=${encodeURIComponent(to)}&subject=${encodedSubject}&body=${encodedBody}`;
-      
-      const userAgent = navigator.userAgent.toLowerCase();
-      
-      if (userAgent.includes('chrome') || userAgent.includes('edge')) {
-        window.open(gmailUrl, '_blank');
-      } else if (userAgent.includes('outlook') || userAgent.includes('office')) {
-        window.open(outlookUrl, '_blank');
-      } else {
-        window.location.href = `mailto:${to}?subject=${encodedSubject}&body=${encodedBody}`;
-      }
-    } else {
-      const mailtoLink = `mailto:${to}?subject=${encodedSubject}&body=${encodedBody}`;
-      window.location.href = mailtoLink;
-    }
-    
-    toast({
-      title: "Opening Your Email App",
-      description: "Your objection letter is ready to send! Review and click send in your email app.",
-    });
-  };
-
-  const handleReportClick = () => {
-    setIsReportingOpen(prev => !prev);
-  };
-
-  const handleSupportClick = () => {
-    const donationButton = document.querySelector('[data-donation-trigger]') as HTMLElement;
-    if (donationButton) {
-      donationButton.click();
-    }
-  };
-
-  const handleMenuClick = () => {
-    document.getElementById('details')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const handleScrollToTop = () => {
+  const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleRadioClick = () => {
-    setIsRadioOpen(true);
+  const scrollToNextSection = () => {
+    const nextSection = document.querySelector('#features');
+    if (nextSection) {
+      nextSection.scrollIntoView({ behavior: 'smooth' });
+    }
   };
-
-  const handleBillsClick = () => {
-    setBillsDockOrigin(document.activeElement as HTMLElement);
-    setBillsDockOpen(true);
-  };
-
-  const totalUsers = userCount.viewers + userCount.emailsSent;
-  const shouldShowCounter = totalUsers >= 1000;
-  
-  const displayCount = showFullCount
-    ? totalUsers.toLocaleString()
-    : `${Math.round(totalUsers / 1000)}K+`;
-  
-
-  const stats = [
-    { icon: Shield, label: "Constitutional Articles", value: "Art 33, Art 35, Art 118(1)" },
-    { icon: Scale, label: "Legal Foundation", value: "Constitution of Kenya 2010" },
-    { icon: Users, label: "Public Participation", value: "Mandated by Art 118(1)" }
-  ];
-
-  useEffect(() => {
-    window.scrollTo(0, window.innerHeight * 0.02);
-  }, []);
 
   const dockItems = [
-    { 
-      icon: <FileText size={18} />, 
-      label: 'Bills', 
-      onClick: handleBillsClick
+    {
+      icon: <FileText className="h-6 w-6" />,
+      label: "Bills",
+      onClick: () => setShowBillsSidebar(true),
+      className: "dock-item-bills"
     },
-    { 
-      icon: <Radio size={18} />, 
-      label: 'Radio', 
-      onClick: () => setIsRadioOpen(true)
+    {
+      icon: <Radio className="h-6 w-6" />,
+      label: "Radio",
+      onClick: () => setShowRadioSystem(true),
+      className: "dock-item-radio"
     },
-    { 
-      icon: <Heart size={18} />, 
-      label: 'Support', 
-      onClick: handleSupportClick
+    {
+      icon: <Shield className="h-6 w-6" />,
+      label: "Emergency",
+      onClick: () => setShowEmergencySystem(true),
+      className: "dock-item-emergency"
     },
-    { 
-      icon: <Shield size={18} />, 
-      label: 'Report', 
-      onClick: handleReportClick
+    {
+      icon: <Heart className="h-6 w-6" />,
+      label: "Support",
+      onClick: () => setShowDonation(true),
+      className: "dock-item-support"
     },
-    { 
-      icon: <Users size={18} />, 
-      label: 'CEKA', 
-      onClick: () => {
-        const confirmed = confirm('You are about to visit the main CEKA platform. Would you like to proceed?');
-        if (confirmed) {
-          window.open('https://ceka.lovable.app', '_blank');
-        }
-      }
-    },
+    {
+      icon: <Users className="h-6 w-6" />,
+      label: "Share",
+      onClick: () => {},
+      className: "dock-item-share"
+    }
   ];
 
+  const billCards = [
+    {
+      id: 'budget',
+      title: 'Budget Bill 2025',
+      description: 'Government budget allocation and transparency issues',
+      status: 'Active',
+      urgency: 'high',
+      path: '/budget-2025',
+      color: 'from-red-500 to-red-600',
+      icon: <Target className="h-6 w-6" />
+    },
+    {
+      id: 'tax',
+      title: 'Tax Bill 2025',
+      description: 'New taxation policies affecting citizens',
+      status: 'Under Review',
+      urgency: 'high',
+      path: '/tax-2025',
+      color: 'from-orange-500 to-red-500',
+      icon: <Flame className="h-6 w-6" />
+    },
+    {
+      id: 'investment',
+      title: 'Investment Bill 2025',
+      description: 'Foreign investment regulations and local impact',
+      status: 'Proposed',
+      urgency: 'medium',
+      path: '/investment-2025',
+      color: 'from-yellow-500 to-orange-500',
+      icon: <Sparkles className="h-6 w-6" />
+    },
+    {
+      id: 'digital',
+      title: 'Digital Economy Bill 2025',
+      description: 'Digital transformation and cyber regulations',
+      status: 'Draft',
+      urgency: 'medium',
+      path: '/digital-2025',
+      color: 'from-blue-500 to-purple-500',
+      icon: <BookOpen className="h-6 w-6" />
+    }
+  ];
+
+  if (showSplash) {
+    return <SplashScreen onComplete={() => setShowSplash(false)} />;
+  }
+
   return (
-    <>
-      <SplashScreen isVisible={showSplash} onComplete={() => setShowSplash(false)} />
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 relative overflow-hidden">
+      <Aurora />
       
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 relative overflow-hidden">
-        <Aurora 
-          colorStops={["#000000", "#DC143C", "#006400"]}
-          blend={0.5}
-          amplitude={1.0}
-          speed={0.5}
+      {/* Fixed Controls */}
+      <DarkModeToggle />
+      <ClearModeToggle currentMode={clearMode} onModeChange={setClearMode} />
+
+      {/* Floating Elements with opacity control */}
+      <div 
+        style={{ 
+          opacity: getElementOpacity(),
+          pointerEvents: getElementInteractivity()
+        }}
+        className="transition-opacity duration-500"
+      >
+        <FloatingActionButtons 
+          onReportClick={() => setShowEmergencySystem(true)}
+          onSupportClick={() => setShowDonation(true)}
+          onMenuClick={() => {}}
+          onScrollToTop={scrollToTop}
+          onRadioClick={() => setShowRadioSystem(true)}
         />
-        
-        {/* Fixed Controls */}
-        <DarkModeToggle />
-        <ClearModeToggle currentMode={clearMode} onModeChange={setClearMode} />
-        
-        {/* Floating Elements with opacity control */}
-        <div 
-          style={{ 
-            opacity: getElementOpacity(),
-            pointerEvents: getElementInteractivity()
-          }}
-          className="transition-opacity duration-500"
+        <ShareButton />
+        <ScrollToTop />
+        <UserCountSidebar />
+        <ScrollProgressTracker activeSection={sections[0]} sections={sections} />
+      </div>
+
+      {/* First Section - Hero */}
+      <section id="intro" className="min-h-screen flex items-center justify-center relative">
+        <div className="text-center px-4 max-w-4xl mx-auto">
+          <RotatingText texts={rotatingTexts} />
+          <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 2, duration: 0.8 }}
+            onClick={scrollToNextSection}
+            className="mt-12 p-4 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-300 group"
+          >
+            <ChevronDown className="h-8 w-8 text-white group-hover:animate-bounce" />
+          </motion.button>
+        </div>
+      </section>
+
+      {/* Second Section - Features */}
+      <section id="features" className="min-h-screen py-20 px-4 max-w-6xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
         >
-          <FloatingActionButtons
-            onReportClick={handleReportClick}
-            onSupportClick={handleSupportClick}
-            onMenuClick={handleMenuClick}
-            onScrollToTop={handleScrollToTop}
-            onRadioClick={handleRadioClick}
-            isReportOpen={isReportingOpen}
-          />
-          <ShareButton />
-          <ScrollToTop />
-          <UserCountSidebar />
-          <ScrollProgressTracker />
+          <h2 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
+            Powerful Civic Tools
+          </h2>
+          <p className="text-xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+            Exercise your constitutional rights with our comprehensive platform designed for effective civic participation.
+          </p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+          {[
+            {
+              icon: <Shield className="h-8 w-8" />,
+              title: "Emergency Reporting",
+              description: "Report incidents and emergencies with instant alerts to relevant authorities"
+            },
+            {
+              icon: <Radio className="h-8 w-8" />,
+              title: "Offline Communication",
+              description: "P2P mesh networking for communication during network outages"
+            },
+            {
+              icon: <FileText className="h-8 w-8" />,
+              title: "Bill Analysis",
+              description: "Comprehensive analysis of government bills and their impact on citizens"
+            },
+            {
+              icon: <Heart className="h-8 w-8" />,
+              title: "Community Support",
+              description: "Connect with like-minded citizens and support civic education initiatives"
+            },
+            {
+              icon: <Wifi className="h-8 w-8" />,
+              title: "Real-time Updates",
+              description: "Live updates on political developments and civic participation opportunities"
+            },
+            {
+              icon: <Users className="h-8 w-8" />,
+              title: "Collective Action",
+              description: "Organize and participate in peaceful demonstrations and civic activities"
+            }
+          ].map((feature, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              viewport={{ once: true }}
+              className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+            >
+              <div className="text-blue-600 dark:text-blue-400 mb-4">{feature.icon}</div>
+              <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">{feature.title}</h3>
+              <p className="text-gray-600 dark:text-gray-300">{feature.description}</p>
+            </motion.div>
+          ))}
         </div>
+      </section>
 
-        {/* First Section - Always Ultra Clear */}
-        <section className="min-h-screen flex items-center justify-center relative">
-          <div className="text-center px-4 max-w-4xl mx-auto">
-            <RotatingText texts={rotatingTexts} />
-          </div>
-        </section>
-
-        {/* Main Content */}
-        <div className="relative max-w-6xl mx-auto px-4 py-16">
-          <div className="text-center">
-            <div className={`inline-flex items-center gap-3 px-6 py-3 rounded-full text-sm font-medium mb-6 ${
-              shouldShowCounter 
-                ? 'bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-300' 
-                : 'bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-300'
-            }`}>
-              <AlertTriangle className="h-5 w-5" />
-              {shouldShowCounter ? (
-                <span 
-                  onClick={() => setShowFullCount(!showFullCount)}
-                  className="cursor-pointer"
-                >
-                  As used by {displayCount} citizens
-                </span>
-              ) : (
-                'Action Required: Share your voice. Your constitutional right protects it.'
-              )}
-            </div>
-            
-            <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
-              Object to the{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-green-600 dark:from-red-400 dark:to-green-400">
-                Finance Bill 2025
-              </span>
-            </h1>
-            
-            <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
-              Exercise your constitutional right to participate in legislative processes.
-              Submit your formal objection to protect essential goods and privacy rights.
+      {/* Third Section - About */}
+      <section id="about" className="min-h-screen py-20 px-4 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm">
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="mb-12"
+          >
+            <h2 className="text-4xl md:text-6xl font-bold mb-6 text-gray-900 dark:text-gray-100">
+              About <LetterGlitch text="CEKA" />
+            </h2>
+            <p className="text-xl text-gray-700 dark:text-gray-300 leading-relaxed mb-8">
+              Civic Education Kenya App (CEKA) empowers citizens to actively participate in democratic processes through constitutional awareness, bill analysis, and civic engagement tools.
             </p>
+          </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto mb-12">
-              {stats.map((stat, index) => (
-                <div
-                  key={index}
-                  className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700 rounded-xl p-3 md:p-6 shadow-sm"
-                >
-                  <div className="flex flex-col items-center gap-2 mb-2 text-center">
-                    <div className="bg-blue-100 dark:bg-blue-900/50 p-2 rounded-lg flex-shrink-0">
-                      <stat.icon className="h-4 w-4 md:h-5 md:w-5 text-blue-600 dark:text-blue-400" />
-                    </div>
-                    <h3 className="font-semibold text-gray-900 dark:text-white text-xs md:text-base leading-tight">{stat.label}</h3>
-                  </div>
-                  <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 text-center leading-tight">{stat.value}</p>
-                </div>
-              ))}
-            </div>
-
-            <div className="space-y-4 max-w-4xl mx-auto">
-              {!hasSeenTour && !showTour && (
-                <TourStarter onStartTour={startTour} />
-              )}
-
-              {hasSeenTour && (
-                <button
-                  onClick={restartTour}
-                  className="mb-4 inline-flex items-center gap-1 px-3 py-1 bg-yellow-200 hover:bg-yellow-300 dark:bg-yellow-700 dark:hover:bg-yellow-600 text-yellow-800 dark:text-yellow-200 rounded-full text-xs font-medium transition-colors"
-                  title="Restart tour"
-                >
-                  <Play className="h-3 w-3" />
-                  Restart Tour
-                </button>
-              )}
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Card className="bg-gradient-to-r from-red-600 to-green-600 dark:from-red-500 dark:to-green-500 border-gray-200 dark:border-gray-700 shadow-lg">
-                  <CardContent className="pt-6">
-                    <div className="flex items-start gap-4">
-                      <div className="bg-white/20 p-2 rounded-lg flex-shrink-0 backdrop-blur-sm">
-                        <Scale className="h-6 w-6 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-white mb-2">Finance Bill GPT</h3>
-                        <p className="text-sm text-white/90 mb-4">
-                          Get instant answers about the Finance Bill 2025 from the 'Finance Bill GPT' AI assistant.
-                        </p>
-                        <a
-                          href="https://chatgpt.com/g/g-681270efebe08191ad509259b304815b-2025-finance-bill-gpt"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 px-4 py-2 bg-white text-gray-900 hover:bg-white/90 rounded-lg text-sm font-medium transition-colors"
-                        >
-                          Ask Assistant
-                          <ArrowUpRight className="h-4 w-4" />
-                        </a>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                
-                <Card className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-500 dark:to-purple-500 border-gray-200 dark:border-gray-700 shadow-lg">
-                  <CardContent className="pt-6">
-                    <div className="flex items-start gap-4">
-                      <div className="bg-white/20 p-2 rounded-lg flex-shrink-0 backdrop-blur-sm">
-                        <CheckCircle className="h-6 w-6 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-white mb-2">Use Our App</h3>
-                        <p className="text-sm text-white/90 mb-4">
-                          Get the #RejectFinanceBill app on your device and amplify your voice, on the go!
-                        </p>
-                        <button 
-                          onClick={() => {
-                            const link = document.createElement('a');
-                            link.href = "https://juzqumvamllubshomuge.supabase.co/storage/v1/object/sign/apps/Signed%20APK%20-%20Prod%20Ready/RFB254%20by%20CEKA.apk?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8wZThlZDg5OC05N2JkLTRhNmEtYjUwZS0zMTU5M2U4NmMwOTIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBzL1NpZ25lZCBBUEsgLSBQcm9kIFJlYWR5L1JGQjI1NCBieSBDRUtBLmFwayIsImlhdCI6MTc0OTA2Mjg3OSwiZXhwIjoxNzgwNTk4ODc5fQ.qS2msdBAlUVLX6XYBwNe7ErBYiRyEqZIterdv1Gjo1M";
-                            link.download = "RFB254-by-CEKA.apk";
-                            link.click();
-                          }}
-                          className="inline-flex items-center gap-2 px-4 py-2 bg-white text-gray-900 hover:bg-white/90 rounded-lg text-sm font-medium transition-colors"
-                          >
-                          Download Here
-                          <ArrowUpRight className="h-4 w-4" />
-                        </button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="grid md:grid-cols-3 gap-8 mb-12"
+          >
+            {[
+              { icon: <BookOpen />, title: "Educational", description: "Learn about your constitutional rights and civic duties" },
+              { icon: <Users />, title: "Community", description: "Connect with fellow citizens for collective action" },
+              { icon: <Shield />, title: "Secure", description: "Safe platform for expressing civic concerns" }
+            ].map((item, index) => (
+              <div key={index} className="text-center">
+                <div className="text-blue-600 dark:text-blue-400 mb-4 flex justify-center">{item.icon}</div>
+                <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-gray-100">{item.title}</h3>
+                <p className="text-gray-600 dark:text-gray-300">{item.description}</p>
               </div>
-            </div>
-          </div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Fourth Section - Bills Overview */}
+      <section id="bills" className="min-h-screen py-20 px-4 max-w-6xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
+            Active Bills 2025
+          </h2>
+          <p className="text-xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+            Review and object to bills that affect your daily life. Exercise your constitutional right to participate in governance.
+          </p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-8 mb-16">
+          {billCards.map((bill, index) => (
+            <motion.div
+              key={bill.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              viewport={{ once: true }}
+              className="group relative overflow-hidden"
+            >
+              <Link to={bill.path}>
+                <div className={`bg-gradient-to-br ${bill.color} rounded-xl p-6 h-full hover:shadow-xl transition-all duration-300 hover:scale-[1.02] text-white relative`}>
+                  <div className="absolute top-4 right-4">
+                    {bill.icon}
+                  </div>
+                  <div className="mb-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        bill.urgency === 'high' ? 'bg-red-200 text-red-800' : 'bg-yellow-200 text-yellow-800'
+                      }`}>
+                        {bill.urgency === 'high' ? 'High Priority' : 'Medium Priority'}
+                      </span>
+                      <span className="px-2 py-1 rounded-full text-xs font-medium bg-white/20 text-white">
+                        {bill.status}
+                      </span>
+                    </div>
+                    <h3 className="text-2xl font-bold mb-2">{bill.title}</h3>
+                    <p className="text-white/90 mb-4">{bill.description}</p>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium">Learn More</span>
+                    <ExternalLink className="h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
+              </Link>
+            </motion.div>
+          ))}
         </div>
 
-        <div className="max-w-4xl mx-auto px-4 py-12 space-y-8">
-          
-          <Card className="bg-gradient-to-r from-blue-50 to-emerald-50 dark:from-blue-900/30 dark:to-emerald-900/30 border-blue-200 dark:border-blue-700">
-            <CardContent className="pt-6">
-              <div className="flex items-start gap-4">
-                <div className="bg-blue-600 dark:bg-blue-500 p-2 rounded-lg flex-shrink-0">
-                  <CheckCircle className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">How It Works</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                    <div className="flex items-center gap-2">
-                      <span className="bg-blue-600 dark:bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">1</span>
-                      <span className="text-gray-700 dark:text-gray-300">Enter your name</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="bg-blue-600 dark:bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">2</span>
-                      <span className="text-gray-700 dark:text-gray-300">Review your letter</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="bg-blue-600 dark:bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">3</span>
-                      <span className="text-gray-700 dark:text-gray-300">Open and send via your email</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="text-center"
+        >
+          <button 
+            onClick={() => setShowBillsSidebar(true)}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-colors shadow-lg hover:shadow-xl"
+          >
+            View All Bills
+          </button>
+        </motion.div>
+      </section>
 
-          <section id="details" className={`transition-all duration-700 ${
-            activeSection === 'details' ? 'relative z-30 scale-[1.02]' : 'relative z-20'
-          }`}>
-            <Card className="border-2 border-dashed border-blue-300 dark:border-blue-600 bg-blue-50/30 dark:bg-blue-900/20">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-3">
-                  <div className="bg-blue-600 dark:bg-blue-500 p-2 rounded-lg">
-                    <User className="h-5 w-5 text-white" />
-                  </div>
-                  <span className="text-gray-900 dark:text-white">Your Details</span>
-                </CardTitle>
-                <p className="text-gray-600 dark:text-gray-400">Only your name is required to prefill the objection letter</p>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div>
-                    <Label htmlFor="userName" className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">
-                      Full Name *
-                    </Label>
-                    <Input
-                      id="userName"
-                      type="text"
-                      placeholder="Enter your full name as it should appear in the letter"
-                      value={userName}
-                      onChange={(e) => setUserName(e.target.value)}
-                      className="text-lg py-3 border-2 focus:border-blue-500 dark:focus:border-blue-400 transition-colors dark:bg-gray-800 dark:border-gray-600 dark:text-white"
-                    />
-                  </div>
-                  <div className="bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-700 rounded-lg p-3 text-emerald-900 dark:text-emerald-300 text-sm">
-                    <p>
-                      <strong>Privacy & Anonymity Notice:</strong> This site collects <u>no</u> personal data. 
-                      All inputs remain on your device until you click "Send." 
-                      You may use a pseudonym or initials if desired.
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </section>
+      {/* Interactive Count Widget */}
+      <InteractiveCountWidget 
+        isVisible={donationVisible} 
+        onComplete={() => setDonationVisible(false)} 
+      />
 
-          <section id="recipients" className={`transition-all duration-700 ${
-            activeSection === 'recipients' ? 'relative z-30 scale-[1.02]' : 'relative z-20'
-          }`}>
-            <Card className="dark:bg-gray-800 dark:border-gray-700">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-3">
-                  <div className="bg-emerald-600 dark:bg-emerald-500 p-2 rounded-lg">
-                    <Mail className="h-5 w-5 text-white" />
-                  </div>
-                  <span className="text-gray-900 dark:text-white">Send To</span>
-                </CardTitle>
-                <p className="text-gray-600 dark:text-gray-400">Select who should receive your objection letter</p>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="flex items-start space-x-3 p-4 border-2 border-gray-200 dark:border-gray-600 rounded-lg hover:border-emerald-300 dark:hover:border-emerald-500 transition-colors">
-                      <Checkbox
-                        id="clerk"
-                        checked={selectedRecipients.clerk}
-                        onCheckedChange={(checked) => handleRecipientChange('clerk', checked as boolean)}
-                        className="mt-1"
-                      />
-                      <Label htmlFor="clerk" className="flex-1 cursor-pointer">
-                        <div className="font-semibold text-gray-900 dark:text-white">{recipients.clerk.name}</div>
-                        <div className="text-sm text-gray-600 dark:text-gray-400">{recipients.clerk.email}</div>
-                        <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-1">✓ Recommended</div>
-                      </Label>
-                    </div>
-                    
-                    <div className="flex items-start space-x-3 p-4 border-2 border-gray-200 dark:border-gray-600 rounded-lg hover:border-emerald-300 dark:hover:border-emerald-500 transition-colors">
-                      <Checkbox
-                        id="financeCommittee"
-                        checked={selectedRecipients.financeCommittee}
-                        onCheckedChange={(checked) => handleRecipientChange('financeCommittee', checked as boolean)}
-                        className="mt-1"
-                      />
-                      <Label htmlFor="financeCommittee" className="flex-1 cursor-pointer">
-                        <div className="font-semibold text-gray-900 dark:text-white">{recipients.financeCommittee.name}</div>
-                        <div className="text-sm text-gray-600 dark:text-gray-400">{recipients.financeCommittee.email}</div>
-                        <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-1">✓ Recommended</div>
-                      </Label>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </section>
+      {/* Dock */}
+      <Dock
+        items={dockItems}
+        className="fixed bottom-4 left-1/2 transform -translate-x-1/2"
+        panelHeight={68}
+        magnification={70}
+        distance={200}
+      />
 
-          <section id="subject" className={`transition-all duration-700 ${
-            activeSection === 'subject' ? 'relative z-30 scale-[1.02]' : 'relative z-20'
-          }`}>
-            <Card className="dark:bg-gray-800 dark:border-gray-700">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-3">
-                  <div className="bg-purple-600 dark:bg-purple-500 p-2 rounded-lg">
-                    <FileText className="h-5 w-5 text-white" />
-                  </div>
-                  <span className="text-gray-900 dark:text-white">Email Subject</span>
-                </CardTitle>
-                <p className="text-gray-600 dark:text-gray-400">The subject line for your objection email</p>
-              </CardHeader>
-              <CardContent>
-                <Input
-                  value={subject}
-                  onChange={(e) => setSubject(e.target.value)}
-                  className="text-sm font-medium py-3 border-2 focus:border-purple-500 dark:focus:border-purple-400 transition-colors dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                />
-              </CardContent>
-            </Card>
-          </section>
-
-          <section id="letter" className={`transition-all duration-700 ${
-            activeSection === 'letter' ? 'relative z-30 scale-[1.02]' : 'relative z-20'
-          }`}>
-            <Card className="dark:bg-gray-800 dark:border-gray-700">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-3">
-                  <div className="bg-indigo-600 dark:bg-indigo-500 p-2 rounded-lg">
-                    <FileText className="h-5 w-5 text-white" />
-                  </div>
-                  <span className="text-gray-900 dark:text-white">Your Objection Letter</span>
-                </CardTitle>
-                <p className="text-gray-600 dark:text-gray-400">
-                  Review and edit your formal objection letter. The letter cites specific constitutional violations and legal grounds.
-                </p>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700 rounded-lg p-4">
-                    <div className="flex items-center gap-2 text-amber-700 dark:text-amber-300 mb-2">
-                      <AlertTriangle className="h-4 w-4" />
-                      <span className="text-sm font-medium">Key Objections Covered</span>
-                    </div>
-                    <ul className="text-sm text-amber-700 dark:text-amber-300 space-y-1">
-                      <li>• VAT on essential goods (Art 43 violation)</li>
-                      <li>• Digital lending tax expansion (Art 27 violation)</li>
-                      <li>• Privacy rights erosion (Art 31 violation)</li>
-                    </ul>
-                  </div>
-                  
-                  <Textarea
-                    value={messageBody.replace(
-                      '[USER_NAME_PLACEHOLDER]',
-                      userName || '[Your Name Will Appear Here]'
-                    )}
-                    onChange={(e) => {
-                      const newValue = e.target.value.replace(
-                        userName || '[Your Name Will Appear Here]',
-                        '[USER_NAME_PLACEHOLDER]'
-                      );
-                      setMessageBody(newValue);
-                    }}
-                    rows={25}
-                    className="text-sm leading-relaxed font-mono resize-none border-2 focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                  />
-                </div>
-              </CardContent>
-            </Card>
-          </section>
-
-          <section id="send" className={`transition-all duration-700 ${
-            activeSection === 'send' ? 'relative z-30 scale-[1.02]' : 'relative z-20'
-          }`}>
-            <Card className="bg-gradient-to-r from-emerald-50 to-blue-50 dark:from-emerald-900/30 dark:to-blue-900/30 border-2 border-emerald-200 dark:border-emerald-700">
-              <CardContent className="pt-6">
-                <div className="text-center space-y-6">
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                      Ready to Submit Your Objection?
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-400">
-                      Clicking the button below will open your email app with everything pre-filled.
-                      Just review and hit send!
-                    </p>
-                  </div>
-
-                  <div className="bg-white dark:bg-gray-800 rounded-lg p-4 max-w-md mx-auto">
-                    <div className="space-y-2 text-sm">
-                      <div className="flex items-center justify-between">
-                        <span className="text-gray-700 dark:text-gray-300">Your Name:</span>
-                        <span
-                          className={
-                            userName.trim() ? "text-emerald-600 dark:text-emerald-400 font-medium" : "text-red-500 dark:text-red-400"
-                          }
-                        >
-                          {userName.trim() ? "✓ Provided" : "✗ Required"}
-                        </span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-gray-700 dark:text-gray-300">Recipients:</span>
-                        <span
-                          className={
-                            getSelectedRecipientEmails().length > 0
-                              ? "text-emerald-600 dark:text-emerald-400 font-medium"
-                              : "text-red-500 dark:text-red-400"
-                          }
-                        >
-                          {getSelectedRecipientEmails().length > 0
-                            ? `✓ ${getSelectedRecipientEmails().length} selected`
-                            : "✗ None selected"}
-                        </span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-gray-700 dark:text-gray-300">Letter:</span>
-                        <span className="text-emerald-600 dark:text-emerald-400 font-medium">✓ Ready</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <Button
-                    onClick={handleSendEmail}
-                    size="lg"
-                    className="bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 dark:from-emerald-500 dark:to-blue-500 dark:hover:from-emerald-600 dark:hover:to-blue-600 text-white px-4 sm:px-6 md:px-12 py-4 text-sm sm:text-base md:text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 w-full max-w-full"
-                  >
-                    <Send className="mr-2 sm:mr-3 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 flex-shrink-0" />
-                    <span className="truncate text-xs sm:text-sm md:text-base">Open Email & Send Objection</span>
-                  </Button>
-
-                  <p className="text-xs text-gray-500 dark:text-gray-400 max-w-md mx-auto">
-                    This will open your default email app (Gmail, Outlook, Apple Mail, etc.) with your objection letter ready to send to the National Assembly.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </section>
-        </div>
-
-        {/* Dock */}
-        <Dock
-          items={dockItems}
-          className="fixed bottom-4 left-1/2 transform -translate-x-1/2"
-          panelHeight={68}
-          magnification={70}
-          distance={200}
-        />
-
-        {/* Modals and Widgets */}
-        <SimpleTour
-          isActive={showTour}
-          onComplete={handleTourComplete}
-          onSkip={handleTourSkip}
-        />
-
-        <ScrollProgressTracker
-          activeSection={activeSection}
-          sections={sections}
-        />
-
-        <div className={`transition-all duration-500 ${activeSection === 'hero' ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
-          <BillsSidebar />
-        </div>
-
-        <InteractiveCountWidget />
-
-        <DonationWidget />
-
-        <EmergencyReportingSystem 
-          isOpen={isReportingOpen} 
-          onClose={() => setIsReportingOpen(false)} 
-        />
-
-        <OfflineRadioSystem
-          isOpen={isRadioOpen}
-          onClose={() => setIsRadioOpen(false)}
-        />
-
-        <BillsDockPopup 
-          isOpen={billsDockOpen}
-          onClose={() => setBillsDockOpen(false)}
-          originElement={billsDockOrigin}
-        />
-
+      {/* Bills FAB */}
+      <div className="fixed left-4 bottom-20 z-50">
         <BillsFAB />
       </div>
 
-      <footer className="bg-gray-900 dark:bg-gray-950 text-gray-200 dark:text-gray-300 py-8 text-xs text-center px-4 max-w-full overflow-x-hidden transition-colors duration-300">
-        <div className="max-w-6xl mx-auto">
-          <p className="break-words max-w-full">
-            <strong>
-              Published by{" "}
-              <a
-                href="https://ceka.lovable.app"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline text-emerald-400 dark:text-emerald-300 hover:text-emerald-300 dark:hover:text-emerald-200 break-words"
-              >
-                Civic Education Kenya App (CEKA). 
-              </a>
-            </strong>
-          </p>
-          <p className="break-words max-w-full">
-            CEKA provides this tool under the Constitution of Kenya 2010 (Art 33, Art 35, Art 118(1)). 
-            CEKA does not store, monitor, or share personal user data. 
-          </p>
-          <p className="break-words max-w-full">
-            We collect only anonymous, aggregate usage statistics (such as page views) to improve service delivery.
-          </p>
-          <p className="mt-2 italic break-words max-w-full">
-            By using this platform, you acknowledge that all content is user-generated. CEKA holds no liability for any outcomes arising from your objection email.
-          </p>
-          <div className="mt-4 flex flex-col sm:flex-row items-center justify-center gap-2 text-gray-400 dark:text-gray-500">
-            <Scale className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-400 dark:text-emerald-300 flex-shrink-0" />
-            <span className="text-center text-xs sm:text-sm break-words max-w-full">
-              Exercise your constitutional right to participate in legislative processes (Art 118(1)).
-            </span>
-          </div>
-        </div>
-      </footer>
+      {/* Modals and Widgets */}
+      <DonationWidget isVisible={showDonation} onTimedOut={() => setShowDonation(false)} />
+      
+      <EmergencyReportingSystem 
+        isOpen={showEmergencySystem} 
+        onClose={() => setShowEmergencySystem(false)} 
+      />
+      
+      <OfflineRadioSystem 
+        isOpen={showRadioSystem} 
+        onClose={() => setShowRadioSystem(false)} 
+      />
 
-      {/* Bottom Disclaimer */}
-      <div className="bg-gray-800 dark:bg-gray-950 border-t border-gray-700 dark:border-gray-800 text-gray-300 dark:text-gray-400 p-3 text-center text-xs font-medium transition-colors duration-300">
-        <p className="max-w-3xl mx-auto">
-          This platform operates under <strong>Art 33 (Freedom of Expression)</strong>, <strong>Art 35 (Access to Information)</strong>, and <strong>Art 118(1) (Public Participation)</strong> of the Constitution of Kenya 2010. 
-          No data is stored or shared. All emails are drafted locally on your device.
-        </p>
-      </div>
-    </>
+      <ScrollProgressTracker activeSection={sections[0]} sections={sections} />
+
+      <BillsSidebar isOpen={showBillsSidebar} onClose={() => setShowBillsSidebar(false)} />
+
+      {/* Toast Notifications */}
+      <AnimatePresence>
+        {toastMessage && (
+          <ToastNotification
+            message={toastMessage}
+            onClose={() => setToastMessage('')}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Tour System */}
+      <TourStarter />
+      <JoyrideTour />
+    </div>
   );
 };
 

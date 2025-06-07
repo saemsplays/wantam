@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Shield, Radio, FileText, Heart, Users, ArrowLeft } from 'lucide-react';
@@ -10,10 +9,10 @@ import Aurora from '../components/Aurora';
 import RotatingText from '../components/RotatingText';
 import { JoyrideTour } from '../components/JoyrideTour';
 import { FloatingActionButtons } from '../components/FloatingActionButtons';
-import { UserCountSidebar } from '../components/UserCountSidebar';
+import UserCountSidebar from '../components/UserCountSidebar';
 import { DarkModeToggle } from '../components/DarkModeToggle';
 import { ClearModeToggle, ClearMode } from '../components/ClearModeToggle';
-import { ShareButton } from '../components/ShareButton';
+import ShareButton from '../components/ShareButton';
 import { ScrollToTop } from '../components/ScrollToTop';
 import { TourStarter } from '../components/TourStarter';
 import { ScrollProgressTracker } from '../components/ScrollProgressTracker';
@@ -26,12 +25,19 @@ const BudgetBill2025: React.FC = () => {
   const [clearMode, setClearMode] = useState<ClearMode>('normal');
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isInFirstSection, setIsInFirstSection] = useState(true);
+  const [tourActive, setTourActive] = useState(false);
 
   const rotatingTexts = [
     "Object to the Budget Bill 2025",
     "Demand Fiscal Transparency",
     "Question Government Spending",
     "Protect Public Resources"
+  ];
+
+  const sections = [
+    { id: 'intro', label: 'Introduction' },
+    { id: 'content', label: 'Content' },
+    { id: 'action', label: 'Action' }
   ];
 
   // Handle scroll for opacity control
@@ -65,6 +71,10 @@ const BudgetBill2025: React.FC = () => {
   const getElementInteractivity = () => {
     if (isInFirstSection || clearMode === 'ultra-clear') return 'none';
     return 'auto';
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const dockItems = [
@@ -124,11 +134,17 @@ const BudgetBill2025: React.FC = () => {
         }}
         className="transition-opacity duration-500"
       >
-        <FloatingActionButtons />
+        <FloatingActionButtons 
+          onReportClick={() => setShowEmergencySystem(true)}
+          onSupportClick={() => setShowDonation(true)}
+          onMenuClick={() => {}}
+          onScrollToTop={scrollToTop}
+          onRadioClick={() => setShowRadioSystem(true)}
+        />
         <ShareButton />
         <ScrollToTop />
         <UserCountSidebar />
-        <ScrollProgressTracker />
+        <ScrollProgressTracker activeSection={sections[0]} sections={sections} />
       </div>
 
       {/* First Section */}
@@ -257,8 +273,12 @@ const BudgetBill2025: React.FC = () => {
       />
 
       {/* Tour System */}
-      <TourStarter />
-      <JoyrideTour />
+      <TourStarter onStartTour={() => setTourActive(true)} />
+      <JoyrideTour 
+        isActive={tourActive} 
+        onComplete={() => setTourActive(false)}
+        onSkip={() => setTourActive(false)}
+      />
     </div>
   );
 };
