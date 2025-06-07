@@ -409,7 +409,11 @@ const handleCloseDonationWidget = () => {
         isReportOpen={isReportingOpen}
       />
 
-      <BillsFAB />
+      <BillsFAB 
+        isOpen={billsDockOpen}
+        onClose={() => setBillsDockOpen(false)}
+        originElement={billsDockOrigin}
+      />
 
       <section className="h-screen relative overflow-hidden">
         <Aurora
