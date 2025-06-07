@@ -35,8 +35,6 @@ const Index = () => {
     financeCommittee: true
   });
 
-  const [isDonationWidgetVisible, setIsDonationWidgetVisible] = useState(false);
-
   const [subject, setSubject] = useState(
     'RE: MEMORANDUM OF OBJECTION TO THE FINANCE BILL 2025 (NATIONAL ASSEMBLY BILLS NO. 19 OF 2025)'
   );
@@ -77,6 +75,7 @@ Citizen of Kenya`);
   const [userCount, setUserCount] = useState({ viewers: 0, emailsSent: 0 });
   const [showFullCount, setShowFullCount] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
+  const [isDonationWidgetVisible, setIsDonationWidgetVisible] = useState(false);
   
   // Tour state
   const [showTour, setShowTour] = useState(false);
@@ -278,8 +277,13 @@ Citizen of Kenya`);
     }
   };
 
-  // Add this new handler specifically for the dock
-const handleDockSupportClick = () => {
+  const handleDockSupportClick = () => {
+  // First, trigger the existing donation button click
+  const donationButton = document.querySelector('[data-donation-trigger]') as HTMLElement;
+  if (donationButton) {
+    donationButton.click();
+  }
+  // Then also show your custom donation widget
   setIsDonationWidgetVisible(true);
 };
 
