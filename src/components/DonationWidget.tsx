@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Heart, X, Gift, Copy, ExternalLink } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -29,9 +28,14 @@ const MAX_WIDGET_DISPLAY_TIME = 5 * 60 * 1000;
 interface DonationWidgetProps {
   onTimedOut?: () => void;
   isVisible?: boolean;
+  onClose?: () => void; // New prop for external close handling
 }
 
-const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: controlledVisibility }) => {
+const DonationWidget: React.FC<DonationWidgetProps> = ({ 
+  onTimedOut, 
+  isVisible: controlledVisibility, 
+  onClose 
+}) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
@@ -57,6 +61,9 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
 
   // Handle opacity changes based on hover
   useEffect(() => {
+    // Skip opacity management when controlled externally
+    if (controlledVisibility !== undefined) return;
+
     if (isHovering || isExpanded) {
       setOpacity(1);
       if (opacityTimerRef.current) {
@@ -75,7 +82,7 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
         clearTimeout(opacityTimerRef.current);
       }
     };
-  }, [isHovering, isExpanded]);
+  }, [isHovering, isExpanded, controlledVisibility]);
 
   const handleMouseEnter = () => {
     if (!isExpanded) {
@@ -93,9 +100,18 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
   useEffect(() => {
     if (controlledVisibility !== undefined) {
       setIsVisible(controlledVisibility);
+      // When controlled externally, start expanded if visible
+      if (controlledVisibility) {
+        setIsExpanded(true);
+        setOpacity(1);
+      } else {
+        setIsExpanded(false);
+        setHasTimedOut(false);
+      }
       return;
     }
 
+    // Original automatic behavior when not controlled
     visibilityTimerRef.current = setTimeout(() => {
       setIsVisible(true);
     }, 5000);
@@ -117,6 +133,11 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
 
   const handleCollapse = () => {
     setIsExpanded(false);
+    
+    // If controlled externally, call onClose to hide the widget
+    if (controlledVisibility !== undefined && onClose) {
+      onClose();
+    }
   };
 
   const handleMpesa = () => {
