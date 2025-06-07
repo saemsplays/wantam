@@ -25,7 +25,7 @@ import { FloatingActionButtons } from '../components/FloatingActionButtons';
 import { DarkModeToggle } from '../components/DarkModeToggle';
 import { OfflineRadioSystem } from '../components/OfflineRadioSystem';
 import { ShareButton } from '../components/ShareButton';
-import { BillsDockPopup } from './components/BillsDockPopup';
+import { BillsDockPopup } from '../components/BillsDockPopup';
 import { Home as HomeIcon, Archive as ArchiveIcon, Settings as SettingsIcon, HelpCircle as HelpCircleIcon, Lightbulb as LightbulbIcon, Heart as HeartIcon, Flag as FlagIcon, ExternalLink as ExternalLinkIcon, Radio as RadioIcon, FileText as FileTextIcon, Users as UsersIcon } from "lucide-react";
 
 const Index = () => {
@@ -409,11 +409,7 @@ const handleCloseDonationWidget = () => {
         isReportOpen={isReportingOpen}
       />
 
-      <BillsFAB 
-        isOpen={billsDockOpen}
-        onClose={() => setBillsDockOpen(false)}
-        originElement={billsDockOrigin}
-      />
+      <BillsFAB />
 
       <section className="h-screen relative overflow-hidden">
         <Aurora
