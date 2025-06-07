@@ -1040,58 +1040,16 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: { isOpen: boolean; onClos
 
   return (
     <>
-    {/* Backdrop */}
-    <div 
-      className="fixed inset-0 bg-black bg-opacity-40 z-40 transition-opacity duration-500 ease-out"
-      onClick={onClose}
-      style={{ opacity }}
-    />
-
-    {/* Sliding Panel with floating animation styles */}
-    <div
-      data-donation-trigger
-      className={`fixed transition-all duration-500 ease-out z-50 ${
-        isExpanded
-          ? 'right-1/2 top-1/2 transform translate-x-1/2 -translate-y-1/2 w-96 h-auto max-h-[90vh]'
-          : 'bottom-32 right-8 transform -translate-y-[6px] w-48 h-12'
-      } bg-white dark:bg-gray-900 shadow-2xl overflow-hidden rounded-xl`}
-      style={{ zIndex: 999, opacity }}
-    >
-      {!isExpanded ? (
-        <div
-          className="relative group cursor-pointer w-full h-full flex items-center px-4"
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          onClick={handleExpand}
-        >
-          <div 
-            className={`absolute right-12 top-0 h-12 flex items-center transition-all duration-500 ease-out ${
-              isHovering 
-                ? 'opacity-100 translate-x-0' 
-                : 'opacity-0 translate-x-4 pointer-events-none'
-            }`}
-          >
-            <div 
-              className={`absolute inset-0 rounded-full transition-all duration-500 ease-out ${
-                isHovering 
-                  ? 'bg-black/20 backdrop-blur-sm scale-100' 
-                  : 'bg-black/0 backdrop-blur-none scale-75'
-              }`} 
-            />
-            <span className="relative z-10 text-white text-sm font-medium px-4 py-2">Open Panel</span>
-          </div>
-
-          <button className="relative z-10 w-full h-full bg-blue-600 hover:bg-blue-700 text-white rounded-full transition-colors">
-            Donate
-          </button>
-        </div>
-      ) : (
-        <div className="overflow-y-auto p-6 h-full">
+      <div 
+        className="fixed inset-0 bg-black bg-opacity-40 z-40"
+        onClick={onClose}
+      />
+      <div className="fixed right-0 top-0 h-full w-96 bg-white dark:bg-gray-900 shadow-2xl z-50 overflow-hidden">
+        <div className="h-full overflow-y-auto p-6">
           {content}
         </div>
-      )}
-    </div>
-  </>
+      </div>
+    </>
   );
 };
 
