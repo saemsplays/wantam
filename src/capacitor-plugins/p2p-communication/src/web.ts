@@ -62,7 +62,7 @@ export class P2pCommunicationWeb extends WebPlugin implements P2pCommunicationPl
     return { success: true };
   }
 
-  async addListener(
+    async addListener(
     eventName: string,
     listenerFunc: (data: any) => void
   ): Promise<PluginListenerHandle> {
