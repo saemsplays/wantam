@@ -20,7 +20,7 @@ import Aurora from '../components/Aurora';
 import RotatingText from '../components/RotatingText';
 import SplashScreen from '../components/SplashScreen';
 import EmergencyReportingSystem from '../components/EmergencyReportingSystem';
-import BillsFAB from '../components/BillsFAB';
+import { BillsFAB } from '../components/BillsFAB';
 import { ScrollToTop } from '../components/ScrollToTop';
 import { FloatingActionButtons } from '../components/FloatingActionButtons';
 import { DarkModeToggle } from '../components/DarkModeToggle';
@@ -28,7 +28,7 @@ import { OfflineRadioSystem } from '../components/OfflineRadioSystem';
 import ShareButton from '../components/ShareButton';
 import { BillsDockPopup } from '../components/BillsDockPopup';
 import { ClearModeToggle, ClearMode } from '../components/ClearModeToggle'; // Added ClearModeToggle
-import { UserCountSidebar } from '../components/UserCountSidebar'; // Added UserCountSidebar
+import UserCountSidebar from '../components/UserCountSidebar'; // Added UserCountSidebar
 
 const Index = () => {
   const [showSplash, setShowSplash] = useState(true); // Added splash screen state
