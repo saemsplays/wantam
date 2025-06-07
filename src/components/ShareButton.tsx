@@ -22,22 +22,50 @@ const ShareButton: React.FC = () => {
 
   const shareOptions = [
     {
-      icon: MessageCircle,
-      label: 'WhatsApp',
-      action: () => window.open(`https://wa.me/?text=${encodeURIComponent(shareText + ' ' + currentUrl)}`, '_blank'),
-      color: 'bg-green-500 hover:bg-green-600'
+      name: 'Instagram',
+      icon: Instagram,
+      color: 'bg-gradient-to-r from-red-600 to-green-600',
+      message: '🚨 Your constitutional rights matter! Join the Finance Bill objection movement. Exercise your Article 118(1) rights for public participation. #RejectFinanceBill2025 #CEKA',
+      action: () => {
+        navigator.clipboard.writeText('🚨 Your constitutional rights matter! Join the Finance Bill objection movement. Exercise your Article 118(1) rights for public participation. #RejectFinanceBill2025 #CEKA\n\nrejectfinancebill2025.lovable.app');
+        alert('Text copied! Open Instagram and paste in your story or post.');
+      }
     },
     {
-      icon: Mail,
-      label: 'Email',
-      action: () => window.open(`mailto:?subject=${encodeURIComponent(shareText)}&body=${encodeURIComponent(shareText + '\n\n' + currentUrl)}`, '_blank'),
-      color: 'bg-blue-500 hover:bg-blue-600'
+      name: 'X (Twitter)',
+      icon: Twitter,
+      color: 'bg-gradient-to-r from-black to-red-600',
+      message: 'Hi #KOT #KenyansOnTwitter. You\'ve got to see this app #RFB254 by #CEKA. They\'ve really outdone themselves with this one! #RejectFinanceBill2025 #CivicEducationKenya',
+      action: () => {
+        const text = encodeURIComponent('🚨 Your constitutional rights matter! Join the Finance Bill objection movement. Exercise your Article 118(1) rights for public participation. #RejectFinanceBill2025 #CEKA');
+        const url = encodeURIComponent('https://rejectfinancebill2025.lovable.app');
+        window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
+      }
     },
     {
-      icon: copied ? Check : Copy,
-      label: copied ? 'Copied!' : 'Copy Link',
-      action: copyToClipboard,
-      color: copied ? 'bg-green-500' : 'bg-gray-500 hover:bg-gray-600'
+      name: 'TikTok',
+      icon: () => (
+        <img 
+          src="/lovable-uploads/2cc19d59-6197-421d-a11f-b1e74b3072e4.png" 
+          alt="TikTok" 
+          className="w-5 h-5"
+        />
+      ),
+      color: 'bg-gradient-to-r from-green-600 to-black',
+      message: '💪 Exercise your constitutional rights! Join the Finance Bill resistance. Your voice matters in democracy! #RejectFinanceBill2025 #CEKA #ConstitutionalRights',
+      action: () => {
+        navigator.clipboard.writeText('💪 Exercise your constitutional rights! Join the Finance Bill resistance. Your voice matters in democracy! #RejectFinanceBill2025 #CEKA #ConstitutionalRights\n\nrejectfinancebill2025.lovable.app');
+        alert('Text copied! Open TikTok and paste in your video description.');
+      }
+    },
+    {
+      name: 'Follow CEKA',
+      icon: ExternalLink,
+      color: 'bg-gradient-to-r from-emerald-600 to-blue-600',
+      message: 'Follow us for updates',
+      action: () => {
+        window.open('https://linktr.ee/civiceducationke', '_blank');
+      }
     }
   ];
 
