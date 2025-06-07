@@ -834,6 +834,19 @@ const EmergencyReportingSystem: React.FC<EmergencyReportingSystemProps> = ({
   };
 
   if (!isOpen) {
+    const handleOpenClick = () => {
+      setCurrentSection('main');
+      setIsPrivacyMode(false);
+      setIsMobileMenuOpen(false);
+      setCurrentCategory('');
+      setCopiedItems({});
+      setSearchTerm('');
+      setDebouncedTerm('');
+      setFilteredResources({});
+      setNoSearchResults(false);
+      // Note: We don't call onClose() here since we want to open, not close
+    };
+
     return (
       <div className={`fixed z-50 ${
         dockPosition === 'top' ? 'top-4 right-4' : 
@@ -842,7 +855,7 @@ const EmergencyReportingSystem: React.FC<EmergencyReportingSystemProps> = ({
         'bottom-4 right-4'
       }`}>
         <button
-          onClick={() => setCurrentSection('main') || onClose() || setIsPrivacyMode(false) || setIsMobileMenuOpen(false) || setCurrentCategory('') || setCopiedItems({}) || setSearchTerm('') || setDebouncedTerm('') || setFilteredResources({}) || setNoSearchResults(false) || setIsOpen(true)}
+          onClick={handleOpenClick}
           className="bg-red-600 hover:bg-red-700 text-white p-4 rounded-full shadow-lg transition-all hover:scale-105 animate-pulse"
           title="Emergency Reporting Hub"
           style={{ boxShadow: '0 4px 14px rgba(220, 38, 38, 0.5)' }}
