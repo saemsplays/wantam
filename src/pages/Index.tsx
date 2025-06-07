@@ -2,39 +2,37 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Shield, Radio, FileText, Heart, Users } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import Dock from '../components/Dock';
+import DonationWidget from '../components/DonationWidget';
+import EmergencyReportingSystem from '../components/EmergencyReportingSystem';
 import Aurora from '../components/Aurora';
 import RotatingText from '../components/RotatingText';
 import { JoyrideTour } from '../components/JoyrideTour';
 import { FloatingActionButtons } from '../components/FloatingActionButtons';
-import { OfflineRadioSystem } from '../components/OfflineRadioSystem';
-import EmergencyReportingSystem from '../components/EmergencyReportingSystem';
-import DonationWidget from '../components/DonationWidget';
-import { TourStarter } from '../components/TourStarter';
-import { BillsDockPopup } from '../components/BillsDockPopup';
-import { ClearModeToggle, ClearMode } from '../components/ClearModeToggle';
-import UserCountSidebar from '../components/UserCountSidebar';
-import { BillsFAB } from '../components/BillsFAB';
-import ShareButton from '../components/ShareButton';
-import { ScrollToTop } from '../components/ScrollToTop';
+import { UserCountSidebar } from '../components/UserCountSidebar';
 import { DarkModeToggle } from '../components/DarkModeToggle';
+import { ClearModeToggle, ClearMode } from '../components/ClearModeToggle';
+import { ShareButton } from '../components/ShareButton';
+import { ScrollToTop } from '../components/ScrollToTop';
+import { TourStarter } from '../components/TourStarter';
 import { ScrollProgressTracker } from '../components/ScrollProgressTracker';
-import Dock from '../components/Dock';
+import { OfflineRadioSystem } from '../components/OfflineRadioSystem';
+import { SplashScreen } from '../components/SplashScreen';
 
 const Index: React.FC = () => {
+  const [showSplash, setShowSplash] = useState(true);
   const [showDonation, setShowDonation] = useState(false);
   const [showEmergencySystem, setShowEmergencySystem] = useState(false);
   const [showRadioSystem, setShowRadioSystem] = useState(false);
-  const [showBillsPopup, setShowBillsPopup] = useState(false);
   const [clearMode, setClearMode] = useState<ClearMode>('normal');
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isInFirstSection, setIsInFirstSection] = useState(true);
 
   const rotatingTexts = [
     "Object to the Finance Bill 2025",
-    "Defend the Constitution",
-    "Protect Kenyan Rights",
-    "Demand Civic Education"
+    "Protect Your Rights",
+    "Make Your Voice Heard",
+    "Stand for Justice"
   ];
 
   // Handle scroll for opacity control
@@ -54,9 +52,9 @@ const Index: React.FC = () => {
 
   // Calculate opacity based on clear mode and scroll position
   const getElementOpacity = () => {
-    if (isInFirstSection) return 0;
+    if (isInFirstSection) return 0; // Ultra clear in first section
     
-    const baseOpacity = Math.min(scrollProgress * 2, 1);
+    const baseOpacity = Math.min(scrollProgress * 2, 1); // Gradual increase
     
     switch (clearMode) {
       case 'clear': return baseOpacity * 0.1;
@@ -74,7 +72,7 @@ const Index: React.FC = () => {
     {
       icon: <FileText className="h-6 w-6" />,
       label: "Bills",
-      onClick: () => setShowBillsPopup(true),
+      onClick: () => {},
       className: "dock-item-bills"
     },
     {
@@ -104,146 +102,144 @@ const Index: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 relative overflow-hidden">
-      <Aurora />
+    <>
+      <SplashScreen isVisible={showSplash} onComplete={() => setShowSplash(false)} />
       
-      {/* Fixed Controls */}
-      <DarkModeToggle />
-      <ClearModeToggle currentMode={clearMode} onModeChange={setClearMode} />
-      
-      {/* Back to Bill Menu */}
-      <BillsFAB />
-
-      {/* Floating Elements with opacity control */}
-      <div 
-        style={{ 
-          opacity: getElementOpacity(),
-          pointerEvents: getElementInteractivity()
-        }}
-        className="transition-opacity duration-500"
-      >
-        <FloatingActionButtons 
-          onReportClick={() => setShowEmergencySystem(true)}
-          onSupportClick={() => setShowDonation(true)}
-          onMenuClick={() => {}}
-          onScrollToTop={() => window.scrollTo(0, 0)}
-        />
-        <ShareButton />
-        <ScrollToTop />
-        <UserCountSidebar />
-      </div>
-
-      {/* First Section */}
-      <section className="min-h-screen flex items-center justify-center relative">
-        <div className="text-center px-4 max-w-4xl mx-auto">
-          <RotatingText texts={rotatingTexts} />
-        </div>
-      </section>
-
-      {/* Main Content */}
-      <section className="min-h-screen py-20 px-4 max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 relative overflow-hidden">
+        <Aurora />
+        
+        {/* Fixed Controls */}
+        <DarkModeToggle />
+        <ClearModeToggle currentMode={clearMode} onModeChange={setClearMode} />
+        
+        {/* Floating Elements with opacity control */}
+        <div 
+          style={{ 
+            opacity: getElementOpacity(),
+            pointerEvents: getElementInteractivity()
+          }}
+          className="transition-opacity duration-500"
         >
-          <h2 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
-            Object to the Finance Bill 2025
-          </h2>
-          <p className="text-xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            The Finance Bill 2025 introduces punitive tax measures that will further burden ordinary Kenyans while failing to address tax avoidance by the wealthy. Stand up for fair taxation.
-          </p>
-        </motion.div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          {[
-            {
-              title: "Increased Taxes",
-              description: "The bill proposes increases in various taxes, including VAT and income tax.",
-              impact: "Higher cost of living for ordinary citizens"
-            },
-            {
-              title: "Fuel Levy Hike",
-              description: "A significant increase in the fuel levy, impacting transportation and energy costs.",
-              impact: "Increased transportation costs and inflation"
-            },
-            {
-              title: "Housing Fund Contribution",
-              description: "Mandatory contributions to the National Housing Development Fund.",
-              impact: "Reduced disposable income for workers"
-            },
-            {
-              title: "Digital Service Tax",
-              description: "Taxation of digital services, potentially affecting access to online platforms.",
-              impact: "Increased costs for digital services"
-            },
-            {
-              title: "Healthcare Levy",
-              description: "New healthcare levy, adding to the financial burden on citizens.",
-              impact: "Increased healthcare costs for households"
-            },
-            {
-              title: "Excise Duty Expansion",
-              description: "Expansion of excise duties to cover more goods and services.",
-              impact: "Higher prices for consumer goods"
-            }
-          ].map((issue, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
-            >
-              <h3 className="text-xl font-bold mb-3 text-red-600 dark:text-red-400">{issue.title}</h3>
-              <p className="text-gray-700 dark:text-gray-300 mb-4">{issue.description}</p>
-              <div className="bg-red-50 dark:bg-red-900/20 p-3 rounded-lg">
-                <p className="text-sm font-medium text-red-800 dark:text-red-200">
-                  <strong>Impact:</strong> {issue.impact}
-                </p>
-              </div>
-            </motion.div>
-          ))}
+          <FloatingActionButtons />
+          <ShareButton />
+          <ScrollToTop />
+          <UserCountSidebar />
+          <ScrollProgressTracker />
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center bg-gradient-to-r from-red-600 to-orange-600 rounded-xl p-8 text-white"
-        >
-          <h3 className="text-3xl font-bold mb-4">Take Action Against Unfair Taxation</h3>
-          <p className="text-xl mb-6 text-red-100">
-            The Finance Bill 2025 will disproportionately affect low-income Kenyans. We must stand together to demand a fairer tax system.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/emergency"
-              className="bg-white text-red-600 px-8 py-3 rounded-lg font-semibold hover:bg-red-50 transition-colors"
-            >
-              Report Concerns
-            </Link>
-            <button className="bg-red-800 text-white px-8 py-3 rounded-lg font-semibold hover:bg-red-900 transition-colors">
-              Share This Message
-            </button>
+        {/* First Section - Always Ultra Clear */}
+        <section className="min-h-screen flex items-center justify-center relative">
+          <div className="text-center px-4 max-w-4xl mx-auto">
+            <RotatingText texts={rotatingTexts} />
           </div>
-        </motion.div>
-      </section>
+        </section>
 
-      <BillsDockPopup isOpen={showBillsPopup} onClose={() => setShowBillsPopup(false)} originElement={null} />
+        {/* Main Content */}
+        <section className="min-h-screen py-20 px-4 max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
+              Object to the Finance Bill 2025
+            </h2>
+            <p className="text-xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+              The Finance Bill 2025 threatens to burden Kenyan citizens with excessive taxation while failing to address fundamental economic challenges. Join us in demanding accountability and fiscal responsibility.
+            </p>
+          </motion.div>
 
-      <Dock
-        items={dockItems}
-        className="fixed bottom-4 left-1/2 transform -translate-x-1/2"
-        panelHeight={68}
-        magnification={70}
-        distance={200}
-      />
+          {/* Key Issues Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+            {[
+              {
+                title: "Housing Levy Increase",
+                description: "Mandatory deductions that burden low-income workers without guaranteed housing benefits.",
+                impact: "Reduces take-home pay for struggling families"
+              },
+              {
+                title: "VAT on Essential Services",
+                description: "New taxes on basic services including mobile money transfers and digital services.",
+                impact: "Makes everyday transactions more expensive"
+              },
+              {
+                title: "Fuel Tax Hikes",
+                description: "Additional levies on petroleum products affecting transportation and goods prices.",
+                impact: "Increases cost of living across all sectors"
+              },
+              {
+                title: "Digital Service Tax",
+                description: "New taxes on digital platforms and online services.",
+                impact: "Stifles innovation and digital economy growth"
+              },
+              {
+                title: "Import Duty Changes",
+                description: "Increased tariffs on essential goods and raw materials.",
+                impact: "Makes imported goods and local production more expensive"
+              },
+              {
+                title: "Tax Administration Powers",
+                description: "Expanded KRA powers with limited taxpayer protections.",
+                impact: "Reduces due process and taxpayer rights"
+              }
+            ].map((issue, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+              >
+                <h3 className="text-xl font-bold mb-3 text-red-600 dark:text-red-400">{issue.title}</h3>
+                <p className="text-gray-700 dark:text-gray-300 mb-4">{issue.description}</p>
+                <div className="bg-red-50 dark:bg-red-900/20 p-3 rounded-lg">
+                  <p className="text-sm font-medium text-red-800 dark:text-red-200">
+                    <strong>Impact:</strong> {issue.impact}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
 
+          {/* Call to Action */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center bg-gradient-to-r from-red-600 to-orange-600 rounded-xl p-8 text-white"
+          >
+            <h3 className="text-3xl font-bold mb-4">Take Action Now</h3>
+            <p className="text-xl mb-6 text-red-100">
+              Your voice matters. Join thousands of Kenyans demanding better fiscal policies.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button 
+                onClick={() => setShowEmergencySystem(true)}
+                className="bg-white text-red-600 px-8 py-3 rounded-lg font-semibold hover:bg-red-50 transition-colors"
+              >
+                Report Issues
+              </button>
+              <button className="bg-red-800 text-white px-8 py-3 rounded-lg font-semibold hover:bg-red-900 transition-colors">
+                Share This Message
+              </button>
+            </div>
+          </motion.div>
+        </section>
+
+        {/* Dock */}
+        <Dock
+          items={dockItems}
+          className="fixed bottom-4 left-1/2 transform -translate-x-1/2"
+          panelHeight={68}
+          magnification={70}
+          distance={200}
+        />
+
+        {/* Modals and Widgets */}
         <DonationWidget isVisible={showDonation} onTimedOut={() => setShowDonation(false)} />
         
         <EmergencyReportingSystem 
@@ -256,18 +252,11 @@ const Index: React.FC = () => {
           onClose={() => setShowRadioSystem(false)} 
         />
 
-        <ScrollProgressTracker 
-          activeSection="hero" 
-          sections={["hero", "about", "action"]} 
-        />
-
-      <TourStarter onStartTour={() => {}} />
-      <JoyrideTour 
-        isActive={false}
-        onComplete={() => {}}
-        onSkip={() => {}}
-      />
-    </div>
+        {/* Tour System */}
+        <TourStarter />
+        <JoyrideTour />
+      </div>
+    </>
   );
 };
 

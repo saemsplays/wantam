@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Shield, Radio, FileText, Heart, Users, ArrowLeft } from 'lucide-react';
@@ -10,10 +9,10 @@ import Aurora from '../components/Aurora';
 import RotatingText from '../components/RotatingText';
 import { JoyrideTour } from '../components/JoyrideTour';
 import { FloatingActionButtons } from '../components/FloatingActionButtons';
-import UserCountSidebar from '../components/UserCountSidebar';
+import { UserCountSidebar } from '../components/UserCountSidebar';
 import { DarkModeToggle } from '../components/DarkModeToggle';
 import { ClearModeToggle, ClearMode } from '../components/ClearModeToggle';
-import ShareButton from '../components/ShareButton';
+import { ShareButton } from '../components/ShareButton';
 import { ScrollToTop } from '../components/ScrollToTop';
 import { TourStarter } from '../components/TourStarter';
 import { ScrollProgressTracker } from '../components/ScrollProgressTracker';
@@ -124,19 +123,11 @@ const TaxBill2025: React.FC = () => {
         }}
         className="transition-opacity duration-500"
       >
-        <FloatingActionButtons 
-          onReportClick={() => setShowEmergencySystem(true)}
-          onSupportClick={() => setShowDonation(true)}
-          onMenuClick={() => {}}
-          onScrollToTop={() => window.scrollTo(0, 0)}
-        />
+        <FloatingActionButtons />
         <ShareButton />
         <ScrollToTop />
         <UserCountSidebar />
-        <ScrollProgressTracker 
-          activeSection="hero" 
-          sections={["hero", "about", "action"]} 
-        />
+        <ScrollProgressTracker />
       </div>
 
       {/* First Section */}
@@ -265,12 +256,8 @@ const TaxBill2025: React.FC = () => {
       />
 
       {/* Tour System */}
-      <TourStarter onStartTour={() => {}} />
-      <JoyrideTour 
-        isActive={false}
-        onComplete={() => {}}
-        onSkip={() => {}}
-      />
+      <TourStarter />
+      <JoyrideTour />
     </div>
   );
 };

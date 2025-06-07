@@ -79,11 +79,7 @@ export const BillsFAB: React.FC = () => {
         </AnimatePresence>
       </div>
 
-      {showSidebar && (
-        <BillsSidebar onClose={() => setShowSidebar(false)} />
-      )}
+      <BillsSidebar isOpen={showSidebar} onClose={() => setShowSidebar(false)} />
     </>
   );
 };
-
-export default BillsFAB;

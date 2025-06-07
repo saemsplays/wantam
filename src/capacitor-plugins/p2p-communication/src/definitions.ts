@@ -1,6 +1,5 @@
 
 import type { PluginListenerHandle } from '@capacitor/core';
-
 export interface P2pCommunicationPlugin {
   /**
    * Initialize the P2P communication system
@@ -55,6 +54,7 @@ export interface P2pCommunicationPlugin {
   /**
    * Add listeners for P2P events
    */
+  // Update listener signatures to match Capacitor's pattern
   addListener(
     eventName: 'peerDiscovered',
     listenerFunc: (event: { peer: P2pPeer }) => void
@@ -75,6 +75,10 @@ export interface P2pCommunicationPlugin {
   removeAllListeners(): Promise<void>;
 }
 
+export interface PluginListenerHandle {
+   remove: () => Promise<void>;
+}
+
 export interface P2pPeer {
   id: string;
   name: string;
@@ -90,4 +94,8 @@ export interface P2pMessage {
   content: string;
   timestamp: number;
   messageType: 'text' | 'voice' | 'file';
+}
+
+export interface PluginListenerHandle {
+  remove: () => Promise<void>;
 }
