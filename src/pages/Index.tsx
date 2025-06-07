@@ -277,15 +277,7 @@ Citizen of Kenya`);
     }
   };
 
-  const handleDockSupportClick = () => {
-  // First, trigger the existing donation button click
-  const donationButton = document.querySelector('[data-donation-trigger]') as HTMLElement;
-  if (donationButton) {
-    donationButton.click();
-  }
-  // Then also show your custom donation widget
-  setIsDonationWidgetVisible(true);
-};
+  const handleDockSupportClick = handleSupportClick;
 
 // Add the close handler
 const handleCloseDonationWidget = () => {
