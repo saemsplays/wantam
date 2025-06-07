@@ -287,6 +287,12 @@ Citizen of Kenya`);
     setIsRadioOpen(true);
   };
 
+  const handleBillsClick = () => {
+    // Use the same navigation as BillsFAB
+    setBillsDockOrigin(document.activeElement as HTMLElement);
+    setBillsDockOpen(true);
+  };
+
   const totalUsers = userCount.viewers + userCount.emailsSent;
   const shouldShowCounter = totalUsers >= 1000;
   
@@ -306,44 +312,39 @@ Citizen of Kenya`);
   }, []);
 
   const dockItems = [
-  { 
-    icon: <FileTextIcon size={18} />, 
-    label: 'Bills', 
-    // Remove event parameter from the function
-    onClick: () => {
-      // Use document.activeElement to get the current target
-      setBillsDockOrigin(document.activeElement as HTMLElement);
-      setBillsDockOpen(true);
-    }
-  },
-  { 
-    icon: <RadioIcon size={18} />, 
-    label: 'Radio', 
-    onClick: () => {
-      setIsRadioOpen(true);
-    }
-  },
-  { 
-    icon: <HeartIcon size={18} />, 
-    label: 'Support', 
-    onClick: handleSupportClick
-  },
-  { 
-    icon: <FlagIcon size={18} />, 
-    label: 'Report', 
-    onClick: handleReportClick
-  },
-  { 
-    icon: <UsersIcon size={18} />, 
-    label: 'CEKA', 
-    onClick: () => {
-      const confirmed = confirm('You are about to visit the main CEKA platform. Would you like to proceed?');
-      if (confirmed) {
-        window.open('https://ceka.lovable.app', '_blank');
+    { 
+      icon: <FileTextIcon size={18} />, 
+      label: 'Bills', 
+      onClick: handleBillsClick // Updated to use unified Bills navigation
+    },
+    { 
+      icon: <RadioIcon size={18} />, 
+      label: 'Radio', 
+      onClick: () => {
+        setIsRadioOpen(true);
       }
-    }
-  },
-];
+    },
+    { 
+      icon: <HeartIcon size={18} />, 
+      label: 'Support', 
+      onClick: handleSupportClick // Updated to properly trigger donation widget
+    },
+    { 
+      icon: <FlagIcon size={18} />, 
+      label: 'Report', 
+      onClick: handleReportClick
+    },
+    { 
+      icon: <UsersIcon size={18} />, 
+      label: 'CEKA', 
+      onClick: () => {
+        const confirmed = confirm('You are about to visit the main CEKA platform. Would you like to proceed?');
+        if (confirmed) {
+          window.open('https://ceka.lovable.app', '_blank');
+        }
+      }
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">

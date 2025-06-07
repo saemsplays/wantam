@@ -27,7 +27,7 @@ const BillsFAB = () => {
   };
 
   return (
-    <div className="fixed left-4 bottom-36 z-40">
+    <div className="fixed left-4 bottom-36 z-50">
       <AnimatePresence>
         {isExpanded && (
           <motion.div
@@ -60,7 +60,8 @@ const BillsFAB = () => {
 
       <motion.button
         onClick={() => setIsExpanded(!isExpanded)}
-        className={`w-12 h-12 ${getCurrentBill().color} text-white rounded-full shadow-lg hover:shadow-xl transition-all transform hover:scale-110 flex items-center justify-center`}
+        className={`w-12 h-12 ${getCurrentBill().color} text-white rounded-full shadow-lg hover:shadow-xl transition-all transform flex items-center justify-center ${!isExpanded ? 'opacity-70 hover:opacity-100' : 'opacity-100'}`}
+        whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
       >
         <motion.div
