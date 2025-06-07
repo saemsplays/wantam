@@ -792,61 +792,61 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
                 <Button
                   variant="outline"
                   onClick={() => setCurrentSection('emergency-support')}
-                  className="p-4 h-auto bg-red-50 border-red-200 hover:bg-red-100 text-left flex flex-col items-start"
+                  className="p-4 h-auto bg-red-50 border-red-200 hover:bg-red-100 text-left flex flex-col items-start overflow-hidden rounded-xl"
                 >
                   <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center mb-2">
                     <Zap className="w-4 h-4 text-red-600" />
                   </div>
-                  <div className="text-sm font-bold text-red-800">Emergency</div>
-                  <div className="text-xs text-red-600 mt-1">Immediate danger & crisis support</div>
+                  <div className="text-sm font-bold text-red-800 break-words">Emergency</div>
+                  <div className="text-xs text-red-600 mt-1 break-words">Immediate danger & crisis support</div>
                 </Button>
 
                 <Button
                   variant="outline"
                   onClick={() => setCurrentSection('local-ngos')}
-                  className="p-4 h-auto bg-blue-50 border-blue-200 hover:bg-blue-100 text-left flex flex-col items-start"
+                  className="p-4 h-auto bg-blue-50 border-blue-200 hover:bg-blue-100 text-left flex flex-col items-start overflow-hidden rounded-xl"
                 >
                   <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mb-2">
                     <MapPin className="w-4 h-4 text-blue-600" />
                   </div>
-                  <div className="text-sm font-bold text-blue-800">Local NGOs</div>
-                  <div className="text-xs text-blue-600 mt-1">Kenyan human rights organizations</div>
+                  <div className="text-sm font-bold text-blue-800 break-words">Local NGOs</div>
+                  <div className="text-xs text-blue-600 mt-1 break-words">Kenyan human rights organizations</div>
                 </Button>
 
                 <Button
                   variant="outline"
                   onClick={() => setCurrentSection('international-orgs')}
-                  className="p-4 h-auto bg-purple-50 border-purple-200 hover:bg-purple-100 text-left flex flex-col items-start"
+                  className="p-4 h-auto bg-purple-50 border-purple-200 hover:bg-purple-100 text-left flex flex-col items-start overflow-hidden rounded-xl"
                 >
                   <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mb-2">
                     <Globe className="w-4 h-4 text-purple-600" />
                   </div>
-                  <div className="text-sm font-bold text-purple-800">International</div>
-                  <div className="text-xs text-purple-600 mt-1">UN bodies & global organizations</div>
+                  <div className="text-sm font-bold text-purple-800 break-words">International</div>
+                  <div className="text-xs text-purple-600 mt-1 break-words">UN bodies & global organizations</div>
                 </Button>
 
                 <Button
                   variant="outline"
                   onClick={() => setCurrentSection('legal-support')}
-                  className="p-4 h-auto bg-green-50 border-green-200 hover:bg-green-100 text-left flex flex-col items-start"
+                  className="p-4 h-auto bg-green-50 border-green-200 hover:bg-green-100 text-left flex flex-col items-start overflow-hidden rounded-xl"
                 >
                   <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mb-2">
                     <Scale className="w-4 h-4 text-green-600" />
                   </div>
-                  <div className="text-sm font-bold text-green-800">Legal Aid</div>
-                  <div className="text-xs text-green-600 mt-1">Medical & legal documentation</div>
+                  <div className="text-sm font-bold text-green-800 break-words">Legal Aid</div>
+                  <div className="text-xs text-green-600 mt-1 break-words">Medical & legal documentation</div>
                 </Button>
 
                 <Button
                   variant="outline"
                   onClick={() => setCurrentSection('secure-channels')}
-                  className="p-4 h-auto bg-yellow-50 border-yellow-200 hover:bg-yellow-100 text-left flex flex-col items-start"
+                  className="p-4 h-auto bg-yellow-50 border-yellow-200 hover:bg-yellow-100 text-left flex flex-col items-start overflow-hidden rounded-xl"
                 >
                   <div className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center mb-2">
                     <Shield className="w-4 h-4 text-yellow-600" />
                   </div>
-                  <div className="text-sm font-bold text-yellow-800">Secure Channels</div>
-                  <div className="text-xs text-yellow-600 mt-1">Safe reporting methods</div>
+                  <div className="text-sm font-bold text-yellow-800 break-words">Secure Channels</div>
+                  <div className="text-xs text-yellow-600 mt-1 break-words">Safe reporting methods</div>
                 </Button>
 
                 <Button
@@ -854,11 +854,11 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
                   onClick={() => setCurrentSection('darkweb-options')}
                   className="p-4 h-auto bg-gray-100 border-gray-300 hover:bg-gray-200 text-left flex flex-col items-start"
                 >
-                  <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center mb-2">
+                  <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center mb-2 overflow-hidden rounded-xl">
                     <Globe className="w-4 h-4 text-gray-700" />
                   </div>
-                  <div className="text-sm font-bold text-gray-800">Dark Web Options</div>
-                  <div className="text-xs text-gray-600 mt-1">High-risk anonymous reporting</div>
+                  <div className="text-sm font-bold text-gray-800 break-words">Dark Web Options</div>
+                  <div className="text-xs text-gray-600 mt-1 break-words">High-risk anonymous reporting</div>
                 </Button>
               </>
             )}
@@ -911,7 +911,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
                   setCurrentCategory(category);
                   setCurrentSection('category-detail');
                 }}
-                className={`p-4 h-auto border rounded-lg hover:shadow-md transition-all text-left flex justify-between items-center ${getSectionColor(currentSection)}`}
+                className={`p-4 h-auto border rounded-lg hover:shadow-md transition-all text-left flex justify-between items-center overflow-hidden ${getSectionColor(currentSection)}`}
               >
                 <div>
                   <h4 className="font-semibold mb-1">{categoryData.title}</h4>
@@ -1060,7 +1060,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
   if (isMobile) {
     return (
       <Sheet open={isOpen} onOpenChange={onClose}>
-        <SheetContent side="bottom" className="h-[85vh] overflow-hidden">
+       <SheetContent side="bottom" className="h-[85vh] max-w-6 mx-auto bg-transparent overflow-hidden">
           <div className="h-full overflow-y-auto p-6">
             {content}
           </div>
