@@ -2,7 +2,9 @@
 import React, { useState } from 'react';
 import { Share2, MessageCircle, Mail, Copy, Check, Users, ExternalLink } from 'lucide-react';
 
-const ShareButton: React.FC = () => {
+interface ShareButtonProps {}
+
+const ShareButton: React.FC<ShareButtonProps> = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [copied, setCopied] = useState(false);
 

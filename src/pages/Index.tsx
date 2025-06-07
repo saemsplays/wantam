@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
@@ -26,13 +25,13 @@ import { ScrollToTop } from '../components/ScrollToTop';
 import { FloatingActionButtons } from '../components/FloatingActionButtons';
 import { DarkModeToggle } from '../components/DarkModeToggle';
 import { OfflineRadioSystem } from '../components/OfflineRadioSystem';
-import { ShareButton } from '../components/ShareButton';
+import ShareButton from '../components/ShareButton';
 import { BillsDockPopup } from '../components/BillsDockPopup';
-import { ClearModeToggle, ClearMode } from '../components/ClearModeToggle'; // Added ClearModeToggle
-import { UserCountSidebar } from '../components/UserCountSidebar'; // Added UserCountSidebar
+import { ClearModeToggle, ClearMode } from '../components/ClearModeToggle';
+import { UserCountSidebar } from '../components/UserCountSidebar';
 
 const Index = () => {
-  const [showSplash, setShowSplash] = useState(true); // Added splash screen state
+  const [showSplash, setShowSplash] = useState(true);
   const [userName, setUserName] = useState('');
   const [selectedRecipients, setSelectedRecipients] = useState({
     clerk: true,
@@ -86,19 +85,28 @@ Citizen of Kenya`);
   const [billsDockOpen, setBillsDockOpen] = useState(false);
   const [billsDockOrigin, setBillsDockOrigin] = useState<HTMLElement | null>(null);
   
-  // New state variables for scroll effects
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isInFirstSection, setIsInFirstSection] = useState(true);
   const [clearMode, setClearMode] = useState<ClearMode>('normal');
 
-  const rotatingTexts = [ // Added rotating texts
+  const rotatingTexts = [
     "Object to the Finance Bill 2025",
     "Protect Your Rights",
     "Make Your Voice Heard",
     "Stand for Justice"
   ];
 
-  // Added scroll effect for opacity control
+  const sections = [
+    { id: 'start', title: 'Beginning', position: 0 },
+    { id: 'hero', title: 'Introduction', position: 0 },
+    { id: 'gpt-card', title: 'Finance Bill GPT', position: 0 },
+    { id: 'details', title: 'Your Details', position: 44 },
+    { id: 'recipients', title: 'Send To', position: 53 },
+    { id: 'subject', title: 'Email Subject', position: 60 },
+    { id: 'letter', title: 'Your Objection Letter', position: 73 },
+    { id: 'send', title: 'Ready To Submit Your Objection?', position: 96 }
+  ];
+
   useEffect(() => {
     const handleScroll = () => {
       const firstSectionHeight = window.innerHeight;
@@ -113,11 +121,10 @@ Citizen of Kenya`);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Calculate opacity based on clear mode and scroll position
   const getElementOpacity = () => {
-    if (isInFirstSection) return 0; // Ultra clear in first section
+    if (isInFirstSection) return 0;
     
-    const baseOpacity = Math.min(scrollProgress * 2, 1); // Gradual increase
+    const baseOpacity = Math.min(scrollProgress * 2, 1);
     
     switch (clearMode) {
       case 'clear': return baseOpacity * 0.1;
@@ -130,17 +137,6 @@ Citizen of Kenya`);
     if (isInFirstSection || clearMode === 'ultra-clear') return 'none';
     return 'auto';
   };
-
-  const sections = [
-    { id: 'start', title: 'Beginning', position: 0 },
-    { id: 'hero', title: 'Introduction', position: 0 },
-    { id: 'gpt-card', title: 'Finance Bill GPT', position: 0 },
-    { id: 'details', title: 'Your Details', position: 44 },
-    { id: 'recipients', title: 'Send To', position: 53 },
-    { id: 'subject', title: 'Email Subject', position: 60 },
-    { id: 'letter', title: 'Your Objection Letter', position: 73 },
-    { id: 'send', title: 'Ready To Submit Your Objection?', position: 96 }
-  ];
 
   useEffect(() => {
     const trackPageView = async () => {
