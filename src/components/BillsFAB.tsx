@@ -20,10 +20,14 @@ const bills = [
 export const BillsFAB: React.FC<BillsFABProps> = ({ isOpen, onClose, originElement }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  
+  // Add the missing state variable
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const handleBillSelect = (path: string) => {
     navigate(path);
     onClose();
+    setIsExpanded(false); // Close the expanded state when selecting a bill
   };
 
   const getCurrentBill = () => {
