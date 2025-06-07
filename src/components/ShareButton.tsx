@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Share2, MessageCircle, Mail, Copy, Check, Users, ExternalLink } from 'lucide-react';
 

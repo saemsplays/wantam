@@ -19,13 +19,13 @@ const EmergencyReportingSystem: React.FC<EmergencyReportingSystemProps> = ({
   const [currentSection, setCurrentSection] = useState('main');
   const [currentCategory, setCurrentCategory] = useState('');
   const [isPrivacyMode, setIsPrivacyMode] = useState(false);
-  const [copiedItems, setCopiedItems] = useState({});
+  const [copiedItems, setCopiedItems] = useState<Record<string, boolean>>({});
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedTerm, setDebouncedTerm] = useState("");
   const [filteredResources, setFilteredResources] = useState<Record<string, Record<string, any>>>({});
   const [noSearchResults, setNoSearchResults] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const modalRef = useRef(null);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   // Debounce input
   useEffect(() => {
@@ -36,8 +36,8 @@ const EmergencyReportingSystem: React.FC<EmergencyReportingSystemProps> = ({
 
   // Close modal when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (modalRef.current && !modalRef.current.contains(event.target)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
         onClose();
         setIsMobileMenuOpen(false);
       }
@@ -842,7 +842,7 @@ const EmergencyReportingSystem: React.FC<EmergencyReportingSystemProps> = ({
         'bottom-4 right-4'
       }`}>
         <button
-          onClick={() => setCurrentSection('main') || onClose() || setIsPrivacyMode(false) || setIsMobileMenuOpen(false) || setCurrentCategory('') || setCopiedItems({}) || setSearchTerm('') || setDebouncedTerm('') || setFilteredResources({}) || setNoSearchResults(false) || setIsOpen(true)}
+          onClick={onClose}
           className="bg-red-600 hover:bg-red-700 text-white p-4 rounded-full shadow-lg transition-all hover:scale-105 animate-pulse"
           title="Emergency Reporting Hub"
           style={{ boxShadow: '0 4px 14px rgba(220, 38, 38, 0.5)' }}

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Shield, Radio, FileText, Heart, Users, ArrowLeft } from 'lucide-react';
@@ -10,10 +9,10 @@ import Aurora from '../components/Aurora';
 import RotatingText from '../components/RotatingText';
 import { JoyrideTour } from '../components/JoyrideTour';
 import { FloatingActionButtons } from '../components/FloatingActionButtons';
-import { UserCountSidebar } from '../components/UserCountSidebar';
+import UserCountSidebar from '../components/UserCountSidebar';
 import { DarkModeToggle } from '../components/DarkModeToggle';
 import { ClearModeToggle, ClearMode } from '../components/ClearModeToggle';
-import { ShareButton } from '../components/ShareButton';
+import ShareButton from '../components/ShareButton';
 import { ScrollToTop } from '../components/ScrollToTop';
 import { TourStarter } from '../components/TourStarter';
 import { ScrollProgressTracker } from '../components/ScrollProgressTracker';
@@ -29,9 +28,9 @@ const BudgetBill2025: React.FC = () => {
 
   const rotatingTexts = [
     "Object to the Budget Bill 2025",
-    "Demand Fiscal Transparency",
-    "Question Government Spending",
-    "Protect Public Resources"
+    "Demand Financial Transparency",
+    "Protect Public Resources",
+    "Ensure Fiscal Responsibility"
   ];
 
   // Handle scroll for opacity control
@@ -124,11 +123,19 @@ const BudgetBill2025: React.FC = () => {
         }}
         className="transition-opacity duration-500"
       >
-        <FloatingActionButtons />
+        <FloatingActionButtons 
+          onReportClick={() => setShowEmergencySystem(true)}
+          onSupportClick={() => setShowDonation(true)}
+          onMenuClick={() => {}}
+          onScrollToTop={() => window.scrollTo(0, 0)}
+        />
         <ShareButton />
         <ScrollToTop />
         <UserCountSidebar />
-        <ScrollProgressTracker />
+        <ScrollProgressTracker 
+          activeSection="main" 
+          sections={['hero', 'about', 'action']} 
+        />
       </div>
 
       {/* First Section */}
@@ -151,42 +158,41 @@ const BudgetBill2025: React.FC = () => {
             Object to the Budget Bill 2025
           </h2>
           <p className="text-xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            The Budget Bill 2025 allocates public resources without adequate consultation or transparency. Join us in demanding accountability in government spending and fiscal responsibility.
+            The Budget Bill 2025 proposes measures that will increase the tax burden on ordinary Kenyans while failing to address corruption and wasteful spending. We must demand a budget that serves the people.
           </p>
         </motion.div>
 
-        {/* Key Issues Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           {[
             {
-              title: "Excessive Development Spending",
-              description: "Disproportionate allocation to infrastructure projects without clear accountability mechanisms.",
-              impact: "Reduces funding for essential services like healthcare and education"
+              title: "Increased Taxes",
+              description: "The bill introduces new taxes and increases existing ones, placing a heavier burden on citizens.",
+              impact: "Reduces disposable income and increases the cost of living."
             },
             {
-              title: "Debt Servicing Burden",
-              description: "Massive allocation to debt payments consuming over 60% of revenue.",
-              impact: "Limits resources available for citizen welfare programs"
+              title: "Lack of Transparency",
+              description: "The budget process lacks transparency, making it difficult for citizens to understand how funds are allocated.",
+              impact: "Undermines accountability and public trust."
             },
             {
-              title: "Opaque Budget Processes",
-              description: "Limited public participation in budget formulation and implementation.",
-              impact: "Reduces democratic oversight and accountability"
+              title: "Corruption Concerns",
+              description: "The bill does not address corruption, leading to concerns about misuse of public funds.",
+              impact: "Diverts resources away from essential services and development projects."
             },
             {
-              title: "Conditional Grants Reduction",
-              description: "Decreased funding for counties affecting devolved functions.",
-              impact: "Weakens service delivery at the grassroots level"
+              title: "Wasteful Spending",
+              description: "The budget includes allocations for non-essential projects and wasteful spending, diverting funds from critical areas.",
+              impact: "Reduces the effectiveness of public spending and hinders development."
             },
             {
-              title: "Defense and Security Increases",
-              description: "Significant budget increases for security apparatus without transparency.",
-              impact: "Prioritizes militarization over social development"
+              title: "Debt Accumulation",
+              description: "The bill increases borrowing, leading to unsustainable debt levels and future financial instability.",
+              impact: "Threatens the country's long-term economic health."
             },
             {
-              title: "Revenue Projection Unrealism",
-              description: "Overly optimistic revenue targets leading to potential budget deficits.",
-              impact: "May force additional borrowing or service cuts mid-year"
+              title: "Inequitable Distribution",
+              description: "The budget does not address income inequality, exacerbating the gap between the rich and the poor.",
+              impact: "Perpetuates poverty and social injustice."
             }
           ].map((issue, index) => (
             <motion.div
@@ -208,7 +214,6 @@ const BudgetBill2025: React.FC = () => {
           ))}
         </div>
 
-        {/* Call to Action */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -216,9 +221,9 @@ const BudgetBill2025: React.FC = () => {
           viewport={{ once: true }}
           className="text-center bg-gradient-to-r from-red-600 to-orange-600 rounded-xl p-8 text-white"
         >
-          <h3 className="text-3xl font-bold mb-4">Demand Budget Transparency</h3>
+          <h3 className="text-3xl font-bold mb-4">Demand a People's Budget</h3>
           <p className="text-xl mb-6 text-red-100">
-            Every Kenyan deserves to know how their tax money is being spent. Join the movement for fiscal accountability.
+            We must ensure that the budget reflects the needs and priorities of all Kenyans, not just a select few. Join us in demanding a fair and equitable budget.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button 
@@ -234,7 +239,6 @@ const BudgetBill2025: React.FC = () => {
         </motion.div>
       </section>
 
-      {/* Dock */}
       <Dock
         items={dockItems}
         className="fixed bottom-4 left-1/2 transform -translate-x-1/2"
@@ -243,7 +247,6 @@ const BudgetBill2025: React.FC = () => {
         distance={200}
       />
 
-      {/* Modals and Widgets */}
       <DonationWidget isVisible={showDonation} onTimedOut={() => setShowDonation(false)} />
       
       <EmergencyReportingSystem 
@@ -256,9 +259,12 @@ const BudgetBill2025: React.FC = () => {
         onClose={() => setShowRadioSystem(false)} 
       />
 
-      {/* Tour System */}
-      <TourStarter />
-      <JoyrideTour />
+      <TourStarter onStartTour={() => {}} />
+      <JoyrideTour 
+        isActive={false}
+        onComplete={() => {}}
+        onSkip={() => {}}
+      />
     </div>
   );
 };
