@@ -12,21 +12,11 @@ import { ScrollProgressTracker } from '../components/ScrollProgressTracker';
 import { SimpleTour } from '../components/SimpleTour';
 import { TourStarter } from '../components/TourStarter';
 import { BillsSidebar } from '../components/BillsSidebar';
-import DonationWidget from '../components/DonationWidget';
-import Dock from '../components/Dock';
 import InteractiveCountWidget from '../components/InteractiveCountWidget';
 import Aurora from '../components/Aurora';
 import RotatingText from '../components/RotatingText';
 import SplashScreen from '../components/SplashScreen';
-import EmergencyReportingSystem from '../components/EmergencyReportingSystem';
-import BillsFAB from '../components/BillsFAB';
-import { ScrollToTop } from '../components/ScrollToTop';
-import { FloatingActionButtons } from '../components/FloatingActionButtons';
-import { DarkModeToggle } from '../components/DarkModeToggle';
-import { OfflineRadioSystem } from '../components/OfflineRadioSystem';
-import { ShareButton } from '../components/ShareButton';
-import { BillsDockPopup } from '../components/BillsDockPopup';
-import { Home as HomeIcon, Archive as ArchiveIcon, Settings as SettingsIcon, HelpCircle as HelpCircleIcon, Lightbulb as LightbulbIcon, Heart as HeartIcon, Flag as FlagIcon, ExternalLink as ExternalLinkIcon, Radio as RadioIcon, FileText as FileTextIcon, Users as UsersIcon } from "lucide-react";
+import { SharedLayout } from '../components/SharedLayout';
 
 const Index = () => {
   const [userName, setUserName] = useState('');
@@ -75,20 +65,10 @@ Citizen of Kenya`);
   const [userCount, setUserCount] = useState({ viewers: 0, emailsSent: 0 });
   const [showFullCount, setShowFullCount] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
-  const [isDonationWidgetVisible, setIsDonationWidgetVisible] = useState(false);
   
   // Tour state
   const [showTour, setShowTour] = useState(false);
   const [hasSeenTour, setHasSeenTour] = useState(false);
-
-  // New state for floating action buttons
-  const [isReportingOpen, setIsReportingOpen] = useState(false);
-  const [isRadioOpen, setIsRadioOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Bills dock popup state
-  const [billsDockOpen, setBillsDockOpen] = useState(false);
-  const [billsDockOrigin, setBillsDockOrigin] = useState<HTMLElement | null>(null);
 
   // Section definitions with updated percentages including Introduction
   const sections = [
@@ -146,16 +126,6 @@ Citizen of Kenya`);
     if (tourSeen) {
       setHasSeenTour(true);
     }
-  }, []);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   const handleTourComplete = () => {
@@ -263,43 +233,6 @@ Citizen of Kenya`);
     });
   };
 
-  // Floating action button handlers
-  const handleReportClick = () => {
-    setIsReportingOpen(prev => !prev);
-  };
-
-  const handleSupportClick = () => {
-    const donationButton = document.querySelector('[data-donation-trigger]') as HTMLElement;
-    if (donationButton) {
-      donationButton.click();
-    }
-  };
-
-  const handleDockSupportClick = handleSupportClick;
-
-// Add the close handler
-const handleCloseDonationWidget = () => {
-  setIsDonationWidgetVisible(false);
-};
-
-  const handleMenuClick = () => {
-    document.getElementById('details')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const handleScrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleRadioClick = () => {
-    setIsRadioOpen(true);
-  };
-
-  const handleBillsClick = () => {
-    // Use the same navigation as BillsFAB
-    setBillsDockOrigin(document.activeElement as HTMLElement);
-    setBillsDockOpen(true);
-  };
-
   const totalUsers = userCount.viewers + userCount.emailsSent;
   const shouldShowCounter = totalUsers >= 1000;
   
@@ -318,48 +251,9 @@ const handleCloseDonationWidget = () => {
     window.scrollTo(0, window.innerHeight * 0.02);
   }, []);
 
-  const dockItems = [
-    { 
-      icon: <FileTextIcon size={18} />, 
-      label: 'Bills', 
-      onClick: handleBillsClick // Updated to use unified Bills navigation
-    },
-    { 
-      icon: <RadioIcon size={18} />, 
-      label: 'Radio', 
-      onClick: () => {
-        setIsRadioOpen(true);
-      }
-    },
-    { 
-      icon: <HeartIcon size={18} />, 
-      label: 'Support', 
-      onClick: handleDockSupportClick // Updated to properly trigger donation widget
-    },
-    { 
-      icon: <FlagIcon size={18} />, 
-      label: 'Report', 
-      onClick: handleReportClick
-    },
-    { 
-      icon: <UsersIcon size={18} />, 
-      label: 'CEKA', 
-      onClick: () => {
-        const confirmed = confirm('You are about to visit the main CEKA platform. Would you like to proceed?');
-        if (confirmed) {
-          window.open('https://ceka.lovable.app', '_blank');
-        }
-      }
-    },
-  ];
-
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
+    <SharedLayout>
       <SplashScreen />
-      
-      <DarkModeToggle />
-
-      <ShareButton />
       
       <SimpleTour
         isActive={showTour}
@@ -377,37 +271,6 @@ const handleCloseDonationWidget = () => {
       </div>
 
       <InteractiveCountWidget />
-
-      <DonationWidget />
-
-      <EmergencyReportingSystem 
-        isOpen={isReportingOpen} 
-        onClose={() => setIsReportingOpen(false)} 
-      />
-
-      <OfflineRadioSystem
-        isOpen={isRadioOpen}
-        onClose={() => setIsRadioOpen(false)}
-      />
-
-      <BillsDockPopup 
-        isOpen={billsDockOpen}
-        onClose={() => setBillsDockOpen(false)}
-        originElement={billsDockOrigin}
-      />
-
-      <ScrollToTop />
-
-      <FloatingActionButtons
-        onReportClick={handleReportClick}
-        onSupportClick={handleSupportClick}
-        onMenuClick={handleMenuClick}
-        onScrollToTop={handleScrollToTop}
-        onRadioClick={handleRadioClick}
-        isReportOpen={isReportingOpen}
-      />
-
-      <BillsFAB />
 
       <section className="h-screen relative overflow-hidden">
         <Aurora
@@ -819,64 +682,7 @@ const handleCloseDonationWidget = () => {
           </Card>
         </section>
       </div>
-
-      <footer className="bg-gray-900 dark:bg-gray-950 text-gray-200 dark:text-gray-300 py-8 text-xs text-center px-4 max-w-full overflow-x-hidden transition-colors duration-300">
-        <div className="max-w-6xl mx-auto">
-          <p className="break-words max-w-full">
-            <strong>
-              Published by{" "}
-              <a
-                href="https://ceka.lovable.app"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline text-emerald-400 dark:text-emerald-300 hover:text-emerald-300 dark:hover:text-emerald-200 break-words"
-              >
-                Civic Education Kenya App (CEKA). 
-              </a>
-            </strong>
-          </p>
-          <p className="break-words max-w-full">
-            CEKA provides this tool under the Constitution of Kenya 2010 (Art 33, Art 35, Art 118(1)). 
-            CEKA does not store, monitor, or share personal user data. 
-          </p>
-          <p className="break-words max-w-full">
-            We collect only anonymous, aggregate usage statistics (such as page views) to improve service delivery.
-          </p>
-          <p className="mt-2 italic break-words max-w-full">
-            By using this platform, you acknowledge that all content is user-generated. CEKA holds no liability for any outcomes arising from your objection email.
-          </p>
-          <div className="mt-4 flex flex-col sm:flex-row items-center justify-center gap-2 text-gray-400 dark:text-gray-500">
-            <Scale className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-400 dark:text-emerald-300 flex-shrink-0" />
-            <span className="text-center text-xs sm:text-sm break-words max-w-full">
-              Exercise your constitutional right to participate in legislative processes (Art 118(1)).
-            </span>
-          </div>
-        </div>
-      </footer>
-
-      {/* Bottom Disclaimer */}
-      <div className="bg-gray-800 dark:bg-gray-950 border-t border-gray-700 dark:border-gray-800 text-gray-300 dark:text-gray-400 p-3 pb-20 text-center text-xs font-medium transition-colors duration-300">
-        <p className="max-w-3xl mx-auto">
-          This platform operates under <strong>Art 33 (Freedom of Expression)</strong>, <strong>Art 35 (Access to Information)</strong>, and <strong>Art 118(1) (Public Participation)</strong> of the Constitution of Kenya 2010. 
-          No data is stored or shared. All emails are drafted locally on your device.
-        </p>
-      </div>
-
-      <div className="absolute bottom-0 left-0 right-0">
-        <Dock 
-          items={dockItems}
-          panelHeight={68}
-          baseItemSize={50}
-          magnification={70}
-          />
-      </div>
-
-      <DonationWidget 
-  isVisible={isDonationWidgetVisible}
-  onClose={handleCloseDonationWidget}
-/>
-      
-    </div>
+    </SharedLayout>
   );
 };
 
