@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FileText, X, ChevronUp } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useScrollVisibility } from '../hooks/useScrollVisibility';
 
 const bills = [
   { id: 'finance-2025', name: 'Finance Bill 2025', path: '/', color: 'bg-gradient-to-r from-red-600 to-green-600' },
@@ -13,6 +14,7 @@ const bills = [
 
 const BillsFAB = () => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const isVisible = useScrollVisibility(300);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -26,7 +28,11 @@ const BillsFAB = () => {
   };
 
   return (
-    <div className="fixed left-4 bottom-36 z-30">
+    <div className={"fixed left-4 bottom-36 z-30 transition-all duration-300 ease-in-out transform ${
+    isVisible
+      ? 'opacity-100 translate-y-0 pointer-events-auto'
+      : 'opacity-0 translate-y-4 pointer-events-none'
+  }`}">
       <AnimatePresence>
         {isExpanded && (
           <>
