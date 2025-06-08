@@ -110,7 +110,7 @@ export const SharedLayout: React.FC<SharedLayoutProps> = ({ children }) => {
 
       <FloatingActionButtons
         onReportClick={handleReportClick}
-        onSupportClick={handleSupportClick}
+        onSupportClick={handleDonationClick}
         onMenuClick={handleMenuClick}
         onScrollToTop={handleScrollToTop}
         onRadioClick={handleRadioClick}
