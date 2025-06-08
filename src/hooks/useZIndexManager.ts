@@ -12,23 +12,38 @@ interface ZIndexManager {
 export const useZIndexManager = (): ZIndexManager => {
   const [activeButton, setActiveButton] = useState<string | null>(null);
   const buttonRefs = useRef<Map<string, HTMLElement>>(new Map());
+  const isBlurActive = useRef<boolean>(false);
+
+  const applyBlur = useCallback(() => {
+    if (!isBlurActive.current) {
+      document.body.classList.add('backdrop-blur-active');
+      isBlurActive.current = true;
+    }
+  }, []);
+
+  const removeBlur = useCallback(() => {
+    if (isBlurActive.current) {
+      document.body.classList.remove('backdrop-blur-active');
+      isBlurActive.current = false;
+    }
+  }, []);
 
   const bringToFront = useCallback((buttonId: string) => {
     setActiveButton(buttonId);
-    document.body.classList.add('backdrop-blur-active');
-  }, []);
+    applyBlur();
+  }, [applyBlur]);
 
   const sendToBack = useCallback((buttonId: string) => {
     if (activeButton === buttonId) {
       setActiveButton(null);
-      document.body.classList.remove('backdrop-blur-active');
+      removeBlur();
     }
-  }, [activeButton]);
+  }, [activeButton, removeBlur]);
 
   const reset = useCallback(() => {
     setActiveButton(null);
-    document.body.classList.remove('backdrop-blur-active');
-  }, []);
+    removeBlur();
+  }, [removeBlur]);
 
   const registerButton = useCallback((buttonId: string, ref: HTMLElement | null) => {
     if (ref) {
@@ -40,55 +55,54 @@ export const useZIndexManager = (): ZIndexManager => {
 
   const unregisterButton = useCallback((buttonId: string) => {
     buttonRefs.current.delete(buttonId);
-  }, []);
+    // If the unregistered button was active, reset
+    if (activeButton === buttonId) {
+      reset();
+    }
+  }, [activeButton, reset]);
 
-  // Handle click outside effect
+  // Handle click outside and escape key - always active to catch outside clicks
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      // If no active button, nothing to reset
       if (!activeButton) return;
 
       const target = event.target as Node;
-      let clickedInsideButton = false;
-
+      
       // Check if click is inside any registered button
-      for (const [buttonId, buttonElement] of buttonRefs.current) {
+      for (const [, buttonElement] of buttonRefs.current) {
         if (buttonElement && buttonElement.contains(target)) {
-          clickedInsideButton = true;
-          break;
+          return; // Click is inside a button, don't reset
         }
       }
+      
+      // Clicked outside all buttons, reset blur and active state
+      reset();
+    };
 
-      // If clicked outside all buttons, reset
-      if (!clickedInsideButton) {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && activeButton) {
         reset();
       }
     };
 
-    // Only add listener when there's an active button
-    if (activeButton) {
-      document.addEventListener('mousedown', handleClickOutside);
-      
-      // Also handle escape key
-      const handleEscape = (event: KeyboardEvent) => {
-        if (event.key === 'Escape') {
-          reset();
-        }
-      };
-      document.addEventListener('keydown', handleEscape);
+    // Always add event listeners to catch clicks outside
+    document.addEventListener('mousedown', handleClickOutside, true); // Use capture phase
+    document.addEventListener('keydown', handleEscape);
 
-      return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
-        document.removeEventListener('keydown', handleEscape);
-      };
-    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside, true);
+      document.removeEventListener('keydown', handleEscape);
+    };
   }, [activeButton, reset]);
 
   // Cleanup on unmount
   useEffect(() => {
     return () => {
-      document.body.classList.remove('backdrop-blur-active');
+      removeBlur();
+      buttonRefs.current.clear();
     };
-  }, []);
+  }, [removeBlur]);
 
   return {
     activeButton,
