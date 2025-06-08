@@ -41,7 +41,7 @@ export const SimpleTour: React.FC<SimpleTourProps> = ({ isActive, onComplete, on
       id: 'introduction',
       title: 'Introduction + Finance Bill GPT',
       description: 'Understand how the Constitution protects you + ask questions on the Finance Bill GPT',
-      targetId: 'hero'
+      targetId: 'chad'
     },
     {
       id: 'details',
