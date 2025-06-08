@@ -128,19 +128,23 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
   if (hasTimedOut || !isVisible) return null;
 
   return (
-    <div
-      data-donation-trigger
-      className={`fixed z-30 transition-all duration-500 ease-out ${
-        isExpanded 
-          ? 'right-1/2 transform translate-x-1/2 translate-y-1/2' 
-          : 'right-8 transform -translate-y-[6px]'
-      }`}
-      style={{
-        zIndex: 30,
-        opacity,
-        bottom: isExpanded ? '50%' : `${offsetY}px`,
-      }}
-    >
+  <div
+    data-donation-trigger
+    className="fixed z-30 transition-all duration-500 ease-out"
+    style={{
+      zIndex: 30,
+      opacity,
+      bottom: `${offsetY}px`,
+      ...(isExpanded ? {
+        top: '50%',
+        bottom: 'auto',
+        left: '50%',
+        transform: 'translate(-50%, -50%)'
+      } : {
+        right: '2rem',
+      })
+    }}
+  >
       {!isExpanded ? (
         <div
           className="relative group cursor-pointer"
