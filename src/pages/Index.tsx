@@ -93,7 +93,6 @@ Citizen of Kenya`);
   // Section definitions with updated percentages including Introduction
   const sections = [
     { id: 'hero', title: 'Introduction', position: 21.52 },
-    { id: 'chad', title: 'ChatGPT + Download', position: 30.63 },
     { id: 'details', title: 'Your Details', position: 44 },
     { id: 'recipients', title: 'Send To', position: 53 },
     { id: 'subject', title: 'Email Subject', position: 60 },
