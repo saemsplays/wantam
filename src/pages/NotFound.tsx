@@ -1,108 +1,47 @@
 
-import { useLocation, Link } from "react-router-dom";
-import { useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Construction, Home, ArrowLeft, Clock, Wrench } from "lucide-react";
+import React from 'react';
+import { SharedLayout } from '../components/SharedLayout';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { AlertTriangle, Home } from "lucide-react";
 
 const NotFound = () => {
-  const location = useLocation();
-
-  useEffect(() => {
-    console.error(
-      "404 Error: User attempted to access non-existent route:",
-      location.pathname
-    );
-  }, [location.pathname]);
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center px-4">
-      <div className="max-w-2xl mx-auto text-center">
-        {/* Animated Construction Icon */}
-        <div className="relative mb-8">
-          <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-blue-500 rounded-full blur-3xl opacity-20 animate-pulse"></div>
-          <div className="relative bg-gray-800 rounded-full p-8 border border-gray-700 shadow-2xl">
-            <Construction className="h-24 w-24 text-green-400 mx-auto animate-bounce" />
-          </div>
-        </div>
-
-        {/* Main Content */}
-        <div className="space-y-6">
-          <div className="space-y-2">
-            <h1 className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">
-              404
-            </h1>
-            <h2 className="text-2xl md:text-3xl font-bold text-white">
-              Page Under Construction
-            </h2>
-          </div>
-
-          <div className="space-y-4 max-w-lg mx-auto">
-            <p className="text-lg text-gray-300 leading-relaxed">
-              We're working hard to bring you this content! This page is currently under development and will be available soon.
-            </p>
-            
-            <div className="flex items-center justify-center space-x-2 text-green-400">
-              <Clock className="h-5 w-5 animate-spin" />
-              <span className="text-sm font-medium">Coming Soon</span>
-            </div>
-          </div>
-
-          {/* Progress Bar */}
-          <div className="max-w-md mx-auto">
-            <div className="bg-gray-700 rounded-full h-2 overflow-hidden">
-              <div className="bg-gradient-to-r from-green-400 to-blue-400 h-full rounded-full animate-pulse w-3/4"></div>
-            </div>
-            <p className="text-xs text-gray-400 mt-2">Development Progress: 75%</p>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
-            <Link to="/">
-              <Button className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-8 py-3 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 flex items-center space-x-2">
-                <Home className="h-5 w-5" />
-                <span>Return Home</span>
-              </Button>
-            </Link>
-            
-            <Button 
-              variant="outline" 
-              className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white px-8 py-3 rounded-lg font-semibold transition-all duration-200 flex items-center space-x-2"
-              onClick={() => window.history.back()}
-            >
-              <ArrowLeft className="h-5 w-5" />
-              <span>Go Back</span>
-            </Button>
-          </div>
-
-          {/* Footer Message */}
-          <div className="pt-8 border-t border-gray-700">
-            <div className="flex items-center justify-center space-x-2 text-gray-400">
-              <Wrench className="h-4 w-4" />
-              <span className="text-sm">
-                Thank you for your patience as we build something amazing!
-              </span>
-            </div>
-            <p className="text-xs text-gray-500 mt-2">
-              For immediate assistance, please visit our{" "}
-              <Link to="/" className="text-green-400 hover:text-green-300 underline">
-                homepage
-              </Link>
-            </p>
-          </div>
-        </div>
-
-        {/* Floating Elements */}
-        <div className="absolute top-20 left-10 opacity-20">
-          <div className="w-2 h-2 bg-green-400 rounded-full animate-ping"></div>
-        </div>
-        <div className="absolute top-40 right-20 opacity-20">
-          <div className="w-3 h-3 bg-blue-400 rounded-full animate-pulse"></div>
-        </div>
-        <div className="absolute bottom-32 left-20 opacity-20">
-          <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-bounce"></div>
+    <SharedLayout>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-emerald-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center">
+        <div className="max-w-md mx-auto px-4">
+          <Card className="text-center">
+            <CardHeader>
+              <CardTitle className="flex items-center justify-center gap-3 text-2xl">
+                <div className="bg-red-600 dark:bg-red-500 p-2 rounded-lg">
+                  <AlertTriangle className="h-6 w-6 text-white" />
+                </div>
+                <span className="text-gray-900 dark:text-white">Page Not Found</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div>
+                <h2 className="text-6xl font-bold text-gray-300 dark:text-gray-600 mb-4">404</h2>
+                <p className="text-gray-600 dark:text-gray-400">
+                  The page you're looking for doesn't exist or has been moved.
+                </p>
+              </div>
+              
+              <a
+                href="/"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-red-600 to-green-600 hover:from-red-700 hover:to-green-700 text-white rounded-lg font-medium transition-colors"
+              >
+                <Home className="h-4 w-4" />
+                Return Home
+              </a>
+              
+              <div className="text-xs text-gray-500 dark:text-gray-400">
+                Continue exercising your constitutional rights at our main platform.
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
-    </div>
+    </SharedLayout>
   );
 };
 

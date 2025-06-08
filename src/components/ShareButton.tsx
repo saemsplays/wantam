@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Share2, Instagram, Twitter, ExternalLink } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -70,11 +71,11 @@ export const ShareButton: React.FC = () => {
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
               transition={{ duration: 0.2 }}
-              className="absolute left-16 top-0 flex flex-row space-x-2"
+              className="absolute bottom-16 left-0 flex flex-col space-y-2"
             >
               {shareOptions.map((option, index) => {
                 const IconComponent = option.icon;
@@ -95,7 +96,7 @@ export const ShareButton: React.FC = () => {
                     whileTap={{ scale: 0.95 }}
                   >
                     <IconComponent />
-                    <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                    <div className="absolute left-12 top-1/2 transform -translate-y-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
                       {option.name}
                     </div>
                   </motion.button>
