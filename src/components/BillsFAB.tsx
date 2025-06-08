@@ -26,7 +26,7 @@ const BillsFAB = () => {
   };
 
   return (
-    <div className="fixed left-4 bottom-36 z-50">
+    <div className="fixed left-4 bottom-36 z-30">
       <AnimatePresence>
         {isExpanded && (
           <>
