@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Share2, Instagram, Twitter, ExternalLink } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useScrollVisibility } from '../hooks/useScrollVisibility';
 
 export const ShareButton: React.FC = () => {
+  const isVisible = useScrollVisibility(300);
   const [isOpen, setIsOpen] = useState(false);
 
   const shareOptions = [
