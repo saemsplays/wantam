@@ -792,15 +792,15 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
                 <Button
                   variant="outline"
                   onClick={() => setCurrentSection('emergency-support')}
-                  className="p-4 h-auto bg-red-50 dark:bg-red-500/10 border-red-200 hover:bg-red-100 dark:border-red-400/30 dark:hover:bg-red-300/10 text-left flex flex-col items-start overflow-hidden rounded-xl"
-                >
+                  className="p-4 h-auto bg-red-50 dark:bg-red-500/10 border-red-200 dark:border-red-400/30 hover:bg-red-100 dark:hover:bg-red-300/20 text-left flex flex-col items-start overflow-hidden rounded-xl"
+                  >
                   <div className="w-8 h-8 bg-red-100 dark:bg-red-400/10 rounded-full flex items-center justify-center mb-2">
                     <Zap className="w-4 h-4 text-red-600 " />
                   </div>
                   <div className="text-sm font-bold text-red-800 dark:text-red-300 truncate max-w-full">Emergency</div>
                   <div className="text-xs text-red-600 dark:text-red-400 mt-1 truncate max-w-full">Immediate danger & crisis support</div>
                 </Button>
-
+                
                <Button
                  variant="outline"
                  onClick={() => setCurrentSection('local-ngos')}
