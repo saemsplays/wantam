@@ -1019,17 +1019,23 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
           <span className="font-bold text-gray-900 dark:text-white">Report Emergency</span>
         </div>
         
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => setIsPrivacyMode(!isPrivacyMode)}
-          className={`p-2 h-auto transition-colors ${
-            isPrivacyMode ? 'bg-gray-900 text-white hover:bg-gray-800' : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
-          }`}
-          title={isPrivacyMode ? 'Privacy mode ON' : 'Privacy mode OFF'}
-        >
-          {isPrivacyMode ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-        </Button>
+       <Button
+         variant="ghost"
+         size="sm"
+         onClick={() => setIsPrivacyMode(!isPrivacyMode)}
+         className={`
+         p-2 h-auto transition-colors
+         ${
+           isPrivacyMode
+           ? 'bg-gray-900 text-white hover:bg-gray-800 dark:bg-gray-800 dark:hover:bg-gray-700'
+           : 'bg-gray-200 text-gray-600 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+         }
+         `}
+         title={isPrivacyMode ? 'Privacy mode ON' : 'Privacy mode OFF'}
+         >
+         {isPrivacyMode ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+       </Button>
+        
       </div>
 
       {/* Content */}
