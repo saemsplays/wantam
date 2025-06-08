@@ -170,7 +170,6 @@ export const SharedLayout: React.FC<SharedLayoutProps> = ({ children }) => {
           isVisible={isDonationVisible}
           onTimedOut={() => {
             zIndexManager.sendToBack('donation');
-            setIsDonationVisible(false);
           }}
         />
       </div>
