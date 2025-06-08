@@ -31,6 +31,22 @@ export const useZIndexManager = (): ZIndexManager => {
   const bringToFront = useCallback((buttonId: string) => {
     setActiveButton(buttonId);
     applyBlur();
+    
+    // Set high z-index for the button itself
+    const activeElement = buttonRefs.current.get(buttonId);
+    if (activeElement) {
+      activeElement.style.zIndex = '9998';
+      activeElement.style.position = activeElement.style.position || 'relative';
+    }
+    
+    // Also find child elements anywhere in the document (not just within the button)
+    setTimeout(() => {
+      const childElements = document.querySelectorAll('[data-child-element], .sidebar, .popup, .dropdown, .modal, [role="dialog"], .sheet-content');
+      childElements.forEach(child => {
+        (child as HTMLElement).style.zIndex = '9999';
+        (child as HTMLElement).style.position = (child as HTMLElement).style.position || 'relative';
+      });
+    }, 0);
   }, [applyBlur]);
 
   const sendToBack = useCallback((buttonId: string) => {
@@ -41,9 +57,23 @@ export const useZIndexManager = (): ZIndexManager => {
   }, [activeButton, removeBlur]);
 
   const reset = useCallback(() => {
+    // Reset z-index for previously active elements
+    if (activeButton) {
+      const activeElement = buttonRefs.current.get(activeButton);
+      if (activeElement) {
+        activeElement.style.zIndex = '';
+      }
+    }
+    
+    // Reset all child elements in the document
+    const childElements = document.querySelectorAll('[data-child-element], .sidebar, .popup, .dropdown, .modal, [role="dialog"], .sheet-content');
+    childElements.forEach(child => {
+      (child as HTMLElement).style.zIndex = '';
+    });
+    
     setActiveButton(null);
     removeBlur();
-  }, [removeBlur]);
+  }, [activeButton, removeBlur]);
 
   const registerButton = useCallback((buttonId: string, ref: HTMLElement | null) => {
     if (ref) {
