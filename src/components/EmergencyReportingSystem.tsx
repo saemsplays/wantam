@@ -729,13 +729,13 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
     const displayResources = filteredResources || resources;
     
     return (
-      <div className="space-y-6 rounded-3xl bg-white dark:bg-gray-700 p-8 shadow-2xl border border-gray-200/50 backdrop-blur-sm">
+      <div className="space-y-6 rounded-3xl bg-white dark:bg-gray-700 p-8 shadow-2xl border border-gray-200/50 dark:border-white/10 backdrop-blur-sm">
         <div className="text-center space-y-2">
           <div className="bg-red-100 w-14 h-14 rounded-full flex items-center justify-center mx-auto">
             <Shield className="w-8 h-8 text-red-600" />
           </div>
-          <h3 className="text-xl font-bold text-gray-900">Emergency Reporting Hub</h3>
-          <p className="text-sm text-gray-600">
+          <h3 className="text-xl font-bold text-gray-900 dark:text-white">Emergency Reporting Hub</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-100">
             A safe haven, containing resources for human rights violations and emergency situations
           </p>
         </div>
@@ -792,13 +792,13 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
                 <Button
                   variant="outline"
                   onClick={() => setCurrentSection('emergency-support')}
-                  className="p-4 h-auto bg-red-50 border-red-200 hover:bg-red-100 text-left flex flex-col items-start overflow-hidden rounded-xl"
+                  className="p-4 h-auto bg-red-50 dark:bg-red-500/10 border-red-200 hover:bg-red-100 dark:border-red-400/30 dark:hover:bg-red-500/10 text-left flex flex-col items-start overflow-hidden rounded-xl"
                 >
                   <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center mb-2">
                     <Zap className="w-4 h-4 text-red-600" />
                   </div>
-                  <div className="text-sm font-bold text-red-800 truncate max-w-full">Emergency</div>
-                  <div className="text-xs text-red-600 mt-1 truncate max-w-full">Immediate danger & crisis support</div>
+                  <div className="text-sm font-bold text-red-800 dark:text-red-300 truncate max-w-full">Emergency</div>
+                  <div className="text-xs text-red-600 dark:text-red-400 mt-1 truncate max-w-full">Immediate danger & crisis support</div>
                 </Button>
 
                 <Button
@@ -896,7 +896,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
           <div className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center ">
             {getSectionIcon(currentSection)}
           </div>
-          <h3 className="text-lg font-bold text-gray-900 capitalize">
+          <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 capitalize">
             {currentSection.replace(/-/g, ' ')}
           </h3>
         </div>
@@ -947,7 +947,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
           <Button
             variant="ghost"
             onClick={() => setCurrentSection(sectionKey)}
-            className="flex items-center space-x-2 text-gray-600 hover:text-gray-800"
+            className="flex items-center space-x-2 text-gray-600 dark:text-gray-100 hover:text-gray-800"
           >
             <ArrowLeft className="w-4 h-4" />
             <span className="text-sm">Back</span>
@@ -963,7 +963,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
         </div>
 
         <div className="space-y-4">
-          <h3 className="text-lg font-bold text-gray-900">{categoryData.title}</h3>
+          <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">{categoryData.title}</h3>
           
           {categoryData.warning && (
             <div className="bg-red-50 border border-red-200 rounded-lg p-3">
@@ -1016,7 +1016,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
             }
           </Button>
           <Shield className="w-5 h-5 text-red-600" />
-          <span className="font-bold text-gray-900">Report Emergency</span>
+          <span className="font-bold text-gray-900 dark:text-white">Report Emergency</span>
         </div>
         
         <Button
@@ -1050,7 +1050,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
       )}
 
       {/* Footer */}
-      <div className="bg-gray-50 p-3 border-t border-gray-200 text-center">
+      <div className="bg-gray-50 p-3 border-t border-gray-200 text-center rounded-lg">
         <p className="text-xs text-gray-500">
           Use responsibly. Report safely. Prioritize your security.
         </p>
