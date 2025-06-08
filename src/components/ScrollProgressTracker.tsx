@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { useScrollVisibility } from '../hooks/useScrollVisibility';
 
 interface Section {
   id: string;
@@ -17,6 +18,7 @@ export const ScrollProgressTracker: React.FC<ScrollProgressTrackerProps> = ({
   sections 
 }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
+  const isVisible = useScrollVisibility(300);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,7 +40,12 @@ export const ScrollProgressTracker: React.FC<ScrollProgressTrackerProps> = ({
   };
 
   return (
-    <div className="fixed left-8 top-1/2 transform -translate-y-1/2 z-50 hidden md:flex flex-col items-center">
+    <div className={`fixed left-8 top-1/2 transform -translate-y-1/2 z-50 hidden md:flex flex-col items-centertransition-all duration-300 ease-in-out transform ${
+        isVisible
+        ? 'opacity-100 translate-y-0 pointer-events-auto'
+        : 'opacity-0 translate-y-4 pointer-events-none'
+      }`}
+      >
       {/* Instruction text */}
       <div className="mb-3 bg-white dark:bg-gray-800 rounded-lg px-3 py-1 shadow-lg border border-gray-200 dark:border-gray-700">
         <span className="text-xs font-medium text-gray-600 dark:text-gray-300">
