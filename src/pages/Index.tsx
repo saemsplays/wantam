@@ -332,15 +332,15 @@ const handleCloseDonationWidget = () => {
       onClick: handleReportClick
     },
     {
-  icon: <UsersIcon size={18} />,
-  label: 'Reject',
-  onClick: () => {
-    const el = document.getElementById('details');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-  }
-},
+      icon: <UsersIcon size={18} />,
+      label: 'Reject',
+      onClick: () => {
+        const el = document.getElementById('details');
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+    },
   ];
 
   return (
@@ -852,7 +852,7 @@ const handleCloseDonationWidget = () => {
         </p>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0">
+      <div className="absolute bottom-0 left-0 right-0 z-70">
         <Dock 
           items={dockItems}
           panelHeight={68}
