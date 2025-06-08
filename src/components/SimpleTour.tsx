@@ -136,8 +136,8 @@ export const SimpleTour: React.FC<SimpleTourProps> = ({ isActive, onComplete, on
           
           <CardContent>
             <div className="mb-6">
-              <h3 className="font-semibold text-gray-900 mb-2">{currentStepData.title}</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">{currentStepData.description}</p>
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{currentStepData.title}</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-100 leading-relaxed">{currentStepData.description}</p>
             </div>
             
             <div className="flex items-center justify-between">
