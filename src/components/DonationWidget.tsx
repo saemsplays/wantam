@@ -184,7 +184,7 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
                   : 'bg-gradient-to-br from-red-500 via-red-600 to-red-700 shadow-red-600/40 scale-100'
               }`}
             >
-              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-red-300/30 to-transparent" />
+              <div className="absolute inset-1 rounded-full bg-gradient-to-br from-red-300/30 to-transparent" />
               <Heart 
                 className={`relative z-10 transition-all duration-300 ease-out ${
                   isHovering 
