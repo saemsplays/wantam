@@ -710,139 +710,170 @@ const handleCloseDonationWidget = () => {
         <section id="subject" className={`transition-all duration-700 ${
           activeSection === 'subject' ? 'relative z-30 scale-[1.02]' : 'relative z-20'
         }`}>
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-3">
-                <div className="bg-purple-600 dark:bg-purple-500 p-2 rounded-lg">
-                  <FileText className="h-5 w-5 text-white" />
-                </div>
-                <span className="text-gray-900 dark:text-white">Email Subject</span>
-              </CardTitle>
-              <p className="text-gray-600 dark:text-gray-400">The subject line for your objection email</p>
-            </CardHeader>
-            <CardContent>
-              <Input
-                value={subject}
-                onChange={(e) => setSubject(e.target.value)}
-                className="text-sm font-medium py-3 border-2 focus:border-purple-500 dark:focus:border-purple-400 transition-colors dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-              />
-            </CardContent>
-          </Card>
+          <Card className="group dark:bg-gray-800 dark:border-gray-700 hover:shadow-lg hover:shadow-purple-500/10 dark:hover:shadow-purple-400/20 hover:border-purple-300 dark:hover:border-purple-500 transition-all duration-300 ease-out hover:scale-[1.005]">
+  <CardHeader className="group-hover:bg-purple-50/30 dark:group-hover:bg-purple-900/20 transition-colors duration-300 rounded-t-lg">
+    <CardTitle className="flex items-center gap-3">
+      <div className="bg-purple-600 dark:bg-purple-500 p-2 rounded-lg group-hover:bg-purple-700 dark:group-hover:bg-purple-400 group-hover:shadow-md transition-all duration-300 group-hover:scale-105">
+        <FileText className="h-5 w-5 text-white transition-transform duration-300 group-hover:rotate-12" />
+      </div>
+      <span className="text-gray-900 dark:text-white group-hover:text-purple-900 dark:group-hover:text-purple-100 transition-colors duration-300">
+        Email Subject
+      </span>
+    </CardTitle>
+    <p className="text-gray-600 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors duration-300">
+      The subject line for your objection email
+    </p>
+  </CardHeader>
+  
+  <CardContent className="group-hover:bg-gradient-to-br group-hover:from-purple-50/10 group-hover:to-transparent dark:group-hover:from-purple-800/5 dark:group-hover:to-transparent transition-all duration-300">
+    <div className="relative">
+      <Input
+        value={subject}
+        onChange={(e) => setSubject(e.target.value)}
+        className="text-sm font-medium py-3 border-2 focus:border-purple-500 dark:focus:border-purple-400 transition-all duration-300 dark:bg-gray-700 dark:border-gray-600 dark:text-white hover:border-purple-400 dark:hover:border-purple-500 hover:shadow-md hover:shadow-purple-500/10 dark:hover:shadow-purple-400/20 group-hover:bg-white/80 dark:group-hover:bg-gray-600/80"
+      />
+      {/* Subtle glow effect on hover */}
+      <div className="absolute inset-0 rounded-md bg-gradient-to-r from-purple-400/0 via-purple-400/5 to-purple-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+    </div>
+  </CardContent>
+</Card>
         </section>
 
         <section id="letter" className={`transition-all duration-700 ${
           activeSection === 'letter' ? 'relative z-30 scale-[1.02]' : 'relative z-20'
         }`}>
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-3">
-                <div className="bg-indigo-600 dark:bg-indigo-500 p-2 rounded-lg">
-                  <FileText className="h-5 w-5 text-white" />
-                </div>
-                <span className="text-gray-900 dark:text-white">Your Objection Letter</span>
-              </CardTitle>
-              <p className="text-gray-600 dark:text-gray-400">
-                Review and edit your formal objection letter. The letter cites specific constitutional violations and legal grounds.
-              </p>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700 rounded-lg p-4">
-                  <div className="flex items-center gap-2 text-amber-700 dark:text-amber-300 mb-2">
-                    <AlertTriangle className="h-4 w-4" />
-                    <span className="text-sm font-medium">Key Objections Covered</span>
-                  </div>
-                  <ul className="text-sm text-amber-700 dark:text-amber-300 space-y-1">
-                    <li>• VAT on essential goods (Art 43 violation)</li>
-                    <li>• Digital lending tax expansion (Art 27 violation)</li>
-                    <li>• Privacy rights erosion (Art 31 violation)</li>
-                  </ul>
-                </div>
-                
-                <Textarea
-                  value={messageBody.replace(
-                    '[USER_NAME_PLACEHOLDER]',
-                    userName || '[Your Name Will Appear Here]'
-                  )}
-                  onChange={(e) => {
-                    const newValue = e.target.value.replace(
-                      userName || '[Your Name Will Appear Here]',
-                      '[USER_NAME_PLACEHOLDER]'
-                    );
-                    setMessageBody(newValue);
-                  }}
-                  rows={25}
-                  className="text-sm leading-relaxed font-mono resize-none border-2 focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                />
-              </div>
-            </CardContent>
-          </Card>
+          <Card className="group dark:bg-gray-800 dark:border-gray-700 hover:shadow-lg hover:shadow-indigo-500/10 dark:hover:shadow-indigo-400/20 hover:border-indigo-300 dark:hover:border-indigo-500 transition-all duration-300 ease-out hover:scale-[1.002]">
+  <CardHeader className="group-hover:bg-indigo-50/30 dark:group-hover:bg-indigo-900/20 transition-colors duration-300 rounded-t-lg">
+    <CardTitle className="flex items-center gap-3">
+      <div className="bg-indigo-600 dark:bg-indigo-500 p-2 rounded-lg group-hover:bg-indigo-700 dark:group-hover:bg-indigo-400 group-hover:shadow-md transition-all duration-300 group-hover:scale-105">
+        <FileText className="h-5 w-5 text-white transition-transform duration-300 group-hover:rotate-3" />
+      </div>
+      <span className="text-gray-900 dark:text-white group-hover:text-indigo-900 dark:group-hover:text-indigo-100 transition-colors duration-300">
+        Your Objection Letter
+      </span>
+    </CardTitle>
+    <p className="text-gray-600 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors duration-300">
+      Review and edit your formal objection letter. The letter cites specific constitutional violations and legal grounds.
+    </p>
+  </CardHeader>
+  
+  <CardContent className="group-hover:bg-gradient-to-br group-hover:from-indigo-50/10 group-hover:to-transparent dark:group-hover:from-indigo-800/5 dark:group-hover:to-transparent transition-all duration-300">
+    <div className="space-y-4">
+      <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border-2 border-gray-200 dark:border-gray-600 group-hover:border-indigo-300 dark:group-hover:border-indigo-500 group-hover:shadow-md group-hover:shadow-indigo-500/10 dark:group-hover:shadow-indigo-400/20 transition-all duration-300 group-hover:scale-[1.005] relative">
+        <h4 className="font-semibold text-gray-900 dark:text-white mb-3 group-hover:text-indigo-900 dark:group-hover:text-indigo-100 transition-colors duration-300">
+          Key Objections Covered
+        </h4>
+        <div className="space-y-2 text-sm text-gray-700 dark:text-gray-300 group-hover:text-gray-800 dark:group-hover:text-gray-200 transition-colors duration-300">
+          <div className="flex items-center space-x-2 group/item">
+            <span className="text-red-500 dark:text-red-400 group-hover/item:text-red-600 dark:group-hover/item:text-red-300 transition-colors duration-300">•</span>
+            <span className="group-hover/item:font-medium transition-all duration-300">VAT on essential goods (Art 43 violation)</span>
+          </div>
+          <div className="flex items-center space-x-2 group/item">
+            <span className="text-red-500 dark:text-red-400 group-hover/item:text-red-600 dark:group-hover/item:text-red-300 transition-colors duration-300">•</span>
+            <span className="group-hover/item:font-medium transition-all duration-300">Digital lending tax expansion (Art 27 violation)</span>
+          </div>
+          <div className="flex items-center space-x-2 group/item">
+            <span className="text-red-500 dark:text-red-400 group-hover/item:text-red-600 dark:group-hover/item:text-red-300 transition-colors duration-300">•</span>
+            <span className="group-hover/item:font-medium transition-all duration-300">Privacy rights erosion (Art 31 violation)</span>
+          </div>
+        </div>
+        {/* Subtle glow effect */}
+        <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-indigo-400/0 via-indigo-400/5 to-indigo-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+      </div>
+      
+      <div className="relative group/textarea">
+        <textarea
+          value={messageBody}
+          onChange={(e) => {
+            const newValue = e.target.value.replace(
+              userName || '[Your Name Will Appear Here]',
+              '[USER_NAME_PLACEHOLDER]'
+            );
+            setMessageBody(newValue);
+          }}
+          rows={25}
+          className="text-sm leading-relaxed font-mono resize-none border-2 focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors dark:bg-gray-700 dark:border-gray-600 dark:text-white w-full rounded-lg p-3 hover:border-indigo-300 dark:hover:border-indigo-500 hover:shadow-md hover:shadow-indigo-500/10 dark:hover:shadow-indigo-400/20 group-hover/textarea:scale-[1.002] transition-all duration-300"
+        />
+        {/* Subtle border glow on hover */}
+        <div className="absolute inset-0 rounded-lg border-2 border-indigo-400/20 dark:border-indigo-300/20 opacity-0 group-hover/textarea:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+      </div>
+    </div>
+  </CardContent>
+</Card>
         </section>
 
         <section id="send" className={`transition-all duration-700 ${
           activeSection === 'send' ? 'relative z-30 scale-[1.02]' : 'relative z-20'
         }`}>
-          <Card className="bg-gradient-to-r from-emerald-50 to-blue-50 dark:from-emerald-900/30 dark:to-blue-900/30 border-2 border-emerald-200 dark:border-emerald-700">
-            <CardContent className="pt-6">
-              <div className="text-center space-y-6">
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                    Ready to Submit Your Objection?
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    Clicking the button below will open your email app with everything pre-filled.
-                    Just review and hit send!
-                  </p>
-                </div>
-
-                <div className="bg-white dark:bg-gray-800 rounded-lg p-4 max-w-md mx-auto">
-                  <div className="space-y-2 text-sm">
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-700 dark:text-gray-300">Your Name:</span>
-                      <span
-                        className={
-                          userName.trim() ? "text-emerald-600 dark:text-emerald-400 font-medium" : "text-red-500 dark:text-red-400"
-                        }
-                      >
-                        {userName.trim() ? "✓ Provided" : "✗ Required"}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-700 dark:text-gray-300">Recipients:</span>
-                      <span
-                        className={
-                          getSelectedRecipientEmails().length > 0
-                            ? "text-emerald-600 dark:text-emerald-400 font-medium"
-                            : "text-red-500 dark:text-red-400"
-                        }
-                      >
-                        {getSelectedRecipientEmails().length > 0
-                          ? `✓ ${getSelectedRecipientEmails().length} selected`
-                          : "✗ None selected"}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-700 dark:text-gray-300">Letter:</span>
-                      <span className="text-emerald-600 dark:text-emerald-400 font-medium">✓ Ready</span>
-                    </div>
-                  </div>
-                </div>
-
-                <Button
-                  onClick={handleSendEmail}
-                  size="lg"
-                  className="bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 dark:from-emerald-500 dark:to-blue-500 dark:hover:from-emerald-600 dark:hover:to-blue-600 text-white px-4 sm:px-6 md:px-12 py-4 text-sm sm:text-base md:text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 w-full max-w-full"
-                >
-                  <Send className="mr-2 sm:mr-3 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 flex-shrink-0" />
-                  <span className="truncate text-xs sm:text-sm md:text-base">Open Email & Send Objection</span>
-                </Button>
-
-                <p className="text-xs text-gray-500 dark:text-gray-400 max-w-md mx-auto">
-                  This will open your default email app (Gmail, Outlook, Apple Mail, etc.) with your objection letter ready to send to the National Assembly.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+          <Card className="group bg-gradient-to-r from-emerald-50 to-blue-50 dark:from-emerald-900/30 dark:to-blue-900/30 border-2 border-emerald-200 dark:border-emerald-700 hover:shadow-xl hover:shadow-emerald-500/20 dark:hover:shadow-emerald-400/30 hover:border-emerald-300 dark:hover:border-emerald-500 transition-all duration-300 ease-out hover:scale-[1.005] hover:from-emerald-100 hover:to-blue-100 dark:hover:from-emerald-900/40 dark:hover:to-blue-900/40">
+  <CardContent className="pt-6 group-hover:bg-gradient-to-br group-hover:from-white/10 group-hover:to-transparent dark:group-hover:from-white/5 dark:group-hover:to-transparent transition-all duration-300 rounded-lg">
+    <div className="text-center space-y-6">
+      <div className="group-hover:transform group-hover:scale-[1.02] transition-transform duration-300">
+        <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-emerald-900 dark:group-hover:text-emerald-100 transition-colors duration-300">
+          Ready to Submit Your Objection?
+        </h3>
+        <p className="text-gray-600 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors duration-300">
+          Clicking the button below will open your email app with everything pre-filled.
+          Just review and hit send!
+        </p>
+      </div>
+      
+      <div className="bg-white dark:bg-gray-800 rounded-lg p-4 max-w-md mx-auto border-2 border-transparent group-hover:border-emerald-200 dark:group-hover:border-emerald-600 group-hover:shadow-lg group-hover:shadow-emerald-500/10 dark:group-hover:shadow-emerald-400/20 transition-all duration-300 group-hover:scale-[1.02] relative">
+        <div className="space-y-2 text-sm">
+          <div className="flex items-center justify-between group/status hover:bg-emerald-50/30 dark:hover:bg-emerald-900/20 rounded px-2 py-1 transition-colors duration-300">
+            <span className="text-gray-700 dark:text-gray-300 group-hover/status:text-emerald-800 dark:group-hover/status:text-emerald-200 transition-colors duration-300">Your Name:</span>
+            <span
+              className={
+                userName.trim() 
+                  ? "text-emerald-600 dark:text-emerald-400 font-medium group-hover/status:text-emerald-700 dark:group-hover/status:text-emerald-300 group-hover/status:font-semibold transition-all duration-300" 
+                  : "text-red-500 dark:text-red-400 group-hover/status:text-red-600 dark:group-hover/status:text-red-300 transition-colors duration-300"
+              }
+            >
+              {userName.trim() ? "✓ Provided" : "✗ Required"}
+            </span>
+          </div>
+          <div className="flex items-center justify-between group/status hover:bg-emerald-50/30 dark:hover:bg-emerald-900/20 rounded px-2 py-1 transition-colors duration-300">
+            <span className="text-gray-700 dark:text-gray-300 group-hover/status:text-emerald-800 dark:group-hover/status:text-emerald-200 transition-colors duration-300">Recipients:</span>
+            <span
+              className={
+                getSelectedRecipientEmails().length > 0
+                  ? "text-emerald-600 dark:text-emerald-400 font-medium group-hover/status:text-emerald-700 dark:group-hover/status:text-emerald-300 group-hover/status:font-semibold transition-all duration-300"
+                  : "text-red-500 dark:text-red-400 group-hover/status:text-red-600 dark:group-hover/status:text-red-300 transition-colors duration-300"
+              }
+            >
+              {getSelectedRecipientEmails().length > 0
+                ? `✓ ${getSelectedRecipientEmails().length} selected`
+                : "✗ None selected"}
+            </span>
+          </div>
+          <div className="flex items-center justify-between group/status hover:bg-emerald-50/30 dark:hover:bg-emerald-900/20 rounded px-2 py-1 transition-colors duration-300">
+            <span className="text-gray-700 dark:text-gray-300 group-hover/status:text-emerald-800 dark:group-hover/status:text-emerald-200 transition-colors duration-300">Letter:</span>
+            <span className="text-emerald-600 dark:text-emerald-400 font-medium group-hover/status:text-emerald-700 dark:group-hover/status:text-emerald-300 group-hover/status:font-semibold transition-all duration-300">✓ Ready</span>
+          </div>
+        </div>
+        {/* Subtle inner glow */}
+        <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-emerald-400/0 via-emerald-400/3 to-emerald-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+      </div>
+      
+      <div className="group/button">
+        <Button
+          onClick={handleSendEmail}
+          size="lg"
+          className="bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 dark:from-emerald-500 dark:to-blue-500 dark:hover:from-emerald-600 dark:hover:to-blue-600 text-white px-4 sm:px-6 md:px-12 py-4 text-sm sm:text-base md:text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 w-full max-w-full group-hover/button:shadow-2xl group-hover/button:shadow-emerald-500/30 dark:group-hover/button:shadow-emerald-400/40 group-hover/button:scale-110 group-hover/button:from-emerald-500 group-hover/button:to-blue-500 dark:group-hover/button:from-emerald-400 dark:group-hover/button:to-blue-400"
+        >
+          <Send className="mr-2 sm:mr-3 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 flex-shrink-0 group-hover/button:animate-pulse" />
+          <span className="truncate text-xs sm:text-sm md:text-base group-hover/button:font-bold transition-all duration-300">
+            Open Email & Send Objection
+          </span>
+        </Button>
+      </div>
+      
+      <p className="text-xs text-gray-500 dark:text-gray-400 max-w-md mx-auto group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors duration-300 group-hover:font-medium">
+        This will open your default email app (Gmail, Outlook, Apple Mail, etc.) with your objection letter ready to send to the National Assembly.
+      </p>
+    </div>
+  </CardContent>
+</Card>
         </section>
       </div>
 
