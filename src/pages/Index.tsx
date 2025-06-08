@@ -388,14 +388,15 @@ const handleCloseDonationWidget = () => {
 
       <ScrollToTop />
 
-      <FloatingActionButtons
+      {/*
+        <FloatingActionButtons
         onReportClick={handleReportClick}
         onSupportClick={handleSupportClick}
         onMenuClick={handleMenuClick}
         onScrollToTop={handleScrollToTop}
         onRadioClick={handleRadioClick}
         isReportOpen={isReportingOpen}
-      />
+      /> */}
 
       <BillsFAB />
 
