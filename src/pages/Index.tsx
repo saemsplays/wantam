@@ -333,7 +333,7 @@ const handleCloseDonationWidget = () => {
     },
     {
   icon: <UsersIcon size={18} />,
-  label: 'CEKA',
+  label: 'Reject',
   onClick: () => {
     const el = document.getElementById('details');
     if (el) {
