@@ -2,6 +2,8 @@
 import React from 'react';
 import { Shield, Radio } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useScrollVisibility } from '../hooks/useScrollVisibility';
+
 
 interface FloatingActionButtonsProps {
   onReportClick: () => void;
@@ -16,6 +18,7 @@ export const FloatingActionButtons: React.FC<FloatingActionButtonsProps> = ({
 }) => {
   const buttonSize = "w-12 h-12";
   const spacing = "mb-3";
+  const isVisible = useScrollVisibility(300);
 
   const buttonVariants = {
     initial: { scale: 1 },
@@ -24,7 +27,12 @@ export const FloatingActionButtons: React.FC<FloatingActionButtonsProps> = ({
   };
 
   return (
-    <div className="fixed right-8 bottom-44 transform -translate-y-[5px] z-30 flex flex-col items-center">
+    <div className={`fixed right-8 bottom-44 transform -translate-y-[5px] z-30 flex flex-col items-centertransition-all duration-300 ease-in-out transform ${
+        isVisible
+        ? 'opacity-100 translate-y-0 pointer-events-auto'
+        : 'opacity-0 translate-y-4 pointer-events-none'
+      }`}
+      >
       <motion.button
         variants={buttonVariants}
         initial="initial"
