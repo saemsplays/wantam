@@ -19,6 +19,14 @@ export default {
 			}
 		},
 		extend: {
+			zIndex: {
+				60: '60',
+				70: '70',
+				80: '80',
+				100: '100',
+				1000: '1000',
+				9999: '9999',
+			        },
 			colors: {
 				// Kenyan flag colors
 				kenyan: {
