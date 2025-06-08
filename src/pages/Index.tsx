@@ -331,16 +331,16 @@ const handleCloseDonationWidget = () => {
       label: 'Report', 
       onClick: handleReportClick
     },
-    { 
-      icon: <UsersIcon size={18} />, 
-      label: 'CEKA', 
-      onClick: () => {
-        const confirmed = confirm('You are about to visit the main CEKA platform. Would you like to proceed?');
-        if (confirmed) {
-          window.open('https://ceka.lovable.app', '_blank');
-        }
-      }
-    },
+    {
+  icon: <UsersIcon size={18} />,
+  label: 'CEKA',
+  onClick: () => {
+    const el = document.getElementById('details');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+},
   ];
 
   return (
