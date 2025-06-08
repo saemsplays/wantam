@@ -71,19 +71,9 @@ export const SharedLayout: React.FC<SharedLayoutProps> = ({ children }) => {
 
   const dockItems = [
     { 
-      icon: <FileTextIcon size={18} />, 
-      label: 'Bills', 
-      onClick: handleBillsClick
-    },
-    { 
       icon: <RadioIcon size={18} />, 
       label: 'Radio', 
       onClick: handleRadioClick
-    },
-    { 
-      icon: <HeartIcon size={18} />, 
-      label: 'Support', 
-      onClick: handleDonationClick
     },
     { 
       icon: <FlagIcon size={18} />, 
