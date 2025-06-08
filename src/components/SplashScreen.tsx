@@ -33,7 +33,7 @@ const SplashScreen = () => {
 
     const timer = setTimeout(() => {
       setIsVisible(false);
-    }, 3500);
+    }, 4500);
     
     return () => {
       clearTimeout(timer);
