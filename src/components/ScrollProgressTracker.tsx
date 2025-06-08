@@ -40,7 +40,7 @@ export const ScrollProgressTracker: React.FC<ScrollProgressTrackerProps> = ({
   };
 
   return (
-    <div className={`fixed left-8 top-1/2 transform -translate-y-1/2 z-50 hidden md:flex flex-col items-centertransition-all duration-300 ease-in-out transform ${
+    <div className={`fixed left-8 top-1/2 transform -translate-y-1/2 z-50 hidden md:flex flex-col items-center transition-all duration-300 ease-in-out transform ${
         isVisible
         ? 'opacity-100 translate-y-0 pointer-events-auto'
         : 'opacity-0 translate-y-4 pointer-events-none'
