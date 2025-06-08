@@ -24,7 +24,7 @@ export const SimpleTour: React.FC<SimpleTourProps> = ({ isActive, onComplete, on
     {
       id: 'start',
       title: 'Begin Your Guide',
-      description: 'Welcome! I am herer to guide you through your submission. Shall we?',
+      description: 'Welcome! I am here to guide you through your submission. Shall we?',
       targetId: 'hero'
     },
     {
@@ -36,13 +36,13 @@ export const SimpleTour: React.FC<SimpleTourProps> = ({ isActive, onComplete, on
     {
       id: 'details',
       title: 'Enter Your Details',
-      description: 'Add a name to personalize your objection letter. It does not have to be your actual name.',
+      description: 'Add a name to personalize your objection letter. You\'re free to use a pseudonym or initials.',
       targetId: 'details'
     },
     {
       id: 'recipients',
-      title: 'Choose Recipients',
-      description: 'Review who should receive your constitutional objection',
+      title: 'Confirm Recipients',
+      description: 'In this case, they\'ve been ticked for you',
       targetId: 'recipients'
     },
     {
@@ -54,7 +54,7 @@ export const SimpleTour: React.FC<SimpleTourProps> = ({ isActive, onComplete, on
     {
       id: 'letter',
       title: 'Review Your Letter',
-      description: 'Examine the pre-drafted constitutional objections and edit if needed',
+      description: 'Examine and edit if needed',
       targetId: 'letter'
     },
     {
