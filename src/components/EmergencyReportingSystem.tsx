@@ -802,70 +802,70 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
                 </Button>
 
                <Button
-  variant="outline"
-  onClick={() => setCurrentSection('local-ngos')}
-  className="p-4 h-auto bg-blue-50 dark:bg-blue-500/10 border-blue-200 dark:border-blue-400/30 hover:bg-blue-100 dark:hover:bg-blue-500/10 text-left flex flex-col items-start overflow-hidden rounded-xl"
->
-  <div className="w-8 h-8 bg-blue-100 dark:bg-blue-400/10 rounded-full flex items-center justify-center mb-2">
-    <MapPin className="w-4 h-4 text-blue-600" />
-  </div>
-  <div className="text-sm font-bold text-blue-800 dark:text-blue-300 truncate max-w-full">Local NGOs</div>
-  <div className="text-xs text-blue-600 dark:text-blue-400 mt-1 truncate max-w-full">Kenyan human rights organizations</div>
-</Button>
-
-<Button
-  variant="outline"
-  onClick={() => setCurrentSection('international-orgs')}
-  className="p-4 h-auto bg-purple-50 dark:bg-purple-500/10 border-purple-200 dark:border-purple-400/30 hover:bg-purple-100 dark:hover:bg-purple-500/10 text-left flex flex-col items-start overflow-hidden rounded-xl"
->
-  <div className="w-8 h-8 bg-purple-100 dark:bg-purple-400/10 rounded-full flex items-center justify-center mb-2">
-    <Globe className="w-4 h-4 text-purple-600" />
-  </div>
-  <div className="text-sm font-bold text-purple-800 dark:text-purple-300 truncate max-w-full">International</div>
-  <div className="text-xs text-purple-600 dark:text-purple-400 mt-1 truncate max-w-full">UN bodies & global organizations</div>
-</Button>
-
-<Button
-  variant="outline"
-  onClick={() => setCurrentSection('legal-support')}
-  className="p-4 h-auto bg-green-50 dark:bg-green-500/10 border-green-200 dark:border-green-400/30 hover:bg-green-100 dark:hover:bg-green-500/10 text-left flex flex-col items-start overflow-hidden rounded-xl"
->
-  <div className="w-8 h-8 bg-green-100 dark:bg-green-400/10 rounded-full flex items-center justify-center mb-2">
-    <Scale className="w-4 h-4 text-green-600" />
-  </div>
-  <div className="text-sm font-bold text-green-800 dark:text-green-300 truncate max-w-full">Legal Aid</div>
-  <div className="text-xs text-green-600 dark:text-green-400 mt-1 truncate max-w-full">Medical & legal documentation</div>
-</Button>
-
-<Button
-  variant="outline"
-  onClick={() => setCurrentSection('secure-channels')}
-  className="p-4 h-auto bg-yellow-50 dark:bg-yellow-500/10 border-yellow-200 dark:border-yellow-400/30 hover:bg-yellow-100 dark:hover:bg-yellow-500/10 text-left flex flex-col items-start overflow-hidden rounded-xl"
->
-  <div className="w-8 h-8 bg-yellow-100 dark:bg-yellow-400/10 rounded-full flex items-center justify-center mb-2">
-    <Shield className="w-4 h-4 text-yellow-600" />
-  </div>
-  <div className="text-sm font-bold text-yellow-800 dark:text-yellow-300 truncate max-w-full">Secure Channels</div>
-  <div className="text-xs text-yellow-600 dark:text-yellow-400 mt-1 truncate max-w-full">Safe reporting methods</div>
-</Button>
-
-<Button
-  variant="outline"
-  onClick={() => setCurrentSection('darkweb-options')}
-  className="p-4 h-auto bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-700 text-left flex flex-col items-start overflow-hidden rounded-xl"
->
-  <div className="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center mb-2 overflow-hidden rounded-xl">
-    <Globe className="w-4 h-4 text-gray-700 dark:text-gray-300" />
-  </div>
-  <div className="text-sm font-bold text-gray-800 dark:text-gray-300 truncate max-w-full">Dark Web Options</div>
-  <div className="text-xs text-gray-600 dark:text-gray-400 mt-1 truncate max-w-full">High-risk anonymous reporting</div>
-</Button>
-
+                 variant="outline"
+                 onClick={() => setCurrentSection('local-ngos')}
+                 className="p-4 h-auto bg-blue-50 dark:bg-blue-500/10 border-blue-200 dark:border-blue-400/30 hover:bg-blue-100 dark:hover:bg-blue-500/20 text-left flex flex-col items-start overflow-hidden rounded-xl"
+                 >
+                 <div className="w-8 h-8 bg-blue-100 dark:bg-blue-400/10 rounded-full flex items-center justify-center mb-2">
+                   <MapPin className="w-4 h-4 text-blue-600" />
+                 </div>
+                 <div className="text-sm font-bold text-blue-800 dark:text-blue-300 truncate max-w-full">Local NGOs</div>
+                 <div className="text-xs text-blue-600 dark:text-blue-400 mt-1 truncate max-w-full">Kenyan human rights organizations</div>
+               </Button>
+                
+                <Button
+                  variant="outline"
+                  onClick={() => setCurrentSection('international-orgs')}
+                  className="p-4 h-auto bg-purple-50 dark:bg-purple-500/10 border-purple-200 dark:border-purple-400/30 hover:bg-purple-100 dark:hover:bg-purple-500/20 text-left flex flex-col items-start overflow-hidden rounded-xl"
+                  >
+                  <div className="w-8 h-8 bg-purple-100 dark:bg-purple-400/10 rounded-full flex items-center justify-center mb-2">
+                    <Globe className="w-4 h-4 text-purple-600" />
+                  </div>
+                  <div className="text-sm font-bold text-purple-800 dark:text-purple-300 truncate max-w-full">International</div>
+                  <div className="text-xs text-purple-600 dark:text-purple-400 mt-1 truncate max-w-full">UN bodies & global organizations</div>
+                </Button>
+                
+                <Button
+                  variant="outline"
+                  onClick={() => setCurrentSection('legal-support')}
+                  className="p-4 h-auto bg-green-50 dark:bg-green-500/10 border-green-200 dark:border-green-400/30 hover:bg-green-100 dark:hover:bg-green-500/20 text-left flex flex-col items-start overflow-hidden rounded-xl"
+                  >
+                  <div className="w-8 h-8 bg-green-100 dark:bg-green-400/10 rounded-full flex items-center justify-center mb-2">
+                    <Scale className="w-4 h-4 text-green-600" />
+                  </div>
+                  <div className="text-sm font-bold text-green-800 dark:text-green-300 truncate max-w-full">Legal Aid</div>
+                  <div className="text-xs text-green-600 dark:text-green-400 mt-1 truncate max-w-full">Medical & legal documentation</div>
+                </Button>
+                
+                <Button
+                  variant="outline"
+                  onClick={() => setCurrentSection('secure-channels')}  className="p-4 h-auto bg-yellow-50 dark:bg-yellow-500/10 border-yellow-200 dark:border-yellow-400/30 hover:bg-yellow-100 dark:hover:bg-yellow-500/20 text-left flex flex-col items-start overflow-hidden rounded-xl"
+                  
+                  >
+                  <div className="w-8 h-8 bg-yellow-100 dark:bg-yellow-400/10 rounded-full flex items-center justify-center mb-2">
+                    <Shield className="w-4 h-4 text-yellow-600" />
+                  </div>
+                  <div className="text-sm font-bold text-yellow-800 dark:text-yellow-300 truncate max-w-full">Secure Channels</div>
+                  <div className="text-xs text-yellow-600 dark:text-yellow-400 mt-1 truncate max-w-full">Safe reporting methods</div>
+                </Button>
+                
+                <Button
+                  variant="outline"
+                  onClick={() => setCurrentSection('darkweb-options')}
+                  className="p-4 h-auto bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-700 text-left flex flex-col items-start overflow-hidden rounded-xl"
+                  >
+                  <div className="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center mb-2 overflow-hidden rounded-xl">
+                    <Globe className="w-4 h-4 text-gray-700 dark:text-gray-300" />
+                  </div>
+                  <div className="text-sm font-bold text-gray-800 dark:text-gray-300 truncate max-w-full">Dark Web Options</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400 mt-1 truncate max-w-full">High-risk anonymous reporting</div>
+                </Button>
+                
               </>
-            )}
+          )}
           </div>
-        )}
-
+      )}
+        
         <div className="bg-red-50 border border-red-100 rounded-lg p-3">
           <div className="flex items-start space-x-2">
             <AlertTriangle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
