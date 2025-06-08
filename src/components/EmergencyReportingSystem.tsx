@@ -996,7 +996,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
   };
 
   const content = (
-    <div className="space-y-4 rounded-xl bg-white p-6 shadow-lg w-full max-w-2xl">
+    <div className="space-y-4 rounded-xl bg-white p-6 shadow-lg w-full">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
