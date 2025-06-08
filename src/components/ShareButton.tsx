@@ -57,7 +57,14 @@ export const ShareButton: React.FC = () => {
   ];
 
   return (
-    <div className="fixed left-4 bottom-20 z-40">
+    <div
+      className={`fixed left-4 bottom-20 z-40 transition-all duration-300 ease-in-out transform ${
+        isVisible
+        ? 'opacity-100 translate-y-0 pointer-events-auto'
+        : 'opacity-0 translate-y-4 pointer-events-none'
+      }`}
+      >
+
       <div className="relative">
         <motion.button
           onClick={() => setIsOpen(!isOpen)}
