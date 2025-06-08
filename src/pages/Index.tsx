@@ -640,50 +640,71 @@ const handleCloseDonationWidget = () => {
         <section id="recipients" className={`transition-all duration-700 ${
           activeSection === 'recipients' ? 'relative z-30 scale-[1.02]' : 'relative z-20'
         }`}>
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-3">
-                <div className="bg-emerald-600 dark:bg-emerald-500 p-2 rounded-lg">
-                  <Mail className="h-5 w-5 text-white" />
-                </div>
-                <span className="text-gray-900 dark:text-white">Send To</span>
-              </CardTitle>
-              <p className="text-gray-600 dark:text-gray-400">Select who should receive your objection letter</p>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="flex items-start space-x-3 p-4 border-2 border-gray-200 dark:border-gray-600 rounded-lg hover:border-emerald-300 dark:hover:border-emerald-500 transition-colors">
-                    <Checkbox
-                      id="clerk"
-                      checked={selectedRecipients.clerk}
-                      onCheckedChange={(checked) => handleRecipientChange('clerk', checked as boolean)}
-                      className="mt-1"
-                    />
-                    <Label htmlFor="clerk" className="flex-1 cursor-pointer">
-                      <div className="font-semibold text-gray-900 dark:text-white">{recipients.clerk.name}</div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">{recipients.clerk.email}</div>
-                      <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-1">✓ Recommended</div>
-                    </Label>
-                  </div>
-                  
-                  <div className="flex items-start space-x-3 p-4 border-2 border-gray-200 dark:border-gray-600 rounded-lg hover:border-emerald-300 dark:hover:border-emerald-500 transition-colors">
-                    <Checkbox
-                      id="financeCommittee"
-                      checked={selectedRecipients.financeCommittee}
-                      onCheckedChange={(checked) => handleRecipientChange('financeCommittee', checked as boolean)}
-                      className="mt-1"
-                    />
-                    <Label htmlFor="financeCommittee" className="flex-1 cursor-pointer">
-                      <div className="font-semibold text-gray-900 dark:text-white">{recipients.financeCommittee.name}</div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">{recipients.financeCommittee.email}</div>
-                      <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-1">✓ Recommended</div>
-                    </Label>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+         <Card className="group dark:bg-gray-800 dark:border-gray-700 hover:shadow-lg hover:shadow-emerald-500/10 dark:hover:shadow-emerald-400/20 hover:border-emerald-300 dark:hover:border-emerald-500 transition-all duration-300 ease-out hover:scale-[1.005]">
+  <CardHeader className="group-hover:bg-emerald-50/30 dark:group-hover:bg-emerald-900/20 transition-colors duration-300 rounded-t-lg">
+    <CardTitle className="flex items-center gap-3">
+      <div className="bg-emerald-600 dark:bg-emerald-500 p-2 rounded-lg group-hover:bg-emerald-700 dark:group-hover:bg-emerald-400 group-hover:shadow-md transition-all duration-300 group-hover:scale-105">
+        <Mail className="h-5 w-5 text-white transition-transform duration-300 group-hover:rotate-12" />
+      </div>
+      <span className="text-gray-900 dark:text-white group-hover:text-emerald-900 dark:group-hover:text-emerald-100 transition-colors duration-300">
+        Send To
+      </span>
+    </CardTitle>
+    <p className="text-gray-600 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors duration-300">
+      Select who should receive your objection letter
+    </p>
+  </CardHeader>
+  
+  <CardContent className="group-hover:bg-gradient-to-br group-hover:from-emerald-50/10 group-hover:to-transparent dark:group-hover:from-emerald-800/5 dark:group-hover:to-transparent transition-all duration-300">
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="flex items-start space-x-3 p-4 border-2 border-gray-200 dark:border-gray-600 rounded-lg hover:border-emerald-300 dark:hover:border-emerald-500 hover:bg-emerald-50/30 dark:hover:bg-emerald-900/20 hover:shadow-md hover:shadow-emerald-500/10 dark:hover:shadow-emerald-400/20 transition-all duration-300 hover:scale-[1.02] group/item">
+          <Checkbox
+            id="clerk"
+            checked={selectedRecipients.clerk}
+            onCheckedChange={(checked) => handleRecipientChange('clerk', checked as boolean)}
+            className="mt-1 group-hover/item:border-emerald-400 transition-colors duration-300"
+          />
+          <Label htmlFor="clerk" className="flex-1 cursor-pointer">
+            <div className="font-semibold text-gray-900 dark:text-white group-hover/item:text-emerald-900 dark:group-hover/item:text-emerald-100 transition-colors duration-300">
+              {recipients.clerk.name}
+            </div>
+            <div className="text-sm text-gray-600 dark:text-gray-400 group-hover/item:text-gray-700 dark:group-hover/item:text-gray-300 transition-colors duration-300">
+              {recipients.clerk.email}
+            </div>
+            <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-1 group-hover/item:text-emerald-700 dark:group-hover/item:text-emerald-300 group-hover/item:font-medium transition-all duration-300">
+              ✓ Recommended
+            </div>
+          </Label>
+          {/* Subtle glow effect */}
+          <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-emerald-400/0 via-emerald-400/5 to-emerald-400/0 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+        </div>
+        
+        <div className="flex items-start space-x-3 p-4 border-2 border-gray-200 dark:border-gray-600 rounded-lg hover:border-emerald-300 dark:hover:border-emerald-500 hover:bg-emerald-50/30 dark:hover:bg-emerald-900/20 hover:shadow-md hover:shadow-emerald-500/10 dark:hover:shadow-emerald-400/20 transition-all duration-300 hover:scale-[1.02] group/item relative">
+          <Checkbox
+            id="financeCommittee"
+            checked={selectedRecipients.financeCommittee}
+            onCheckedChange={(checked) => handleRecipientChange('financeCommittee', checked as boolean)}
+            className="mt-1 group-hover/item:border-emerald-400 transition-colors duration-300"
+          />
+          <Label htmlFor="financeCommittee" className="flex-1 cursor-pointer">
+            <div className="font-semibold text-gray-900 dark:text-white group-hover/item:text-emerald-900 dark:group-hover/item:text-emerald-100 transition-colors duration-300">
+              {recipients.financeCommittee.name}
+            </div>
+            <div className="text-sm text-gray-600 dark:text-gray-400 group-hover/item:text-gray-700 dark:group-hover/item:text-gray-300 transition-colors duration-300">
+              {recipients.financeCommittee.email}
+            </div>
+            <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-1 group-hover/item:text-emerald-700 dark:group-hover/item:text-emerald-300 group-hover/item:font-medium transition-all duration-300">
+              ✓ Recommended
+            </div>
+          </Label>
+          {/* Subtle glow effect */}
+          <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-emerald-400/0 via-emerald-400/5 to-emerald-400/0 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+        </div>
+      </div>
+    </div>
+  </CardContent>
+</Card>
         </section>
 
         <section id="subject" className={`transition-all duration-700 ${
