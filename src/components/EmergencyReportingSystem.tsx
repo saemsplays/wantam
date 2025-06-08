@@ -919,55 +919,61 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
   };
 
   const SectionView = () => {
-    const sectionData = resources[currentSection];
-    const categories = Object.keys(sectionData);
+  const sectionData = resources[currentSection];
+  const categories = Object.keys(sectionData);
 
-    return (
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setCurrentSection('main')}
-            className="p-1.5 h-auto"
-          >
-            <ArrowLeft className="w-5 h-5 bg-gray-100 dark:bg-gray-800" />
-          </Button>
-          <div className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center ">
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setCurrentSection('main')}
+          className="p-1.5 h-auto"
+        >
+          <ArrowLeft className="w-5 h-5 bg-gray-100 dark:bg-gray-800" />
+        </Button>
+
+        <div className="flex items-center space-x-2">
+          <div className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
             {getSectionIcon(currentSection)}
           </div>
-          <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 capitalize">
+          <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 capitalize whitespace-nowrap">
             {currentSection.replace(/-/g, ' ')}
           </h3>
         </div>
 
-        <div className="grid gap-3">
-          {categories.map(category => {
-            const categoryData = sectionData[category];
-            return (
-              <Button
-                key={category}
-                variant="outline"
-                onClick={() => {
-                  setCurrentCategory(category);
-                  setCurrentSection('category-detail');
-                }}
-                className={`p-4 h-auto border rounded-lg hover:shadow-md transition-all text-left flex justify-between items-center overflow-hidden ${getSectionColor(currentSection)}`}
-              >
-                <div>
-                  <h4 className="font-semibold mb-1">{categoryData.title}</h4>
-                  <p className="text-xs opacity-80">
-                    {categoryData.organizations?.length || categoryData.contacts?.length || 0} resources
-                  </p>
-                </div>
-                <ChevronRight className="w-5 h-5 text-gray-400" />
-              </Button>
-            );
-          })}
-        </div>
+        <div className="w-8" />
       </div>
-    );
-  };
+
+      <div className="grid gap-3">
+        {categories.map(category => {
+          const categoryData = sectionData[category];
+          return (
+            <Button
+              key={category}
+              variant="outline"
+              onClick={() => {
+                setCurrentCategory(category);
+                setCurrentSection('category-detail');
+              }}
+              className={`p-4 h-auto border rounded-lg hover:shadow-md transition-all text-left flex justify-between items-center overflow-hidden ${getSectionColor(currentSection)}`}
+            >
+              <div>
+                <h4 className="font-semibold mb-1">{categoryData.title}</h4>
+                <p className="text-xs opacity-80">
+                  {categoryData.organizations?.length || categoryData.contacts?.length || 0} resources
+                </p>
+              </div>
+              <ChevronRight className="w-5 h-5 text-gray-400" />
+            </Button>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
 
   const CategoryDetailView = () => {
     const sectionKey = Object.keys(resources).find(key => 
