@@ -1076,10 +1076,10 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
   return (
     <>
       <div 
-        className="fixed inset-0 bg-black bg-opacity-40 z-1000"
+        className="fixed inset-0 bg-black bg-opacity-40 z-50"
         onClick={onClose}
       />
-      <div className="fixed right-0 top-0 h-full w-full md:w-96 bg-transparent shadow-2xl z-50 overflow-hidden">
+      <div className="fixed right-0 top-0 h-full w-full md:w-96 bg-transparent shadow-2xl z-70 overflow-hidden">
         <div className="h-full overflow-y-auto p-4 sm:p-6">
           {content}
         </div>
