@@ -323,7 +323,7 @@ const handleCloseDonationWidget = () => {
       icon: <RadioIcon size={18} />, 
       label: 'Radio', 
       onClick: () => {
-        setIsRadioOpen(true);
+        setIsRadioOpen(prev => !prev);
       }
     },
     { 
