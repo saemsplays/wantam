@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   AlertTriangle, Heart, Shield, Phone, ExternalLink, 
   Eye, EyeOff, Copy, Check, ArrowLeft, 
@@ -87,7 +87,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  }, [isOpen]);
 
   // Reset to main section when modal opens
   useEffect(() => {
@@ -163,12 +163,12 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
     setNoSearchResults(Object.keys(filtered).length === 0);
   }, [debouncedTerm]);
 
-  // Handle sidebar resizing
+   // Handle sidebar resizing - CORRECTED CALCULATION
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!isResizing || !sidebarRef.current) return;
       
-      const containerRect = sidebarRef.current.getBoundingClientRect();
+      // Calculate new width based on cursor position
       const newWidth = window.innerWidth - e.clientX;
       
       // Apply constraints: min 300px, max 80% of screen
@@ -1125,20 +1125,20 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
         className="fixed inset-0 bg-black bg-opacity-40 z-50"
         onClick={onClose}
       />
-     <div 
+      <div 
         ref={sidebarRef}
-        className="fixed right-0 top-0 h-full bg-transparent shadow-2xl z-70 overflow-hidden"
+        className="fixed right-0 top-0 h-full bg-white dark:bg-gray-900 shadow-2xl z-70 overflow-hidden" // Added background colors
         style={{ width: `${sidebarWidth}px` }}
       >
-        {/* Resize Handle */}
+        {/* Resize Handle - IMPROVED VISIBILITY */}
         <div 
-          className="absolute left-0 top-0 bottom-0 w-2 cursor-col-resize z-20"
+          className="absolute left-0 top-0 bottom-0 w-2 cursor-col-resize z-20 flex items-center justify-center"
           onMouseDown={(e) => {
             e.preventDefault();
             setIsResizing(true);
           }}
         >
-          <div className="absolute left-1 top-1/2 -translate-y-1/2 w-1 h-10 bg-gray-300 hover:bg-gray-400 rounded-full transition-colors"></div>
+          <div className="w-1 h-10 bg-gray-300 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-500 rounded-full transition-colors"></div>
         </div>
         
         {/* Content Container */}
