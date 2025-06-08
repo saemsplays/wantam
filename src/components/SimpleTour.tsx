@@ -38,12 +38,12 @@ export const SimpleTour: React.FC<SimpleTourProps> = ({ isActive, onComplete, on
       description: 'Welcome! I am here to guide you through your submission. Shall we?',
       targetId: 'hero'
     },
-    {
+    {/* {
       id: 'chad',
       title: 'Finance Bill GPT + Download',
       description: 'Understand how the Constitution protects you + ask questions on the Finance Bill GPT',
       targetId: 'chad'
-    },
+    }, */}
     {
       id: 'details',
       title: 'Enter Your Details',
