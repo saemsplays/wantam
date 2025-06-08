@@ -86,10 +86,10 @@ const SplashScreen = () => {
               className="space-y-4"
             >
               <h1 className="text-3xl font-bold bg-gradient-to-r from-red-600 to-green-600 bg-clip-text text-transparent">
-                Finance Bill Objection
+                The #RejectFinanceBill App
               </h1>
               <p className="text-lg text-gray-600 dark:text-gray-300 max-w-sm">
-                Exercise Your Constitutional Rights
+                Amplify Your Voice
               </p>
               
               <div className="flex justify-center space-x-4 mt-6">
@@ -129,7 +129,7 @@ const SplashScreen = () => {
               }}
               className="mt-6 text-sm text-gray-500 dark:text-gray-400 italic"
             >
-              "Your Voice, Your Constitution"
+              "Twende Basi!" - Rose Njeri
             </motion.div>
           </div>
         </motion.div>
