@@ -17,7 +17,6 @@ interface ChatMessage {
 }
 
 export const OfflineRadioSystem: React.FC<OfflineRadioSystemProps> = ({ isOpen, onClose }) => {
-  const [isRadioOpen, setIsRadioOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [currentMessage, setCurrentMessage] = useState('');
   const [isRecording, setIsRecording] = useState(false);
