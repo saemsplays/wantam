@@ -729,7 +729,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
     const displayResources = filteredResources || resources;
     
     return (
-      <div className="space-y-6 rounded-3xl bg-white p-8 shadow-2xl border border-gray-200/50 backdrop-blur-sm">
+      <div className="space-y-6 rounded-3xl bg-white dark:bg-gray-700 p-8 shadow-2xl border border-gray-200/50 backdrop-blur-sm">
         <div className="text-center space-y-2">
           <div className="bg-red-100 w-14 h-14 rounded-full flex items-center justify-center mx-auto">
             <Shield className="w-8 h-8 text-red-600" />
@@ -742,7 +742,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
 
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Search className="h-4 w-4 text-gray-400" />
+            <Search className="h-4 w-4 text-gray-400 dark:bg-gray-800" />
           </div>
           <Input
             type="text"
@@ -797,8 +797,8 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
                   <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center mb-2">
                     <Zap className="w-4 h-4 text-red-600" />
                   </div>
-                  <div className="text-sm font-bold text-red-800 break-words">Emergency</div>
-                  <div className="text-xs text-red-600 mt-1 break-words">Immediate danger & crisis support</div>
+                  <div className="text-sm font-bold text-red-800 truncate max-w-full">Emergency</div>
+                  <div className="text-xs text-red-600 mt-1 truncate max-w-full">Immediate danger & crisis support</div>
                 </Button>
 
                 <Button
@@ -809,8 +809,8 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
                   <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mb-2">
                     <MapPin className="w-4 h-4 text-blue-600" />
                   </div>
-                  <div className="text-sm font-bold text-blue-800 break-words">Local NGOs</div>
-                  <div className="text-xs text-blue-600 mt-1 break-words">Kenyan human rights organizations</div>
+                  <div className="text-sm font-bold text-blue-800 truncate max-w-full">Local NGOs</div>
+                  <div className="text-xs text-blue-600 mt-1 truncate max-w-full">Kenyan human rights organizations</div>
                 </Button>
 
                 <Button
@@ -821,8 +821,8 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
                   <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mb-2">
                     <Globe className="w-4 h-4 text-purple-600" />
                   </div>
-                  <div className="text-sm font-bold text-purple-800 break-words">International</div>
-                  <div className="text-xs text-purple-600 mt-1 break-words">UN bodies & global organizations</div>
+                  <div className="text-sm font-bold text-purple-800 truncate max-w-full">International</div>
+                  <div className="text-xs text-purple-600 mt-1 truncate max-w-full">UN bodies & global organizations</div>
                 </Button>
 
                 <Button
@@ -833,8 +833,8 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
                   <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mb-2">
                     <Scale className="w-4 h-4 text-green-600" />
                   </div>
-                  <div className="text-sm font-bold text-green-800 break-words">Legal Aid</div>
-                  <div className="text-xs text-green-600 mt-1 break-words">Medical & legal documentation</div>
+                  <div className="text-sm font-bold text-green-800 truncate max-w-full">Legal Aid</div>
+                  <div className="text-xs text-green-600 mt-1 truncate max-w-full">Medical & legal documentation</div>
                 </Button>
 
                 <Button
@@ -845,8 +845,8 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
                   <div className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center mb-2">
                     <Shield className="w-4 h-4 text-yellow-600" />
                   </div>
-                  <div className="text-sm font-bold text-yellow-800 break-words">Secure Channels</div>
-                  <div className="text-xs text-yellow-600 mt-1 break-words">Safe reporting methods</div>
+                  <div className="text-sm font-bold text-yellow-800 truncate max-w-full">Secure Channels</div>
+                  <div className="text-xs text-yellow-600 mt-1 truncate max-w-full">Safe reporting methods</div>
                 </Button>
 
                 <Button
@@ -891,9 +891,9 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
             onClick={() => setCurrentSection('main')}
             className="p-1.5 h-auto"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className="w-5 h-5 bg-gray-100 dark:bg-gray-800" />
           </Button>
-          <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center ">
             {getSectionIcon(currentSection)}
           </div>
           <h3 className="text-lg font-bold text-gray-900 capitalize">
@@ -997,7 +997,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
   };
 
   const content = (
-    <div className="space-y-4 rounded-xl bg-white p-4 sm:p-6 shadow-lg w-full">
+    <div className="space-y-4 rounded-xl bg-white dark:bg-gray-900 p-4 sm:p-6 shadow-lg w-full">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
@@ -1011,8 +1011,8 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
             className="p-1.5 h-auto"
           >
             {currentSection === 'main' ? 
-              <X className="w-5 h-5" /> : 
-              <ArrowLeft className="w-5 h-5" />
+              <X className="w-5 h-5 text-gray-900 dark:text-gray-100" /> : 
+              <ArrowLeft className="w-5 h-5 text-gray-900 dark:text-gray-100" />
             }
           </Button>
           <Shield className="w-5 h-5 text-red-600" />
@@ -1050,7 +1050,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
       )}
 
       {/* Footer */}
-      <div className="bg-gray-50 p-3 border-t border-gray-200 text-center -mx-6 -mb-6">
+      <div className="bg-gray-50 p-3 border-t border-gray-200 text-center">
         <p className="text-xs text-gray-500">
           Use responsibly. Report safely. Prioritize your security.
         </p>
