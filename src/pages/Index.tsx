@@ -320,21 +320,11 @@ const handleCloseDonationWidget = () => {
 
   const dockItems = [
     { 
-      icon: <FileTextIcon size={18} />, 
-      label: 'Bills', 
-      onClick: handleBillsClick // Updated to use unified Bills navigation
-    },
-    { 
       icon: <RadioIcon size={18} />, 
       label: 'Radio', 
       onClick: () => {
         setIsRadioOpen(true);
       }
-    },
-    { 
-      icon: <HeartIcon size={18} />, 
-      label: 'Support', 
-      onClick: handleDockSupportClick // Updated to properly trigger donation widget
     },
     { 
       icon: <FlagIcon size={18} />, 
