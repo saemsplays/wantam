@@ -585,41 +585,56 @@ const handleCloseDonationWidget = () => {
         <section id="details" className={`transition-all duration-700 ${
           activeSection === 'details' ? 'relative z-30 scale-[1.02]' : 'relative z-20'
         }`}>
-          <Card className="border-2 border-dashed border-blue-300 dark:border-blue-600 bg-blue-50/30 dark:bg-blue-900/20">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-3">
-                <div className="bg-blue-600 dark:bg-blue-500 p-2 rounded-lg">
-                  <User className="h-5 w-5 text-white" />
-                </div>
-                <span className="text-gray-900 dark:text-white">Your Details</span>
-              </CardTitle>
-              <p className="text-gray-600 dark:text-gray-400">Only your name is required to prefill the objection letter</p>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div>
-                  <Label htmlFor="userName" className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">
-                    Full Name *
-                  </Label>
-                  <Input
-                    id="userName"
-                    type="text"
-                    placeholder="Enter your full name as it should appear in the letter"
-                    value={userName}
-                    onChange={(e) => setUserName(e.target.value)}
-                    className="text-lg py-3 border-2 focus:border-blue-500 dark:focus:border-blue-400 transition-colors dark:bg-gray-800 dark:border-gray-600 dark:text-white"
-                  />
-                </div>
-                <div className="bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-700 rounded-lg p-3 text-emerald-900 dark:text-emerald-300 text-sm">
-                  <p>
-                    <strong>Privacy & Anonymity Notice:</strong> This site collects <u>no</u> personal data. 
-                    All inputs remain on your device until you click "Send." 
-                    You may use a pseudonym or initials if desired.
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+         <Card className="group border-2 border-dashed border-blue-300 dark:border-blue-600 bg-blue-50/30 dark:bg-blue-900/20 hover:border-blue-400 dark:hover:border-blue-500 hover:bg-blue-50/50 dark:hover:bg-blue-900/30 hover:shadow-lg hover:shadow-blue-500/10 dark:hover:shadow-blue-400/20 transition-all duration-300 ease-out hover:scale-[1.01]">
+  <CardHeader className="group-hover:bg-blue-50/40 dark:group-hover:bg-blue-800/20 transition-colors duration-300 rounded-t-lg">
+    <CardTitle className="flex items-center gap-3">
+      <div className="bg-blue-600 dark:bg-blue-500 p-2 rounded-lg group-hover:bg-blue-700 dark:group-hover:bg-blue-400 group-hover:shadow-md transition-all duration-300 group-hover:scale-105">
+        <User className="h-5 w-5 text-white transition-transform duration-300 group-hover:rotate-12" />
+      </div>
+      <span className="text-gray-900 dark:text-white group-hover:text-blue-900 dark:group-hover:text-blue-100 transition-colors duration-300">
+        Your Details
+      </span>
+    </CardTitle>
+    <p className="text-gray-600 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors duration-300">
+      Only your name is required to prefill the objection letter
+    </p>
+  </CardHeader>
+  
+  <CardContent className="group-hover:bg-gradient-to-br group-hover:from-blue-50/20 group-hover:to-transparent dark:group-hover:from-blue-800/10 dark:group-hover:to-transparent transition-all duration-300">
+    <div className="space-y-4">
+      <div className="relative">
+        <Label 
+          htmlFor="userName" 
+          className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block group-hover:text-blue-800 dark:group-hover:text-blue-200 transition-colors duration-300"
+        >
+          Full Name *
+        </Label>
+        <div className="relative">
+          <Input
+            id="userName"
+            type="text"
+            placeholder="Enter your full name as it should appear in the letter"
+            value={userName}
+            onChange={(e) => setUserName(e.target.value)}
+            className="text-lg py-3 border-2 focus:border-blue-500 dark:focus:border-blue-400 transition-all duration-300 dark:bg-gray-800 dark:border-gray-600 dark:text-white hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-md hover:shadow-blue-500/10 dark:hover:shadow-blue-400/20 group-hover:bg-white/50 dark:group-hover:bg-gray-700/50"
+          />
+          {/* Subtle glow effect on hover */}
+          <div className="absolute inset-0 rounded-md bg-gradient-to-r from-blue-400/0 via-blue-400/5 to-blue-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+        </div>
+      </div>
+      
+      <div className="bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-700 rounded-lg p-3 text-emerald-900 dark:text-emerald-300 text-sm group-hover:bg-emerald-100/80 dark:group-hover:bg-emerald-800/40 group-hover:border-emerald-300 dark:group-hover:border-emerald-600 group-hover:shadow-sm transition-all duration-300">
+        <p className="group-hover:text-emerald-800 dark:group-hover:text-emerald-200 transition-colors duration-300">
+          <strong className="group-hover:text-emerald-900 dark:group-hover:text-emerald-100 transition-colors duration-300">
+            Privacy & Anonymity Notice:
+          </strong> This site collects <u>no</u> personal data. 
+          All inputs remain on your device until you click "Send." 
+          You may use a pseudonym or initials if desired.
+        </p>
+      </div>
+    </div>
+  </CardContent>
+</Card>
         </section>
 
         <section id="recipients" className={`transition-all duration-700 ${
