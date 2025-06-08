@@ -1,23 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Share2, Instagram, Twitter, ExternalLink } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export const ShareButton: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [showToasts, setShowToasts] = useState(true);
 
   const shareOptions = [
     {
       name: 'Instagram',
       icon: Instagram,
       color: 'bg-gradient-to-r from-red-600 to-green-600',
-      link: 'https://www.instagram.com/civiceducationke/',
+      message: '🚨 Your constitutional rights matter! Join the Finance Bill objection movement. Exercise your Article 118(1) rights for public participation. #RejectFinanceBill2025 #CEKA',
+      action: () => {
+        navigator.clipboard.writeText('🚨 Your constitutional rights matter! Join the Finance Bill objection movement. Exercise your Article 118(1) rights for public participation. #RejectFinanceBill2025 #CEKA\n\nrejectfinancebill2025.lovable.app');
+        alert('Text copied! Open Instagram and paste in your story or post.');
+      }
     },
     {
       name: 'X (Twitter)',
       icon: Twitter,
       color: 'bg-gradient-to-r from-black to-red-600',
-      link: 'https://twitter.com/civiceducationke',
+      message: 'Hi #KOT #KenyansOnTwitter. You\'ve got to see this app #RFB254 by #CEKA. They\'ve really outdone themselves with this one! #RejectFinanceBill2025 #CivicEducationKenya',
+      action: () => {
+        const text = encodeURIComponent('🚨 Your constitutional rights matter! Join the Finance Bill objection movement. Exercise your Article 118(1) rights for public participation. #RejectFinanceBill2025 #CEKA');
+        const url = encodeURIComponent('https://rejectfinancebill2025.lovable.app');
+        window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
+      }
     },
     {
       name: 'TikTok',
@@ -29,46 +37,32 @@ export const ShareButton: React.FC = () => {
         />
       ),
       color: 'bg-gradient-to-r from-green-600 to-black',
-      link: 'https://www.tiktok.com/@civiceducationke',
+      message: '💪 Exercise your constitutional rights! Join the Finance Bill resistance. Your voice matters in democracy! #RejectFinanceBill2025 #CEKA #ConstitutionalRights',
+      action: () => {
+        navigator.clipboard.writeText('💪 Exercise your constitutional rights! Join the Finance Bill resistance. Your voice matters in democracy! #RejectFinanceBill2025 #CEKA #ConstitutionalRights\n\nrejectfinancebill2025.lovable.app');
+        alert('Text copied! Open TikTok and paste in your video description.');
+      }
     },
     {
       name: 'Follow CEKA',
       icon: ExternalLink,
       color: 'bg-gradient-to-r from-emerald-600 to-blue-600',
-      link: 'https://linktr.ee/civiceducationke',
+      message: 'Follow us for updates',
+      action: () => {
+        window.open('https://linktr.ee/civiceducationke', '_blank');
+      }
     }
   ];
 
-  // Show toast notifications once after mount
-  useEffect(() => {
-    const toastTimeout = setTimeout(() => setShowToasts(false), 10000);
-    return () => clearTimeout(toastTimeout);
-  }, []);
-
   return (
     <div className="fixed left-4 bottom-20 z-40">
-      {/* Follow Toasts */}
-      {showToasts && (
-        <div className="space-y-2 mb-4">
-          {shareOptions.map((option) => (
-            <div
-              key={option.name}
-              className="bg-gray-800 text-white text-sm px-4 py-2 rounded shadow-lg animate-fadeIn"
-            >
-              ✅ Follow us on <strong>{option.name}</strong>!
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Floating Share Button */}
       <div className="relative">
         <motion.button
           onClick={() => setIsOpen(!isOpen)}
           className={`w-12 h-12 bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 text-white rounded-full shadow-lg transition-all duration-200 flex items-center justify-center ${!isOpen ? 'opacity-70 hover:opacity-100' : 'opacity-100'}`}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
-          title="Follow"
+          title="Share"
         >
           <Share2 className="w-5 h-5" />
         </motion.button>
@@ -85,15 +79,16 @@ export const ShareButton: React.FC = () => {
               {shareOptions.map((option, index) => {
                 const IconComponent = option.icon;
                 return (
-                  <motion.a
+                  <motion.button
                     key={option.name}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
                     transition={{ delay: index * 0.1 }}
-                    href={option.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    onClick={() => {
+                      option.action();
+                      setIsOpen(false);
+                    }}
                     className={`w-10 h-10 ${option.color} hover:shadow-lg text-white rounded-full transition-all duration-200 flex items-center justify-center group relative`}
                     title={option.name}
                     whileHover={{ scale: 1.1 }}
@@ -103,7 +98,7 @@ export const ShareButton: React.FC = () => {
                     <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
                       {option.name}
                     </div>
-                  </motion.a>
+                  </motion.button>
                 );
               })}
             </motion.div>
