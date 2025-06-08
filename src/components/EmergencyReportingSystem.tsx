@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   AlertTriangle, Heart, Shield, Phone, ExternalLink, 
   Eye, EyeOff, Copy, Check, ArrowLeft, 
@@ -67,27 +67,16 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
   const [filteredResources, setFilteredResources] = useState<Resources | null>(null);
   const [debouncedTerm, setDebouncedTerm] = useState('');
   const [noSearchResults, setNoSearchResults] = useState(false);
-  const [sidebarWidth, setSidebarWidth] = useState(384); // Default width in pixels
-  const [isResizing, setIsResizing] = useState(false);
-  const sidebarRef = useRef<HTMLDivElement>(null);
-
 
   useEffect(() => {
     const checkMobile = () => {
-      const mobile = window.innerWidth < 768;
-      setIsMobile(mobile);
-      
-      // Set initial width to 50% of screen on desktop
-      if (!mobile && isOpen) {
-        const initialWidth = Math.max(300, Math.min(600, window.innerWidth * 0.5));
-        setSidebarWidth(initialWidth);
-      }
+      setIsMobile(window.innerWidth < 768);
     };
     
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
-  }, [isOpen]);
+  }, []);
 
   // Reset to main section when modal opens
   useEffect(() => {
@@ -162,35 +151,6 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
     setFilteredResources(filtered);
     setNoSearchResults(Object.keys(filtered).length === 0);
   }, [debouncedTerm]);
-
-   // Handle sidebar resizing - CORRECTED CALCULATION
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!isResizing || !sidebarRef.current) return;
-      
-      // Calculate new width based on cursor position
-      const newWidth = window.innerWidth - e.clientX;
-      
-      // Apply constraints: min 300px, max 80% of screen
-      const minWidth = 300;
-      const maxWidth = window.innerWidth * 0.8;
-      setSidebarWidth(Math.min(maxWidth, Math.max(minWidth, newWidth)));
-    };
-
-    const handleMouseUp = () => {
-      setIsResizing(false);
-    };
-
-    if (isResizing) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
-    }
-
-    return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-    };
-  }, [isResizing]);
 
   const resources: Resources = {
     'local-ngos': {
@@ -918,57 +878,56 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
     );
   };
 
- const SectionView = () => {
-  const sectionData = resources[currentSection];
-  const categories = Object.keys(sectionData);
-  return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => setCurrentSection('main')}
-          className="p-1.5 h-auto"
-        >
-          <ArrowLeft className="w-5 h-5 bg-gray-100 dark:bg-gray-800" />
-        </Button>
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+  const SectionView = () => {
+    const sectionData = resources[currentSection];
+    const categories = Object.keys(sectionData);
+
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setCurrentSection('main')}
+            className="p-1.5 h-auto"
+          >
+            <ArrowLeft className="w-5 h-5 bg-gray-100 dark:bg-gray-800" />
+          </Button>
+          <div className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center ">
             {getSectionIcon(currentSection)}
           </div>
           <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 capitalize">
             {currentSection.replace(/-/g, ' ')}
           </h3>
         </div>
-        <div className="w-[42px]"></div>
+
+        <div className="grid gap-3">
+          {categories.map(category => {
+            const categoryData = sectionData[category];
+            return (
+              <Button
+                key={category}
+                variant="outline"
+                onClick={() => {
+                  setCurrentCategory(category);
+                  setCurrentSection('category-detail');
+                }}
+                className={`p-4 h-auto border rounded-lg hover:shadow-md transition-all text-left flex justify-between items-center overflow-hidden ${getSectionColor(currentSection)}`}
+              >
+                <div>
+                  <h4 className="font-semibold mb-1">{categoryData.title}</h4>
+                  <p className="text-xs opacity-80">
+                    {categoryData.organizations?.length || categoryData.contacts?.length || 0} resources
+                  </p>
+                </div>
+                <ChevronRight className="w-5 h-5 text-gray-400" />
+              </Button>
+            );
+          })}
+        </div>
       </div>
-      <div className="grid gap-3">
-        {categories.map(category => {
-          const categoryData = sectionData[category];
-          return (
-            <Button
-              key={category}
-              variant="outline"
-              onClick={() => {
-                setCurrentCategory(category);
-                setCurrentSection('category-detail');
-              }}
-              className={`p-4 h-auto border rounded-lg hover:shadow-md transition-all text-left flex justify-between items-center overflow-hidden ${getSectionColor(currentSection)}`}
-            >
-              <div>
-                <h4 className="font-semibold mb-1">{categoryData.title}</h4>
-                <p className="text-xs opacity-80">
-                  {categoryData.organizations?.length || categoryData.contacts?.length || 0} resources
-                </p>
-              </div>
-              <ChevronRight className="w-5 h-5 text-gray-400" />
-            </Button>
-          );
-        })}
-      </div>
-    </div>
-  );
-};
+    );
+  };
 
   const CategoryDetailView = () => {
     const sectionKey = Object.keys(resources).find(key => 
@@ -1126,23 +1085,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
         className="fixed inset-0 bg-black bg-opacity-40 z-50"
         onClick={onClose}
       />
-      <div 
-        ref={sidebarRef}
-        className="fixed right-0 top-0 h-full bg-white dark:bg-gray-900 shadow-2xl z-70 overflow-hidden" // Added background colors
-        style={{ width: `${sidebarWidth}px` }}
-      >
-        {/* Resize Handle - IMPROVED VISIBILITY */}
-        <div 
-          className="absolute left-0 top-0 bottom-0 w-2 cursor-col-resize z-20 flex items-center justify-center"
-          onMouseDown={(e) => {
-            e.preventDefault();
-            setIsResizing(true);
-          }}
-        >
-          <div className="w-1 h-10 bg-gray-300 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-500 rounded-full transition-colors"></div>
-        </div>
-        
-        {/* Content Container */}
+      <div className="fixed right-0 top-0 h-full w-full md:w-96 bg-transparent shadow-2xl z-70 overflow-hidden">
         <div className="h-full overflow-y-auto p-4 sm:p-6">
           {content}
         </div>
