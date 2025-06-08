@@ -4,7 +4,7 @@ import {
   AlertTriangle, Heart, Shield, Phone, ExternalLink, 
   Eye, EyeOff, Copy, Check, ArrowLeft, 
   Search, MapPin, Globe, Zap, Scale, 
-  ChevronRight, Home, X, GripVertical
+  ChevronRight, Home, X
 } from 'lucide-react';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
