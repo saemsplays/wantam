@@ -29,9 +29,10 @@ const MAX_WIDGET_DISPLAY_TIME = 20 * 60 * 1000;
 interface DonationWidgetProps {
   onTimedOut?: () => void;
   isVisible?: boolean;
+  offsetY?: number;
 }
 
-const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: controlledVisibility }) => {
+const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: controlledVisibility, offsetY = 128 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
@@ -45,7 +46,6 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
   const opacityTimerRef = useRef<NodeJS.Timeout | null>(null);
   const { toast } = useToast();
 
-  // Cleanup function for timers
   const clearTimers = () => {
     [visibilityTimerRef, timeoutTimerRef, hoverInactivityTimerRef, opacityTimerRef].forEach(timerRef => {
       if (timerRef.current) {
@@ -55,7 +55,6 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
     });
   };
 
-  // Handle opacity changes based on hover
   useEffect(() => {
     if (isHovering || isExpanded) {
       setOpacity(1);
@@ -64,7 +63,6 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
         opacityTimerRef.current = null;
       }
     } else {
-      // Start 5-second countdown when not hovering
       opacityTimerRef.current = setTimeout(() => {
         setOpacity(0.2);
       }, 5000);
@@ -89,7 +87,6 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
     }
   };
 
-  // Handle initial visibility and timeout
   useEffect(() => {
     if (controlledVisibility !== undefined) {
       setIsVisible(controlledVisibility);
@@ -135,23 +132,23 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
       data-donation-trigger
       className={`fixed z-30 transition-all duration-500 ease-out ${
         isExpanded 
-          ? 'bottom-1/2 right-1/2 transform translate-x-1/2 translate-y-1/2' 
-          : 'bottom-32 right-8 transform -translate-y-[6px]'
+          ? 'right-1/2 transform translate-x-1/2 translate-y-1/2' 
+          : 'right-8 transform -translate-y-[6px]'
       }`}
-      style={{ zIndex: 999, opacity }}
+      style={{
+        zIndex: 30,
+        opacity,
+        bottom: isExpanded ? '50%' : `${offsetY}px`,
+      }}
     >
       {!isExpanded ? (
-        // Luxurious floating button with smooth animations
         <div
           className="relative group cursor-pointer"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           onClick={handleExpand}
         >
-          
-          {/* Main button container - fixed size to prevent layout shifts */}
           <div className="relative w-48 h-12 flex items-center">
-            {/* Text label with backdrop - positioned on the left */}
             <div 
               className={`absolute right-12 top-0 h-12 flex items-center transition-all duration-500 ease-out ${
                 isHovering 
@@ -159,7 +156,6 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
                   : 'opacity-0 translate-x-4 pointer-events-none'
               }`}
             >
-              {/* Backdrop blur */}
               <div 
                 className={`absolute inset-0 rounded-full transition-all duration-500 ease-out ${
                   isHovering 
@@ -167,8 +163,6 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
                     : 'bg-black/0 backdrop-blur-none scale-75'
                 }`} 
               />
-              
-              {/* Text content */}
               <span 
                 className={`relative px-4 py-2 text-white font-semibold text-sm whitespace-nowrap transition-all duration-500 ease-out drop-shadow-lg ${
                   isHovering 
@@ -179,8 +173,6 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
                 Support Us
               </span>
             </div>
-
-            {/* Circular button base - positioned on the right */}
             <div 
               className={`absolute right-0 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-500 ease-out shadow-2xl ${
                 isHovering
@@ -188,10 +180,7 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
                   : 'bg-gradient-to-br from-red-500 via-red-600 to-red-700 shadow-red-600/40 scale-100'
               }`}
             >
-              {/* Inner glow effect */}
               <div className="absolute inset-1 rounded-full bg-gradient-to-br from-red-300/30 to-transparent" />
-              
-              {/* Heart icon */}
               <Heart 
                 className={`relative z-10 transition-all duration-300 ease-out ${
                   isHovering 
@@ -199,8 +188,6 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
                     : 'h-5 w-5 text-white/90'
                 }`} 
               />
-              
-              {/* Pulse effect */}
               <div 
                 className={`absolute inset-0 rounded-full bg-red-400 transition-all duration-1000 ease-out ${
                   isHovering 
@@ -210,8 +197,6 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
               />
             </div>
           </div>
-          
-          {/* Floating particles effect */}
           {isHovering && (
             <>
               <div className="absolute top-2 right-2 w-1 h-1 bg-red-300 rounded-full animate-bounce opacity-60" style={{ animationDelay: '0s' }} />
@@ -221,9 +206,7 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
           )}
         </div>
       ) : (
-        // Expanded modal state with luxurious styling
         <div className="w-80 bg-white/10 dark:bg-gray-900/10 backdrop-blur-xl border border-white/20 dark:border-gray-700/20 rounded-2xl shadow-2xl overflow-hidden">
-          {/* Header with gradient */}
           <div className="bg-gradient-to-r from-red-500/10 to-red-600/10 dark:from-red-400/10 dark:to-red-500/10 p-4 border-b border-white/10 dark:border-gray-700/10">
             <div className="flex justify-between items-center">
               <h3 className="font-bold text-lg flex items-center text-gray-900 dark:text-white">
@@ -242,13 +225,10 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
               </button>
             </div>
           </div>
-          
-          {/* Content */}
           <div className="p-4">
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
               Your support helps us continue our mission of civic education in Kenya.
             </p>
-            
             <div className="space-y-3">
               {DONATION_OPTIONS.map((option, index) => (
                 <div 
@@ -256,9 +236,7 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
                   className="group relative p-4 rounded-xl flex items-center justify-between hover:bg-white/10 dark:hover:bg-gray-800/10 transition-all duration-300 border border-white/10 dark:border-gray-700/10 backdrop-blur-sm"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  {/* Background glow effect */}
                   <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white/5 dark:via-gray-700/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  
                   <div className="flex items-center relative z-10">
                     <div className="text-2xl mr-4 transition-transform duration-300 group-hover:scale-110">
                       {option.icon}
@@ -268,7 +246,6 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
                       <p className="text-xs text-gray-500 dark:text-gray-400">{option.description}</p>
                     </div>
                   </div>
-                  
                   {option.name === 'M-Pesa' ? (
                     <button
                       onClick={handleMpesa}
@@ -291,7 +268,6 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
                 </div>
               ))}
             </div>
-            
             <button
               className="w-full mt-6 py-3 rounded-xl font-semibold bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 dark:from-green-600 dark:to-green-700 dark:hover:from-green-700 dark:hover:to-green-800 text-white transition-all duration-300 shadow-lg hover:shadow-green-500/25 hover:scale-[1.02] backdrop-blur-sm"
               onClick={handleCollapse}
