@@ -178,7 +178,7 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
               </span>
             </div>
             <div 
-              className={`absolute right-0 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-500 ease-out shadow-2xl ${
+              className={`absolute top-1/2 left-1/2 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-500 ease-out shadow-2xl transform -translate-x-1/2 -translate-y-1/2 ${
                 isHovering
                   ? 'bg-gradient-to-br from-red-400 via-red-500 to-red-600 shadow-red-500/50 scale-110'
                   : 'bg-gradient-to-br from-red-500 via-red-600 to-red-700 shadow-red-600/40 scale-100'
