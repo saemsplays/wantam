@@ -5,18 +5,12 @@ import { motion } from 'framer-motion';
 
 interface FloatingActionButtonsProps {
   onReportClick: () => void;
-  onSupportClick: () => void;
-  onMenuClick: () => void;
-  onScrollToTop: () => void;
   onRadioClick?: () => void;
   isReportOpen?: boolean;
 }
 
 export const FloatingActionButtons: React.FC<FloatingActionButtonsProps> = ({
   onReportClick,
-  onSupportClick,
-  onMenuClick,
-  onScrollToTop,
   onRadioClick,
   isReportOpen = false,
 }) => {
