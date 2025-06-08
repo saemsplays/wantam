@@ -1061,7 +1061,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
     return (
       <Sheet open={isOpen} onOpenChange={onClose}>
        <SheetContent side="bottom" className="h-[85vh] overflow-hidden bg-transparent">
-          <div className="fixed inset-0 h-screen w-screen overflow-y-auto p-6 z-[60] bg-white">
+          <div className="fixed inset-0 w-screen overflow-y-auto p-6 z-[60] bg-white">
             {content}
           </div>
         </SheetContent>
