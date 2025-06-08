@@ -4,7 +4,7 @@ import {
   AlertTriangle, Heart, Shield, Phone, ExternalLink, 
   Eye, EyeOff, Copy, Check, ArrowLeft, 
   Search, MapPin, Globe, Zap, Scale, 
-  ChevronRight, Home, X
+  ChevronRight, Home, X, GripVertical
 } from 'lucide-react';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
@@ -67,10 +67,21 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
   const [filteredResources, setFilteredResources] = useState<Resources | null>(null);
   const [debouncedTerm, setDebouncedTerm] = useState('');
   const [noSearchResults, setNoSearchResults] = useState(false);
+  const [sidebarWidth, setSidebarWidth] = useState(384); // Default width in pixels
+  const [isResizing, setIsResizing] = useState(false);
+  const sidebarRef = useRef<HTMLDivElement>(null);
+
 
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      
+      // Set initial width to 50% of screen on desktop
+      if (!mobile && isOpen) {
+        const initialWidth = Math.max(300, Math.min(600, window.innerWidth * 0.5));
+        setSidebarWidth(initialWidth);
+      }
     };
     
     checkMobile();
@@ -151,6 +162,35 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
     setFilteredResources(filtered);
     setNoSearchResults(Object.keys(filtered).length === 0);
   }, [debouncedTerm]);
+
+  // Handle sidebar resizing
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isResizing || !sidebarRef.current) return;
+      
+      const containerRect = sidebarRef.current.getBoundingClientRect();
+      const newWidth = window.innerWidth - e.clientX;
+      
+      // Apply constraints: min 300px, max 80% of screen
+      const minWidth = 300;
+      const maxWidth = window.innerWidth * 0.8;
+      setSidebarWidth(Math.min(maxWidth, Math.max(minWidth, newWidth)));
+    };
+
+    const handleMouseUp = () => {
+      setIsResizing(false);
+    };
+
+    if (isResizing) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isResizing]);
 
   const resources: Resources = {
     'local-ngos': {
@@ -1085,7 +1125,23 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
         className="fixed inset-0 bg-black bg-opacity-40 z-50"
         onClick={onClose}
       />
-      <div className="fixed right-0 top-0 h-full w-full md:w-96 bg-transparent shadow-2xl z-70 overflow-hidden">
+     <div 
+        ref={sidebarRef}
+        className="fixed right-0 top-0 h-full bg-transparent shadow-2xl z-70 overflow-hidden"
+        style={{ width: `${sidebarWidth}px` }}
+      >
+        {/* Resize Handle */}
+        <div 
+          className="absolute left-0 top-0 bottom-0 w-2 cursor-col-resize z-20"
+          onMouseDown={(e) => {
+            e.preventDefault();
+            setIsResizing(true);
+          }}
+        >
+          <div className="absolute left-1 top-1/2 -translate-y-1/2 w-1 h-10 bg-gray-300 hover:bg-gray-400 rounded-full transition-colors"></div>
+        </div>
+        
+        {/* Content Container */}
         <div className="h-full overflow-y-auto p-4 sm:p-6">
           {content}
         </div>
