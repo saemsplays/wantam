@@ -62,36 +62,6 @@ export const SimpleTour: React.FC<SimpleTourProps> = ({ isActive, onComplete, on
       title: 'Send Your Objection',
       description: 'You\'ll be redirected to your email app. Hit send and you\'re done!',
       targetId: 'send'
-    },
-    {
-      id: 'share-button',
-      title: 'Share Your Voice',
-      description: 'Use the Share button to spread awareness on social media platforms like Instagram, Twitter, and TikTok. Help others exercise their constitutional rights!',
-      targetId: 'hero'
-    },
-    {
-      id: 'bills-fab',
-      title: 'Explore Other Bills',
-      description: 'Access different bills and legislative documents through our Bills navigator. Stay informed about all current legislation affecting Kenya.',
-      targetId: 'hero'
-    },
-    {
-      id: 'donation-widget',
-      title: 'Support Our Mission',
-      description: 'Help sustain civic education in Kenya through donations via M-Pesa, Ko-fi, or PayPal. Your support keeps democracy accessible to all.',
-      targetId: 'hero'
-    },
-    {
-      id: 'emergency-reporting',
-      title: 'Emergency Reporting',
-      description: 'Report constitutional violations, police brutality, or other emergencies through our secure reporting system. Your safety and privacy are protected.',
-      targetId: 'hero'
-    },
-    {
-      id: 'offline-radio',
-      title: 'Offline Communication',
-      description: 'Use our peer-to-peer radio system for communication during internet outages or emergencies. Stay connected even when traditional networks fail.',
-      targetId: 'hero'
     }
   ];
 
