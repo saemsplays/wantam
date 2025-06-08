@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Heart, X, Gift, Copy, ExternalLink } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -90,14 +91,11 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
 
   // Handle initial visibility and timeout
   useEffect(() => {
-    // If controlled visibility is provided, use that instead of internal logic
     if (controlledVisibility !== undefined) {
       setIsVisible(controlledVisibility);
-      setHasTimedOut(false); // Reset timeout when controlled
       return;
     }
 
-    // Only use internal timer logic when not controlled
     visibilityTimerRef.current = setTimeout(() => {
       setIsVisible(true);
     }, 5000);
@@ -119,10 +117,6 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
 
   const handleCollapse = () => {
     setIsExpanded(false);
-    // If controlled, call onTimedOut to close it
-    if (controlledVisibility !== undefined && onTimedOut) {
-      onTimedOut();
-    }
   };
 
   const handleMpesa = () => {
@@ -134,10 +128,7 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
     });
   };
 
-  // Show widget if either controlled visibility is true OR internal visibility is true (and not timed out)
-  const shouldShow = controlledVisibility !== undefined ? controlledVisibility : (isVisible && !hasTimedOut);
-
-  if (!shouldShow) return null;
+  if (hasTimedOut || !isVisible) return null;
 
   return (
     <div

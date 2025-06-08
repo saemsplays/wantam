@@ -1058,32 +1058,33 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
   );
 
   if (isMobile) {
+    return (
+      <Sheet open={isOpen} onOpenChange={onClose}>
+       <SheetContent side="bottom" className="h-[85vh] overflow-hidden bg-transparent">
+          <div className="h-full overflow-y-auto p-6">
+            {content}
+          </div>
+        </SheetContent>
+      </Sheet>
+    );
+  }
+
+  // Desktop sidebar
+  if (!isOpen) return null;
+
   return (
-    <Sheet open={isOpen} onOpenChange={onClose}>
-     <SheetContent side="bottom" className="h-[85vh] overflow-hidden bg-transparent popup" data-child-element>
+    <>
+      <div 
+        className="fixed inset-0 bg-black bg-opacity-40 z-40"
+        onClick={onClose}
+      />
+      <div className="fixed right-0 top-0 h-full w-96 bg-transparent shadow-2xl z-50 overflow-hidden">
         <div className="h-full overflow-y-auto p-6">
           {content}
         </div>
-      </SheetContent>
-    </Sheet>
-  );
-}
-
-// Desktop sidebar
-if (!isOpen) return null;
-return (
-  <>
-    <div 
-      className="fixed inset-0 bg-black bg-opacity-40 z-40"
-      onClick={onClose}
-    />
-    <div className="fixed right-0 top-0 h-full w-96 bg-transparent shadow-2xl z-50 overflow-hidden sidebar" data-child-element>
-      <div className="h-full overflow-y-auto p-6">
-        {content}
       </div>
-    </div>
-  </>
-);
+    </>
+  );
 };
 
 export default EmergencyReportingSystem;
