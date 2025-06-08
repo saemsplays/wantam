@@ -7,11 +7,13 @@ interface ZIndexManager {
   reset: () => void;
   registerButton: (buttonId: string, ref: HTMLElement | null) => void;
   unregisterButton: (buttonId: string) => void;
+  registerChild: (buttonId: string, childRef: HTMLElement | null) => void;
 }
 
 export const useZIndexManager = (): ZIndexManager => {
   const [activeButton, setActiveButton] = useState<string | null>(null);
   const buttonRefs = useRef<Map<string, HTMLElement>>(new Map());
+  const childRefs = useRef<Map<string, HTMLElement[]>>(new Map());
   const isBlurActive = useRef<boolean>(false);
 
   const applyBlur = useCallback(() => {
@@ -39,14 +41,14 @@ export const useZIndexManager = (): ZIndexManager => {
       activeElement.style.position = activeElement.style.position || 'relative';
     }
     
-    // Also find child elements anywhere in the document (not just within the button)
-    setTimeout(() => {
-      const childElements = document.querySelectorAll('[data-child-element], .sidebar, .popup, .dropdown, .modal, [role="dialog"], .sheet-content');
+    // Set high z-index for registered child elements of this button
+    const childElements = childRefs.current.get(buttonId);
+    if (childElements) {
       childElements.forEach(child => {
-        (child as HTMLElement).style.zIndex = '9999';
-        (child as HTMLElement).style.position = (child as HTMLElement).style.position || 'relative';
+        child.style.zIndex = '9999';
+        child.style.position = child.style.position || 'relative';
       });
-    }, 0);
+    }
   }, [applyBlur]);
 
   const sendToBack = useCallback((buttonId: string) => {
@@ -63,13 +65,15 @@ export const useZIndexManager = (): ZIndexManager => {
       if (activeElement) {
         activeElement.style.zIndex = '';
       }
+      
+      // Reset only the registered child elements for this button
+      const childElements = childRefs.current.get(activeButton);
+      if (childElements) {
+        childElements.forEach(child => {
+          child.style.zIndex = '';
+        });
+      }
     }
-    
-    // Reset all child elements in the document
-    const childElements = document.querySelectorAll('[data-child-element], .sidebar, .popup, .dropdown, .modal, [role="dialog"], .sheet-content');
-    childElements.forEach(child => {
-      (child as HTMLElement).style.zIndex = '';
-    });
     
     setActiveButton(null);
     removeBlur();
@@ -83,8 +87,18 @@ export const useZIndexManager = (): ZIndexManager => {
     }
   }, []);
 
+  const registerChild = useCallback((buttonId: string, childRef: HTMLElement | null) => {
+    if (childRef) {
+      const existing = childRefs.current.get(buttonId) || [];
+      if (!existing.includes(childRef)) {
+        childRefs.current.set(buttonId, [...existing, childRef]);
+      }
+    }
+  }, []);
+
   const unregisterButton = useCallback((buttonId: string) => {
     buttonRefs.current.delete(buttonId);
+    childRefs.current.delete(buttonId);
     // If the unregistered button was active, reset
     if (activeButton === buttonId) {
       reset();
@@ -131,6 +145,7 @@ export const useZIndexManager = (): ZIndexManager => {
     return () => {
       removeBlur();
       buttonRefs.current.clear();
+      childRefs.current.clear();
     };
   }, [removeBlur]);
 
@@ -140,6 +155,7 @@ export const useZIndexManager = (): ZIndexManager => {
     sendToBack,
     reset,
     registerButton,
-    unregisterButton
+    unregisterButton,
+    registerChild
   };
 };
