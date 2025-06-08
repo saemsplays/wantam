@@ -1,73 +1,131 @@
-# Welcome to your Lovable project
+# ✊ Reject the Finance Bill 2025
 
-## Project info
+A privacy-respecting, citizen-powered platform to object to Kenya's 2025 Finance Bill — built to empower public voices, pressure lawmakers, and defend human rights.
 
-**URL**: https://lovable.dev/projects/92ecb5c3-696a-420a-9e8f-473e8416b14e
+🚨 **Live site**: [rejectfinancebill2025.vercel.app](https://rejectfinancebill2025.vercel.app/)  
+📲 **Android App**: Downloadable APK available on the site
 
-## How can I edit this code?
+---
 
-There are several ways of editing your application.
+## 🧭 What is this project?
 
-**Use Lovable**
+**RejectFinanceBill25** is a civic tech platform enabling Kenyan citizens to **object to the Finance Bill 2025** in an effective, private, and verifiable way. It exists to:
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/92ecb5c3-696a-420a-9e8f-473e8416b14e) and start prompting.
+- **Send objection letters** to Parliament via email with one click.
+- **Track public participation** with real-time viewer and objection counts.
+- **Raise awareness** about harmful sections of the bill.
+- **Report injustice** through a built-in sidebar system (coming soon).
+- **Respect privacy** by doing everything client-side — **no tracking**, **no data storage**.
 
-Changes made via Lovable will be committed automatically to this repo.
+This project is a response to widespread public outcry against the Finance Bill 2025, which many fear will entrench economic hardship and violate constitutional freedoms.
 
-**Use your preferred IDE**
+---
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 🛠️ Tech Stack
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+The project is built using modern web technologies:
 
-Follow these steps:
+- ⚡ **Vite** – ultra-fast frontend tooling
+- ⚛️ **React** – component-based UI framework
+- 🧠 **TypeScript** – static typing for safety
+- 🎨 **Tailwind CSS** – utility-first styling
+- 🧩 **shadcn/ui** – accessible, modern UI components
+- 📦 **Supabase** – used for backend analytics (view and action counters)
+
+---
+
+## 🚀 Features
+
+- 📧 **Objection Letter Generator**: Auto-opens user's email client with a prewritten objection to Parliament.
+- 📊 **Live Activity Tracker**: Counts and displays real-time views and objection emails sent.
+- 🎨 **Milestone-Triggered UI**: Page styling adapts as more users participate (e.g. colors change past 1000 objections).
+- 🔍 **Incident Reporting Sidebar** *(Coming Soon)*: Enables reports of police abuse, abductions, or intimidation.
+- 📱 **Mobile-first & App-ready**: Designed for Android, with an APK version available.
+
+---
+
+## 🧑‍💻 Local Development Guide
+
+> Make sure you have **Node.js** and **npm** installed. It’s recommended to use [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) to manage Node versions.
+
+### 1. Clone the Repository
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+git clone https://github.com/saemsplays/rejectfinancebill25.git
+cd rejectfinancebill25
+2. Install Dependencies
+sh
+Copy
+Edit
+npm install
+3. Start the Dev Server
+sh
+Copy
+Edit
 npm run dev
-```
+This starts the app locally on http://localhost:5173 (or similar).
 
-**Edit a file directly in GitHub**
+📦 Project Structure
+bash
+Copy
+Edit
+/
+├── public/              # Static assets
+├── src/
+│   ├── components/      # Reusable UI components
+│   ├── lib/             # Utility functions
+│   ├── pages/           # Core page views
+│   ├── data/            # Static content & templates
+│   └── main.tsx         # App entry point
+├── index.html
+├── tailwind.config.ts
+├── package.json
+└── tsconfig.json
+📲 Android APK
+This project is also available as a native Android app.
+Users can download the APK directly from the live site.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Built using the PWA → APK method for offline-first performance and installability.
 
-**Use GitHub Codespaces**
+🛡️ Privacy First
+We believe in civic tools that do not exploit or track users. All logic for objection emails, counters, and interactivity is executed in the browser.
+There is no account, no login, and no analytics tracking beyond anonymous, opt-out counts.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+🙌 Contributing
+All forms of contribution are welcome:
 
-## What technologies are used for this project?
+Improve accessibility or responsive behavior
 
-This project is built with:
+Add support for regional languages
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Suggest alternate objection letter formats
 
-## How can I deploy this project?
+Improve Supabase logic or animations
 
-Simply open [Lovable](https://lovable.dev/projects/92ecb5c3-696a-420a-9e8f-473e8416b14e) and click on Share -> Publish.
+Refactor UI/UX for better performance
 
-## Can I connect a custom domain to my Lovable project?
+To contribute:
 
-Yes, you can!
+sh
+Copy
+Edit
+# Fork and clone the repo
+git clone https://github.com/YOUR_USERNAME/rejectfinancebill25.git
+cd rejectfinancebill25
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+# Create a new branch for your fix/feature
+git checkout -b my-feature-branch
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+# Make changes and commit
+git commit -m "Add feature/fix"
+
+# Push and open a Pull Request
+git push origin my-feature-branch
+📄 License
+This project is open-source under the MIT License.
+
+✊ Acknowledgments
+Created by @saemsplays in solidarity with citizens defending constitutional and economic rights.
+Inspired by the courage of everyday Kenyans standing up to systemic injustice.
+
+“They tried to bury us. They didn’t know we were seeds.” 🌱
