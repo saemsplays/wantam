@@ -598,7 +598,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
   };
 
   const ContactCard = ({ org, compact = false }: { org: Organization; compact?: boolean }) => (
-    <div className={`bg-white border border-gray-200 rounded-lg ${compact ? 'p-3' : 'p-4'} space-y-3 shadow-sm transition-all hover:shadow-md`}>
+    <div className={`bg-white border border-gray-200 rounded-lg ${compact ? 'p-3' : 'p-3 sm:p-4'} space-y-3 shadow-sm transition-all hover:shadow-md`}>
       <div className="space-y-2">
         <h4 className={`font-semibold text-gray-900 ${compact ? 'text-sm' : 'text-base'}`}>{org.name}</h4>
         {org.description && (
@@ -767,7 +767,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
         )}
 
         {!noSearchResults && (
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {filteredResources ? (
               // Show filtered results
               Object.keys(displayResources).map(sectionKey => (
@@ -996,7 +996,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
   };
 
   const content = (
-    <div className="space-y-4 rounded-xl bg-white p-6 shadow-lg w-full">
+    <div className="space-y-4 rounded-xl bg-white p-4 sm:p-6 shadow-lg w-full">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
@@ -1061,7 +1061,7 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
     return (
       <Sheet open={isOpen} onOpenChange={onClose}>
        <SheetContent side="bottom" className="h-[85vh] overflow-hidden bg-transparent">
-          <div className="h-full overflow-y-auto p-6">
+          <div className="h-full overflow-y-auto p-4 sm:p-6">
             {content}
           </div>
         </SheetContent>
@@ -1078,8 +1078,8 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
         className="fixed inset-0 bg-black bg-opacity-40 z-40"
         onClick={onClose}
       />
-      <div className="fixed right-0 top-0 h-full w-96 bg-transparent shadow-2xl z-50 overflow-hidden">
-        <div className="h-full overflow-y-auto p-6">
+      <div className="fixed right-0 top-0 h-full w-full md:w-96 bg-transparent shadow-2xl z-50 overflow-hidden">
+        <div className="h-full overflow-y-auto p-4 sm:p-6">
           {content}
         </div>
       </div>
