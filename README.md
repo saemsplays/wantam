@@ -1,6 +1,6 @@
-# ✊ Reject the Finance Bill 2025
+# ✊ The Reject Finance Bill 2025 App
 
-A privacy-respecting, citizen-powered platform to object to Kenya's 2025 Finance Bill — built to empower public voices, pressure lawmakers, and defend human rights.
+A privacy-respecting, citizen-powered platform to object to Kenya's 2025 Finance Bill — built to empower public voices, pressure lawmakers, and defend human rights; whilst offering features that protect the general public in times of emergency
 
 🚨 **Live site**: [rejectfinancebill2025.vercel.app](https://rejectfinancebill2025.vercel.app/)  
 📲 **Android App**: Downloadable APK available on the site
