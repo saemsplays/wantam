@@ -1,131 +1,237 @@
-# ✊ The Reject Finance Bill 2025 App
+# ✊ Reject Finance Bill 2025
 
-A privacy-respecting, citizen-powered platform to object to Kenya's 2025 Finance Bill — built to empower public voices, pressure lawmakers, and defend human rights; whilst offering features that protect the general public in times of emergency
+A privacy-first civic platform empowering Kenyan citizens to formally object to the controversial Finance Bill 2025 through automated parliamentary submissions and real-time collective action tracking.
 
-🚨 **Live site**: [rejectfinancebill2025.vercel.app](https://rejectfinancebill2025.vercel.app/)  
-📲 **Android App**: Downloadable APK available on the site
-
----
-
-## 🧭 What is this project?
-
-**RejectFinanceBill25** is a civic tech platform enabling Kenyan citizens to **object to the Finance Bill 2025** in an effective, private, and verifiable way. It exists to:
-
-- **Send objection letters** to Parliament via email with one click.
-- **Track public participation** with real-time viewer and objection counts.
-- **Raise awareness** about harmful sections of the bill.
-- **Report injustice** through a built-in sidebar system (coming soon).
-- **Respect privacy** by doing everything client-side — **no tracking**, **no data storage**.
-
-This project is a response to widespread public outcry against the Finance Bill 2025, which many fear will entrench economic hardship and violate constitutional freedoms.
+🌐 **Live Platform**: [rejectfinancebill2025.vercel.app](https://rejectfinancebill2025.vercel.app/)  
+📱 **Android App**: Progressive Web App (PWA) installable on mobile devices
 
 ---
 
-## 🛠️ Tech Stack
+## 🎯 Project Mission
 
-The project is built using modern web technologies:
+**RejectFinanceBill25** is a grassroots digital resistance tool designed to amplify citizen voices against Kenya's Finance Bill 2025. The platform enables:
 
-- ⚡ **Vite** – ultra-fast frontend tooling
-- ⚛️ **React** – component-based UI framework
-- 🧠 **TypeScript** – static typing for safety
-- 🎨 **Tailwind CSS** – utility-first styling
-- 🧩 **shadcn/ui** – accessible, modern UI components
-- 📦 **Supabase** – used for backend analytics (view and action counters)
+- **Automated objection submissions** to Parliament with personalized, legally-formatted letters
+- **Real-time participation tracking** showing collective citizen engagement 
+- **Privacy-protected activism** with zero personal data collection or storage
+- **Educational resources** about the bill's harmful provisions
+- **Mobile-first accessibility** for widespread citizen participation
 
----
-
-## 🚀 Features
-
-- 📧 **Objection Letter Generator**: Auto-opens user's email client with a prewritten objection to Parliament.
-- 📊 **Live Activity Tracker**: Counts and displays real-time views and objection emails sent.
-- 🎨 **Milestone-Triggered UI**: Page styling adapts as more users participate (e.g. colors change past 1000 objections).
-- 🔍 **Incident Reporting Sidebar** *(Coming Soon)*: Enables reports of police abuse, abductions, or intimidation.
-- 📱 **Mobile-first & App-ready**: Designed for Android, with an APK version available.
+This project emerged from widespread public opposition to the Finance Bill 2025, which critics argue will deepen economic inequality, increase the tax burden on ordinary Kenyans, and undermine constitutional rights.
 
 ---
 
-## 🧑‍💻 Local Development Guide
+## ⚡ Key Features
 
-> Make sure you have **Node.js** and **npm** installed. It’s recommended to use [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) to manage Node versions.
+### 📧 One-Click Parliamentary Objection
+- Generates legally-formatted objection letters automatically
+- Opens user's default email client with pre-filled recipient and content
+- Includes proper parliamentary submission formatting
+- Allows for personal customization before sending
 
-### 1. Clone the Repository
+### 📊 Live Engagement Dashboard
+- Real-time counter of platform visitors
+- Live tracking of objection emails sent
+- Anonymous, privacy-respecting analytics
+- Visual milestone celebrations (UI changes at participation thresholds)
 
-```sh
+### 🔒 Privacy-First Architecture
+- **Zero data collection** - all processing happens client-side
+- **No user tracking** or personal information storage
+- **Anonymous participation** - no accounts or logins required
+- **Open source transparency** - full code audit available
+
+### 📱 Mobile-Optimized Experience
+- Progressive Web App (PWA) functionality
+- Installable on Android devices as native app
+- Responsive design for all screen sizes
+- Offline-capable core functionality
+
+---
+
+## 🛠️ Technology Stack
+
+Built with modern, performant web technologies:
+
+- **⚡ Vite** - Lightning-fast build tool and dev server
+- **⚛️ React 18** - Component-based UI framework with hooks
+- **🔷 TypeScript** - Type-safe JavaScript for reliability
+- **🎨 Tailwind CSS** - Utility-first styling framework
+- **🧩 shadcn/ui** - Accessible, customizable UI components
+- **📊 Supabase** - Open-source backend for analytics (view/action counters only)
+- **🚀 Vercel** - Edge deployment and hosting platform
+
+---
+
+## 🧑‍💻 Local Development
+
+### Prerequisites
+- **Node.js** (v18 or higher) - [Install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- **npm** or **yarn** package manager
+- **Git** for version control
+
+### Setup Instructions
+
+```bash
+# 1. Clone the repository
 git clone https://github.com/saemsplays/rejectfinancebill25.git
 cd rejectfinancebill25
-2. Install Dependencies
-sh
-Copy
-Edit
-npm install
-3. Start the Dev Server
-sh
-Copy
-Edit
-npm run dev
-This starts the app locally on http://localhost:5173 (or similar).
 
-📦 Project Structure
-bash
-Copy
-Edit
-/
-├── public/              # Static assets
+# 2. Install dependencies
+npm install
+
+# 3. Set up environment variables (if needed)
+cp .env.example .env.local
+# Edit .env.local with your Supabase credentials (for analytics)
+
+# 4. Start development server
+npm run dev
+
+# 5. Open in browser
+# Navigate to http://localhost:5173
+```
+
+### Available Scripts
+
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run preview      # Preview production build locally
+npm run lint         # Run ESLint
+npm run type-check   # Run TypeScript compiler check
+```
+
+---
+
+## 📁 Project Structure
+
+```
+rejectfinancebill25/
+├── public/                 # Static assets
+│   ├── icons/             # App icons and favicons
+│   └── manifest.json      # PWA manifest
 ├── src/
-│   ├── components/      # Reusable UI components
-│   ├── lib/             # Utility functions
-│   ├── pages/           # Core page views
-│   ├── data/            # Static content & templates
-│   └── main.tsx         # App entry point
+│   ├── components/        # Reusable React components
+│   │   ├── ui/           # shadcn/ui components
+│   │   ├── EmailButton.tsx
+│   │   ├── Counter.tsx
+│   │   └── Header.tsx
+│   ├── lib/              # Utility functions
+│   │   ├── utils.ts      # General utilities
+│   │   └── supabase.ts   # Database client
+│   ├── hooks/            # Custom React hooks
+│   ├── data/             # Static content
+│   │   └── objectionTemplate.ts
+│   ├── App.tsx           # Main application component
+│   └── main.tsx          # Application entry point
 ├── index.html
 ├── tailwind.config.ts
+├── vite.config.ts
 ├── package.json
-└── tsconfig.json
-📲 Android APK
-This project is also available as a native Android app.
-Users can download the APK directly from the live site.
+└── README.md
+```
 
-Built using the PWA → APK method for offline-first performance and installability.
+---
 
-🛡️ Privacy First
-We believe in civic tools that do not exploit or track users. All logic for objection emails, counters, and interactivity is executed in the browser.
-There is no account, no login, and no analytics tracking beyond anonymous, opt-out counts.
+## 🤝 Contributing
 
-🙌 Contributing
-All forms of contribution are welcome:
+We welcome contributions from developers, designers, and civic-minded individuals who want to strengthen digital democracy in Kenya.
 
-Improve accessibility or responsive behavior
+### How to Contribute
 
-Add support for regional languages
+1. **Fork the repository** on GitHub
+2. **Create a feature branch**: `git checkout -b feature/your-feature-name`
+3. **Make your changes** with clear, descriptive commits
+4. **Test thoroughly** to ensure functionality
+5. **Submit a pull request** with detailed description
 
-Suggest alternate objection letter formats
+### Contribution Areas
 
-Improve Supabase logic or animations
+- 🌐 **Internationalization**: Add Swahili, local language support
+- ♿ **Accessibility**: Improve screen reader compatibility, keyboard navigation
+- 📱 **Mobile UX**: Enhance mobile experience and PWA functionality
+- 🔧 **Performance**: Optimize loading times and bundle size
+- 📊 **Analytics**: Improve privacy-respecting engagement tracking
+- 🎨 **Design**: UI/UX improvements and visual enhancements
+- 📝 **Content**: Better objection letter templates and educational content
 
-Refactor UI/UX for better performance
+### Code Standards
 
-To contribute:
+- Use TypeScript for all new code
+- Follow existing code style and formatting
+- Write descriptive commit messages
+- Include comments for complex logic
+- Test on multiple devices and browsers
 
-sh
-Copy
-Edit
-# Fork and clone the repo
-git clone https://github.com/YOUR_USERNAME/rejectfinancebill25.git
-cd rejectfinancebill25
+---
 
-# Create a new branch for your fix/feature
-git checkout -b my-feature-branch
+## 🚀 Deployment
 
-# Make changes and commit
-git commit -m "Add feature/fix"
+The project is automatically deployed to Vercel on push to the main branch.
 
-# Push and open a Pull Request
-git push origin my-feature-branch
-📄 License
-This project is open-source under the MIT License.
+### Manual Deployment
 
-✊ Acknowledgments
-Created by @saemsplays in solidarity with citizens defending constitutional and economic rights.
-Inspired by the courage of everyday Kenyans standing up to systemic injustice.
+```bash
+# Build the project
+npm run build
 
-“They tried to bury us. They didn’t know we were seeds.” 🌱
+# Deploy to Vercel (requires Vercel CLI)
+npx vercel --prod
+
+# Or deploy to any static hosting service
+# The built files will be in the `dist/` directory
+```
+
+---
+
+## 🛡️ Privacy & Security
+
+### Our Privacy Commitment
+
+- **No personal data collection** - We don't store names, emails, or personal information
+- **No tracking pixels** or third-party analytics
+- **Client-side processing** - All objection letter generation happens in your browser
+- **Anonymous engagement metrics** - Only aggregate, non-identifying counts
+- **Open source transparency** - Full code available for security audit
+
+### Security Measures
+
+- No server-side user data storage
+- HTTPS encryption for all communications
+- Content Security Policy (CSP) headers
+- Regular dependency security updates
+
+---
+
+## 📄 Legal & Ethics
+
+### Disclaimer
+
+This platform facilitates legitimate civic participation through official parliamentary channels. Users are responsible for their own email communications. The platform creators do not endorse any particular political position beyond supporting democratic participation and transparency.
+
+### License
+
+This project is open source under the **MIT License**. See [LICENSE](LICENSE) for full details.
+
+---
+
+## 🙏 Acknowledgments
+
+- **Built by**: [@saemsplays](https://github.com/saemsplays) and the open source community
+- **Inspired by**: Courageous Kenyan citizens defending constitutional rights
+- **Powered by**: Open source technologies and democratic principles
+- **Special thanks**: To every developer, designer, and citizen who contributed to this project
+
+---
+
+## 📞 Support & Contact
+
+- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/saemsplays/rejectfinancebill25/issues)
+- 💡 **Feature Requests**: [GitHub Discussions](https://github.com/saemsplays/rejectfinancebill25/discussions)
+- 📧 **General Inquiries**: Open an issue or discussion on GitHub
+
+---
+
+**"The ultimate measure of a man is not where he stands in moments of comfort and convenience, but where he stands at times of challenge and controversy."** - Martin Luther King Jr.
+
+Together, we build the democracy we deserve. 🇰🇪
