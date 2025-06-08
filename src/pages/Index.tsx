@@ -93,8 +93,8 @@ Citizen of Kenya`);
   // Section definitions with updated percentages including Introduction
   const sections = [
     { id: 'start', title: 'Beginning', position: 0 },
-    { id: 'hero', title: 'Introduction', position: 0 },
-    { id: 'gpt-card', title: 'Finance Bill GPT', position: 0 },
+    { id: 'hero', title: 'Introduction', position: 20 },
+    { id: 'gpt-card', title: 'Finance Bill GPT', position: 28 },
     { id: 'details', title: 'Your Details', position: 44 },
     { id: 'recipients', title: 'Send To', position: 53 },
     { id: 'subject', title: 'Email Subject', position: 60 },
