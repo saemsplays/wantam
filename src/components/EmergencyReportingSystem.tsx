@@ -918,10 +918,9 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
     );
   };
 
-  const SectionView = () => {
+ const SectionView = () => {
   const sectionData = resources[currentSection];
   const categories = Object.keys(sectionData);
-
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -933,19 +932,16 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
         >
           <ArrowLeft className="w-5 h-5 bg-gray-100 dark:bg-gray-800" />
         </Button>
-
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
             {getSectionIcon(currentSection)}
           </div>
-          <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 capitalize whitespace-nowrap">
+          <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 capitalize">
             {currentSection.replace(/-/g, ' ')}
           </h3>
         </div>
-
-        <div className="w-8" />
+        <div className="w-[42px]"></div>
       </div>
-
       <div className="grid gap-3">
         {categories.map(category => {
           const categoryData = sectionData[category];
@@ -973,7 +969,6 @@ const EmergencyReportingSystem = ({ isOpen, onClose }: EmergencyReportingSystemP
     </div>
   );
 };
-
 
   const CategoryDetailView = () => {
     const sectionKey = Object.keys(resources).find(key => 
