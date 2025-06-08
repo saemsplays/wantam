@@ -1,8 +1,7 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChevronLeft, ChevronRight, X, Play } from "lucide-react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
 interface TourStep {
   id: string;
@@ -19,6 +18,17 @@ interface SimpleTourProps {
 
 export const SimpleTour: React.FC<SimpleTourProps> = ({ isActive, onComplete, onSkip }) => {
   const [currentStep, setCurrentStep] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const tourSteps: TourStep[] = [
     {
@@ -70,7 +80,6 @@ export const SimpleTour: React.FC<SimpleTourProps> = ({ isActive, onComplete, on
   const handleNext = () => {
     if (currentStep < tourSteps.length - 1) {
       setCurrentStep(prev => prev + 1);
-      // Scroll to the target element for the NEXT step
       const nextStep = tourSteps[currentStep + 1];
       const element = document.getElementById(nextStep.targetId);
       if (element) {
@@ -84,7 +93,6 @@ export const SimpleTour: React.FC<SimpleTourProps> = ({ isActive, onComplete, on
   const handlePrev = () => {
     if (currentStep > 0) {
       setCurrentStep(prev => prev - 1);
-      // Scroll to the target element for the PREVIOUS step
       const prevStep = tourSteps[currentStep - 1];
       const element = document.getElementById(prevStep.targetId);
       if (element) {
@@ -93,8 +101,7 @@ export const SimpleTour: React.FC<SimpleTourProps> = ({ isActive, onComplete, on
     }
   };
 
-  // Scroll to current step when tour starts
-  React.useEffect(() => {
+  useEffect(() => {
     if (isActive && currentStepData) {
       const element = document.getElementById(currentStepData.targetId);
       if (element) {
@@ -111,9 +118,15 @@ export const SimpleTour: React.FC<SimpleTourProps> = ({ isActive, onComplete, on
     <>
       {/* Overlay */}
       <div className="fixed inset-0 bg-black bg-opacity-40 z-[60]" onClick={onSkip} />
-      
-      {/* Tour Card - Positioned to not obscure content */}
-      <div className="fixed top-4 right-4 z-[61] w-full max-w-sm mx-4 md:max-w-md">
+
+      {/* Tour Card */}
+      <div
+        className={`
+          fixed z-[61] w-full max-w-sm mx-4 md:max-w-md
+          ${isMobile ? 'left-1/2 bottom-4 -translate-x-1/2' : 'top-4 right-4'}
+        `}
+        style={isMobile ? { transform: 'translateX(-50%) scale(0.95)' } : {}}
+      >
         <Card className="shadow-2xl border-2 border-blue-500">
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
@@ -133,13 +146,17 @@ export const SimpleTour: React.FC<SimpleTourProps> = ({ isActive, onComplete, on
               ))}
             </div>
           </CardHeader>
-          
+
           <CardContent>
             <div className="mb-6">
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{currentStepData.title}</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-100 leading-relaxed">{currentStepData.description}</p>
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                {currentStepData.title}
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-100 leading-relaxed">
+                {currentStepData.description}
+              </p>
             </div>
-            
+
             <div className="flex items-center justify-between">
               <Button
                 variant="outline"
@@ -150,11 +167,11 @@ export const SimpleTour: React.FC<SimpleTourProps> = ({ isActive, onComplete, on
                 <ChevronLeft className="h-4 w-4" />
                 Previous
               </Button>
-              
+
               <span className="text-sm text-gray-500">
                 {currentStep + 1} of {tourSteps.length}
               </span>
-              
+
               <Button onClick={handleNext} className="flex items-center gap-2">
                 {currentStep === tourSteps.length - 1 ? 'Finish' : 'Next'}
                 <ChevronRight className="h-4 w-4" />
