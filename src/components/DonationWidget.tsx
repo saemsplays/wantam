@@ -24,7 +24,7 @@ const DONATION_OPTIONS = [
   }
 ];
 
-const MAX_WIDGET_DISPLAY_TIME = 5 * 60 * 1000;
+const MAX_WIDGET_DISPLAY_TIME = 20 * 60 * 1000;
 
 interface DonationWidgetProps {
   onTimedOut?: () => void;
@@ -123,7 +123,7 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
     navigator.clipboard.writeText('+254798903373');
     toast({
       title: "M-Pesa number copied",
-      description: "+254798903373 copied to clipboard",
+      description: "Number copied to clipboard. You can proceed to send your MPesa donation there via 'Send Money'",
       duration: 3000,
     });
   };
