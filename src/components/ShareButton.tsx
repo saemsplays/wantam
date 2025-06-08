@@ -14,19 +14,15 @@ export const ShareButton: React.FC = () => {
       color: 'bg-gradient-to-r from-red-600 to-green-600',
       message: '🚨 Your constitutional rights matter! Join the Finance Bill objection movement. Exercise your Article 118(1) rights for public participation. #RejectFinanceBill2025 #CEKA',
       action: () => {
-        navigator.clipboard.writeText('🚨 Your constitutional rights matter! Join the Finance Bill objection movement. Exercise your Article 118(1) rights for public participation. #RejectFinanceBill2025 #CEKA\n\nrejectfinancebill2025.lovable.app');
-        alert('Text copied! Open Instagram and paste in your story or post.');
+        window.open('https://www.instagram.com/civiceducationke', '_blank');
       }
     },
     {
       name: 'X (Twitter)',
       icon: Twitter,
       color: 'bg-gradient-to-r from-black to-red-600',
-      message: 'Hi #KOT #KenyansOnTwitter. You\'ve got to see this app #RFB254 by #CEKA. They\'ve really outdone themselves with this one! #RejectFinanceBill2025 #CivicEducationKenya',
       action: () => {
-        const text = encodeURIComponent('🚨 Your constitutional rights matter! Join the Finance Bill objection movement. Exercise your Article 118(1) rights for public participation. #RejectFinanceBill2025 #CEKA');
-        const url = encodeURIComponent('https://rejectfinancebill2025.lovable.app');
-        window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
+        window.open('https:///x.com/civicedkenya', '_blank');
       }
     },
     {
@@ -39,10 +35,8 @@ export const ShareButton: React.FC = () => {
         />
       ),
       color: 'bg-gradient-to-r from-green-600 to-black',
-      message: '💪 Exercise your constitutional rights! Join the Finance Bill resistance. Your voice matters in democracy! #RejectFinanceBill2025 #CEKA #ConstitutionalRights',
       action: () => {
-        navigator.clipboard.writeText('💪 Exercise your constitutional rights! Join the Finance Bill resistance. Your voice matters in democracy! #RejectFinanceBill2025 #CEKA #ConstitutionalRights\n\nrejectfinancebill2025.lovable.app');
-        alert('Text copied! Open TikTok and paste in your video description.');
+        window.open('https://www.tiktok.com/@civiceducationkenya', '_blank');
       }
     },
     {
