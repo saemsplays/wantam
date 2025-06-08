@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -32,14 +33,14 @@ export const SimpleTour: React.FC<SimpleTourProps> = ({ isActive, onComplete, on
 
   const tourSteps: TourStep[] = [
     {
-      id: 'start',
+      id: 'hero',
       title: 'Begin Your Guide',
       description: 'Welcome! I am here to guide you through your submission. Shall we?',
       targetId: 'hero'
     },
     {
-      id: 'introduction',
-      title: 'Introduction + Finance Bill GPT',
+      id: 'chad',
+      title: 'Finance Bill GPT + Download',
       description: 'Understand how the Constitution protects you + ask questions on the Finance Bill GPT',
       targetId: 'chad'
     },
