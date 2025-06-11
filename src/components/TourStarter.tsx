@@ -33,26 +33,26 @@ const tourHighlights = [
 
 export const TourStarter: React.FC<TourStarterProps> = ({ onStartTour }) => {
   return (
-    <Card className="bg-gradient-to-r from-blue-50 to-emerald-50 border-blue-200">
+    <Card className="bg-gradient-to-r from-blue-50 to-emerald-50 dark:from-slate-800 dark:to-slate-900 border-blue-200 dark:border-slate-700">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
-          <div className="bg-blue-600 p-2 rounded-lg">
-            <Play className="h-5 w-5 text-white dark:text-blue-600" />
+          <div className="bg-blue-600 dark:bg-blue-500 p-2 rounded-lg">
+            <Play className="h-5 w-5 text-white" />
           </div>
-          Take a Guided Tour
+          <span className="text-gray-900 dark:text-white">Take a Guided Tour</span>
         </CardTitle>
-        <p className="text-gray-600">Learn how to submit your constitutional objection in 4 simple steps</p>
+        <p className="text-gray-600 dark:text-gray-300">Learn how to submit your constitutional objection in 4 simple steps</p>
       </CardHeader>
       <CardContent>
         <div className="space-y-3 mb-6">
           {tourHighlights.map((highlight, index) => (
             <div key={index} className="flex items-center gap-3">
-              <div className="bg-white p-1 rounded-lg">
+              <div className="bg-white dark:bg-slate-700 p-1 rounded-lg">
                 {highlight.icon}
               </div>
               <div className="flex-1">
-                <h4 className="font-medium text-gray-900 text-sm">{highlight.title}</h4>
-                <p className="text-xs text-gray-600">{highlight.description}</p>
+                <h4 className="font-medium text-gray-900 dark:text-white text-sm">{highlight.title}</h4>
+                <p className="text-xs text-gray-600 dark:text-gray-400">{highlight.description}</p>
               </div>
             </div>
           ))}
@@ -60,7 +60,7 @@ export const TourStarter: React.FC<TourStarterProps> = ({ onStartTour }) => {
         
         <Button 
           onClick={onStartTour}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+          className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white"
         >
           <Play className="mr-2 h-4 w-4" />
           Start Interactive Tour
@@ -68,4 +68,5 @@ export const TourStarter: React.FC<TourStarterProps> = ({ onStartTour }) => {
       </CardContent>
     </Card>
   );
+};
 };
