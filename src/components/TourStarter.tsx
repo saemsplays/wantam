@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,22 +11,22 @@ const tourHighlights = [
   {
     title: 'Your Details',
     description: 'Enter your name to personalize the objection letter',
-    icon: <Users className="w-5 h-5 text-blue-500" />,
+    icon: <Users className="w-5 h-5 text-blue-500 dark:text-blue-400" />,
   },
   {
     title: 'Choose Recipients',
     description: 'Select who should receive your constitutional objection',
-    icon: <FileText className="w-5 h-5 text-emerald-500" />,
+    icon: <FileText className="w-5 h-5 text-emerald-500 dark:text-emerald-400" />,
   },
   {
     title: 'Review Letter',
     description: 'Examine the pre-drafted constitutional objections',
-    icon: <Scale className="w-5 h-5 text-purple-500" />,
+    icon: <Scale className="w-5 h-5 text-purple-500 dark:text-purple-400" />,
   },
   {
     title: 'Send Objection',
     description: 'Submit your formal objection via email',
-    icon: <Shield className="w-5 h-5 text-green-500" />,
+    icon: <Shield className="w-5 h-5 text-green-500 dark:text-green-400" />,
   },
 ];
 
@@ -68,5 +67,4 @@ export const TourStarter: React.FC<TourStarterProps> = ({ onStartTour }) => {
       </CardContent>
     </Card>
   );
-};
 };
