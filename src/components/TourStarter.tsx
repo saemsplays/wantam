@@ -37,7 +37,7 @@ export const TourStarter: React.FC<TourStarterProps> = ({ onStartTour }) => {
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
           <div className="bg-blue-600 p-2 rounded-lg">
-            <Play className="h-5 w-5 text-white" />
+            <Play className="h-5 w-5 text-white dark:text-blue-600" />
           </div>
           Take a Guided Tour
         </CardTitle>
