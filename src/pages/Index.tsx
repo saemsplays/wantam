@@ -412,7 +412,7 @@ const handleCloseDonationWidget = () => {
             <span className="text-red-600">Reject</span>
             <div className="px-4 sm:px-6 md:px-8 bg-gradient-to-r from-green-600 to-red-600 dark:from-green-500 dark:to-red-500 text-white overflow-hidden py-2 sm:py-3 md:py-4 justify-center rounded-lg">
               <RotatingText
-                texts={["lies", "looting","incompetence", "anti-privacy", "abductions", "Finance Bill 2025"]}
+                texts={["lies", "killings","incompetence", "anti-privacy", "dictatorship", "Finance Bill 2025"]}
                 durations={[2000, 2000, 2000, 2000, 2000, 5000]}
                 staggerFrom="last"
                 initial={{ y: "100%" }}
