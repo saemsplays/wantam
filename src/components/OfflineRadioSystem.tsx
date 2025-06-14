@@ -17,26 +17,35 @@ interface ChatMessage {
 
 // Mesh Network Protocol Implementation
 class MeshNode {
-  constructor(nodeId, onMessage, onPeerUpdate) {
+  public nodeId: string;
+  public peers: Map<string, RTCDataChannel>;
+  public connections: Map<string, RTCPeerConnection>;
+  public routingTable: Map<string, { nextHop: string; hopCount: number }>;
+  public messageHistory: Set<string>;
+  public onMessage: (message: any) => void;
+  public onPeerUpdate: (peers: string[]) => void;
+  public sequenceNumber: number;
+
+  constructor(nodeId: string, onMessage: (message: any) => void, onPeerUpdate: (peers: string[]) => void) {
     this.nodeId = nodeId;
-    this.peers = new Map(); // peerId -> RTCDataChannel
-    this.connections = new Map(); // peerId -> RTCPeerConnection
-    this.routingTable = new Map(); // destination -> { nextHop, hopCount }
-    this.messageHistory = new Set(); // for duplicate detection
+    this.peers = new Map();
+    this.connections = new Map();
+    this.routingTable = new Map();
+    this.messageHistory = new Set();
     this.onMessage = onMessage;
     this.onPeerUpdate = onPeerUpdate;
     this.sequenceNumber = 0;
   }
 
   // AODV-inspired routing protocol
-  updateRoutingTable(destination, nextHop, hopCount) {
+  updateRoutingTable(destination: string, nextHop: string, hopCount: number) {
     const existing = this.routingTable.get(destination);
     if (!existing || existing.hopCount > hopCount) {
       this.routingTable.set(destination, { nextHop, hopCount });
     }
   }
 
-  broadcastRouteDiscovery(destination) {
+  broadcastRouteDiscovery(destination: string) {
     const rreq = {
       type: 'RREQ',
       id: `${this.nodeId}-${++this.sequenceNumber}`,
@@ -49,7 +58,7 @@ class MeshNode {
     this.broadcast(rreq);
   }
 
-  handleRouteRequest(rreq, fromPeer) {
+  handleRouteRequest(rreq: any, fromPeer: string) {
     const messageId = rreq.id;
     if (this.messageHistory.has(messageId)) return;
     
@@ -73,7 +82,7 @@ class MeshNode {
     }
   }
 
-  handleRouteReply(rrep, fromPeer) {
+  handleRouteReply(rrep: any, fromPeer: string) {
     this.updateRoutingTable(rrep.destination, fromPeer, rrep.hopCount + 1);
     
     if (rrep.source !== this.nodeId) {
@@ -85,7 +94,7 @@ class MeshNode {
     }
   }
 
-  routeMessage(message) {
+  routeMessage(message: any) {
     const messageId = `${message.sender}-${message.timestamp}`;
     if (this.messageHistory.has(messageId)) return;
     
@@ -109,7 +118,7 @@ class MeshNode {
     }
   }
 
-  broadcast(message, excludePeer = null) {
+  broadcast(message: any, excludePeer: string | null = null) {
     for (const [peerId, channel] of this.peers) {
       if (peerId !== excludePeer && channel.readyState === 'open') {
         this.sendToPeer(peerId, message);
@@ -117,7 +126,7 @@ class MeshNode {
     }
   }
 
-  sendToPeer(peerId, message) {
+  sendToPeer(peerId: string, message: any) {
     const channel = this.peers.get(peerId);
     if (channel && channel.readyState === 'open') {
       try {
@@ -128,14 +137,14 @@ class MeshNode {
     }
   }
 
-  addPeer(peerId, channel, connection) {
+  addPeer(peerId: string, channel: RTCDataChannel, connection: RTCPeerConnection) {
     this.peers.set(peerId, channel);
     this.connections.set(peerId, connection);
     this.updateRoutingTable(peerId, peerId, 1);
     this.onPeerUpdate(Array.from(this.peers.keys()));
   }
 
-  removePeer(peerId) {
+  removePeer(peerId: string) {
     this.peers.delete(peerId);
     const connection = this.connections.get(peerId);
     if (connection) {
@@ -149,7 +158,13 @@ class MeshNode {
 
 // WebRTC Connection Manager
 class WebRTCManager {
-  constructor(onMessage, onPeerUpdate) {
+  public localId: string;
+  public meshNode: MeshNode;
+  public signalingSocket: WebSocket | null;
+  public isConnected: boolean;
+  public pendingConnections: Map<string, RTCPeerConnection>;
+
+  constructor(onMessage: (message: any) => void, onPeerUpdate: (peers: string[]) => void) {
     this.localId = Math.random().toString(36).substring(2, 15);
     this.meshNode = new MeshNode(this.localId, onMessage, onPeerUpdate);
     this.signalingSocket = null;
@@ -169,7 +184,7 @@ class WebRTCManager {
       this.signalingSocket.onopen = () => {
         console.log('✅ Connected to signaling server');
         this.isConnected = true;
-        this.signalingSocket.send(JSON.stringify({
+        this.signalingSocket!.send(JSON.stringify({
           type: 'join',
           id: this.localId,
           room: 'mesh-radio'
@@ -209,22 +224,22 @@ class WebRTCManager {
     
     peers.push(myInfo);
     // Keep only recent peers (last 5 minutes)
-    const recentPeers = peers.filter(p => Date.now() - p.timestamp < 300000);
+    const recentPeers = peers.filter((p: any) => Date.now() - p.timestamp < 300000);
     localStorage.setItem('meshPeers', JSON.stringify(recentPeers));
 
     // Try to connect to recent peers
-    recentPeers.forEach(peer => {
+    recentPeers.forEach((peer: any) => {
       if (peer.id !== this.localId) {
         this.createPeerConnection(peer.id, true);
       }
     });
   }
 
-  async handleSignalingMessage(data) {
+  async handleSignalingMessage(data: any) {
     switch (data.type) {
       case 'peer-list':
         // Connect to existing peers
-        data.peers.forEach(peerId => {
+        data.peers.forEach((peerId: string) => {
           this.createPeerConnection(peerId, true);
         });
         break;
@@ -248,7 +263,7 @@ class WebRTCManager {
     }
   }
 
-  async createPeerConnection(peerId, isInitiator = false) {
+  async createPeerConnection(peerId: string, isInitiator: boolean = false) {
     if (this.meshNode.peers.has(peerId) || this.pendingConnections.has(peerId)) {
       return; // Already connected or connecting
     }
@@ -312,7 +327,7 @@ class WebRTCManager {
     return connection;
   }
 
-  setupDataChannel(channel, peerId, connection) {
+  setupDataChannel(channel: RTCDataChannel, peerId: string, connection: RTCPeerConnection) {
     channel.onopen = () => {
       console.log(`✅ Data channel open with ${peerId}`);
       this.meshNode.addPeer(peerId, channel, connection);
@@ -341,35 +356,37 @@ class WebRTCManager {
     };
   }
 
-  async handleOffer(data) {
+  async handleOffer(data: any) {
     if (this.meshNode.peers.has(data.from) || this.pendingConnections.has(data.from)) {
       return; // Already connected
     }
 
     const connection = await this.createPeerConnection(data.from, false);
-    await connection.setRemoteDescription(data.offer);
-    
-    const answer = await connection.createAnswer();
-    await connection.setLocalDescription(answer);
-    
-    if (this.signalingSocket && this.signalingSocket.readyState === WebSocket.OPEN) {
-      this.signalingSocket.send(JSON.stringify({
-        type: 'answer',
-        answer: answer,
-        target: data.from,
-        from: this.localId
-      }));
+    if (connection) {
+      await connection.setRemoteDescription(data.offer);
+      
+      const answer = await connection.createAnswer();
+      await connection.setLocalDescription(answer);
+      
+      if (this.signalingSocket && this.signalingSocket.readyState === WebSocket.OPEN) {
+        this.signalingSocket.send(JSON.stringify({
+          type: 'answer',
+          answer: answer,
+          target: data.from,
+          from: this.localId
+        }));
+      }
     }
   }
 
-  async handleAnswer(data) {
+  async handleAnswer(data: any) {
     const connection = this.pendingConnections.get(data.from);
     if (connection) {
       await connection.setRemoteDescription(data.answer);
     }
   }
 
-  async handleIceCandidate(data) {
+  async handleIceCandidate(data: any) {
     const connection = this.pendingConnections.get(data.from) || 
                       this.meshNode.connections.get(data.from);
     if (connection && data.candidate) {
@@ -377,7 +394,7 @@ class WebRTCManager {
     }
   }
 
-  sendMessage(message) {
+  sendMessage(message: any) {
     const meshMessage = {
       ...message,
       sender: this.localId,
@@ -461,7 +478,7 @@ export const OfflineRadioSystem: React.FC<OfflineRadioSystemProps> = ({ isOpen, 
   const modalRef = useRef<HTMLDivElement>(null);
   const webrtcManager = useRef<WebRTCManager | null>(null);
 
-  const handleMessage = useCallback((message) => {
+  const handleMessage = useCallback((message: any) => {
     setMessages(prev => [...prev, {
       id: `${message.sender}-${message.timestamp}`,
       sender: message.sender === webrtcManager.current?.localId ? 'You' : `Peer-${message.sender.slice(-4)}`,
@@ -471,7 +488,7 @@ export const OfflineRadioSystem: React.FC<OfflineRadioSystemProps> = ({ isOpen, 
     }]);
   }, []);
 
-  const handlePeerUpdate = useCallback((peers) => {
+  const handlePeerUpdate = useCallback((peers: string[]) => {
     setPeerCount(peers.length);
     setIsConnected(peers.length > 0);
   }, []);
