@@ -277,10 +277,10 @@ Citizen of Kenya`);
 
   const handleDockSupportClick = handleSupportClick;
 
-// Add the close handler
-const handleCloseDonationWidget = () => {
-  setIsDonationWidgetVisible(false);
-};
+  // Add the close handler
+  const handleCloseDonationWidget = () => {
+    setIsDonationWidgetVisible(false);
+  };
 
   const handleMenuClick = () => {
     document.getElementById('details')?.scrollIntoView({ behavior: 'smooth' });
@@ -332,15 +332,15 @@ const handleCloseDonationWidget = () => {
       onClick: handleReportClick
     },
     {
-  icon: <UsersIcon size={18} />,
-  label: 'Reject',
-  onClick: () => {
-    const el = document.getElementById('details');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-  }
-},
+      icon: <UsersIcon size={18} />,
+      label: 'Reject',
+      onClick: () => {
+        const el = document.getElementById('details');
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+    },
   ];
 
   return (
@@ -930,9 +930,8 @@ const handleCloseDonationWidget = () => {
       </div>
 
       <DonationWidget 
-  isVisible={isDonationWidgetVisible}
-  onClose={handleCloseDonationWidget}
-/>
+        isVisible={isDonationWidgetVisible}
+      />
       
     </div>
   );

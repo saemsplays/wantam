@@ -1,11 +1,11 @@
 
-import { WebPlugin } from '@capacitor/core';
 import type { P2pCommunicationPlugin, P2pPeer, P2pMessage, PluginListenerHandle } from './definitions';
 
-export class P2pCommunicationWeb extends WebPlugin implements P2pCommunicationPlugin {
+export class P2pCommunicationWeb implements P2pCommunicationPlugin {
   private peers: P2pPeer[] = [];
   private messages: P2pMessage[] = [];
   private isInitialized = false;
+  private listeners: Map<string, Array<(data: any) => void>> = new Map();
 
   async initialize(): Promise<{ success: boolean }> {
     console.log('P2P Communication initialized (Web fallback)');
@@ -62,15 +62,30 @@ export class P2pCommunicationWeb extends WebPlugin implements P2pCommunicationPl
     return { success: true };
   }
 
-    async addListener(
+  async addListener(
     eventName: string,
     listenerFunc: (data: any) => void
   ): Promise<PluginListenerHandle> {
-    return super.addListener(eventName, listenerFunc);
+    if (!this.listeners.has(eventName)) {
+      this.listeners.set(eventName, []);
+    }
+    this.listeners.get(eventName)!.push(listenerFunc);
+
+    return {
+      remove: async () => {
+        const eventListeners = this.listeners.get(eventName);
+        if (eventListeners) {
+          const index = eventListeners.indexOf(listenerFunc);
+          if (index > -1) {
+            eventListeners.splice(index, 1);
+          }
+        }
+      }
+    };
   }
 
   async removeAllListeners(): Promise<void> {
-    return super.removeAllListeners();
+    this.listeners.clear();
   }
 
   async connectToPeer(options: { peerId: string; connectionType: 'wifi' | 'bluetooth' }): Promise<{ success: boolean }> {
@@ -99,5 +114,18 @@ export class P2pCommunicationWeb extends WebPlugin implements P2pCommunicationPl
 
   async getConnectedPeers(): Promise<{ peers: P2pPeer[] }> {
     return { peers: this.peers.filter(p => p.isConnected) };
+  }
+
+  private notifyListeners(eventName: string, data: any): void {
+    const eventListeners = this.listeners.get(eventName);
+    if (eventListeners) {
+      eventListeners.forEach(listener => {
+        try {
+          listener(data);
+        } catch (error) {
+          console.error(`Error in listener for ${eventName}:`, error);
+        }
+      });
+    }
   }
 }

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Heart, X, Gift, Copy, ExternalLink } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -30,9 +29,10 @@ interface DonationWidgetProps {
   onTimedOut?: () => void;
   isVisible?: boolean;
   offsetY?: number;
+  onClose?: () => void;
 }
 
-const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: controlledVisibility, offsetY = 140 }) => {
+const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: controlledVisibility, offsetY = 140, onClose }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
@@ -114,6 +114,9 @@ const DonationWidget: React.FC<DonationWidgetProps> = ({ onTimedOut, isVisible: 
 
   const handleCollapse = () => {
     setIsExpanded(false);
+    if (onClose) {
+      onClose();
+    }
   };
 
   const handleMpesa = () => {
