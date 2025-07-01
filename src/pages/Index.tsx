@@ -1,10 +1,11 @@
+
 import React, { useState, useEffect, useCallback } from "react";
-import BillsSidebar from "@/components/BillsSidebar";
+import { BillsSidebar } from "@/components/BillsSidebar";
 import FloatingActionButtons from "@/components/FloatingActionButtons";
-import UserCountSidebar from "@/components/UserCountSidebar";
+import { UserCountSidebar } from "@/components/UserCountSidebar";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
-import DarkModeToggle from "@/components/DarkModeToggle";
-import Aurora from "@/components/Aurora";
+import { DarkModeToggle } from "@/components/DarkModeToggle";
+import { Aurora } from "@/components/Aurora";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import {
@@ -69,7 +70,7 @@ import { ModeToggle } from "@/components/ModeToggle";
 import { useTheme } from "@/components/theme-provider";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import { Dock } from "@/components/Dock";
+import Dock from "@/components/Dock";
 import { Compass, Home, Book, Settings, Bell, Mail, User, Sun, Moon } from 'lucide-react';
 import ExternalRadioWindow from "../components/ExternalRadioWindow";
 
@@ -114,9 +115,16 @@ const Index = () => {
       <UserCountSidebar isOpen={isUsersOpen} onClose={() => setUsersOpen(false)} />
 
       <FloatingActionButtons
+        onDashboardClick={() => console.log('Dashboard clicked')}
         onBillsClick={() => setBillsOpen(true)}
-        onUsersClick={() => setUsersOpen(true)}
         onRadioClick={handleRadioClick}
+        onBudgetClick={() => console.log('Budget clicked')}
+        onTaxClick={() => console.log('Tax clicked')}
+        onInvestmentClick={() => console.log('Investment clicked')}
+        onDigitalClick={() => console.log('Digital clicked')}
+        onContactClick={() => console.log('Contact clicked')}
+        onProfileClick={() => setUsersOpen(true)}
+        onSettingsClick={() => console.log('Settings clicked')}
       />
 
       <Dock items={dockItems} />
