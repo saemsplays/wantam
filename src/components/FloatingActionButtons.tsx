@@ -4,10 +4,9 @@ import { Shield, Radio } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useScrollVisibility } from '../hooks/useScrollVisibility';
 
-
 interface FloatingActionButtonsProps {
   onReportClick: () => void;
-  onRadioClick?: () => void;
+  onRadioClick: () => void;
   isReportOpen?: boolean;
 }
 
@@ -27,7 +26,7 @@ export const FloatingActionButtons: React.FC<FloatingActionButtonsProps> = ({
   };
 
   return (
-    <div className={`fixed right-8 bottom-44 transform -translate-y-[5px] z-30 flex flex-col items-centertransition-all duration-300 ease-in-out transform ${
+    <div className={`fixed right-8 bottom-44 transform -translate-y-[5px] z-30 flex flex-col items-center transition-all duration-300 ease-in-out transform ${
         isVisible
         ? 'opacity-100 translate-y-0 pointer-events-auto'
         : 'opacity-0 translate-y-4 pointer-events-none'
@@ -56,7 +55,7 @@ export const FloatingActionButtons: React.FC<FloatingActionButtonsProps> = ({
         whileTap="tap"
         onClick={onRadioClick}
         className={`${buttonSize} ${spacing} bg-gradient-to-r from-green-600 to-black hover:from-green-700 hover:to-gray-900 text-white rounded-full shadow-lg transition-all duration-200 flex items-center justify-center opacity-70 hover:opacity-100`}
-        title="Offline Radio"
+        title="External Radio"
       >
         <Radio className="w-5 h-5" />
       </motion.button>

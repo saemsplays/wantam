@@ -23,7 +23,7 @@ import BillsFAB from '../components/BillsFAB';
 import { ScrollToTop } from '../components/ScrollToTop';
 import { FloatingActionButtons } from '../components/FloatingActionButtons';
 import { DarkModeToggle } from '../components/DarkModeToggle';
-import { OfflineRadioSystem } from '../components/OfflineRadioSystem';
+import { ExternalRadioWindow } from '../components/ExternalRadioWindow';
 import { ShareButton } from '../components/ShareButton';
 import { BillsDockPopup } from '../components/BillsDockPopup';
 import { Home as HomeIcon, Archive as ArchiveIcon, Settings as SettingsIcon, HelpCircle as HelpCircleIcon, Lightbulb as LightbulbIcon, Heart as HeartIcon, Flag as FlagIcon, ExternalLink as ExternalLinkIcon, Radio as RadioIcon, FileText as FileTextIcon, Users as UsersIcon } from "lucide-react";
@@ -322,9 +322,7 @@ Citizen of Kenya`);
     { 
       icon: <RadioIcon size={18} />, 
       label: 'Radio', 
-      onClick: () => {
-        setIsRadioOpen(prev => !prev);
-      }
+      onClick: handleRadioClick
     },
     { 
       icon: <FlagIcon size={18} />, 
@@ -375,7 +373,7 @@ Citizen of Kenya`);
         onClose={() => setIsReportingOpen(false)} 
       />
 
-      <OfflineRadioSystem
+      <ExternalRadioWindow
         isOpen={isRadioOpen}
         onClose={() => setIsRadioOpen(false)}
       />
@@ -387,16 +385,6 @@ Citizen of Kenya`);
       />
 
       <ScrollToTop />
-
-      {/*
-        <FloatingActionButtons
-        onReportClick={handleReportClick}
-        onSupportClick={handleSupportClick}
-        onMenuClick={handleMenuClick}
-        onScrollToTop={handleScrollToTop}
-        onRadioClick={handleRadioClick}
-        isReportOpen={isReportingOpen}
-      /> */}
 
       <BillsFAB />
 
@@ -721,7 +709,7 @@ Citizen of Kenya`);
         Email Subject
       </span>
     </CardTitle>
-    <p className="text-gray-600 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors duration-300">
+    <p className="text-gray-600 dark:text-gray-400 group-hover:text-purple-700 dark:group-hover:text-purple-300 transition-colors duration-300">
       The subject line for your objection email
     </p>
   </CardHeader>
@@ -753,7 +741,7 @@ Citizen of Kenya`);
         Your Objection Letter
       </span>
     </CardTitle>
-    <p className="text-gray-600 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors duration-300">
+    <p className="text-gray-600 dark:text-gray-400 group-hover:text-indigo-700 dark:group-hover:text-indigo-300 transition-colors duration-300">
       Review and edit your formal objection letter. The letter cites specific constitutional violations and legal grounds.
     </p>
   </CardHeader>
