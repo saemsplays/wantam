@@ -846,10 +846,27 @@ Citizen of Kenya`);
       
       <div className="group/button">
         <Button
-          onClick={handleSendEmail}
-          size="lg"
-          className="bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 dark:from-emerald-500 dark:to-blue-500 dark:hover:from-emerald-600 dark:hover:to-blue-600 text-white px-4 sm:px-6 md:px-12 py-4 text-sm sm:text-base md:text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 w-full max-w-full group-hover/button:shadow-2xl group-hover/button:shadow-emerald-500/30 dark:group-hover/button:shadow-emerald-400/40 group-hover/button:scale-110 group-hover/button:from-emerald-500 group-hover/button:to-blue-500 dark:group-hover/button:from-emerald-400 dark:group-hover/button:to-blue-400"
-        >
+  onClick={handleSendEmail}
+  size="lg"
+  className="
+    bg-gradient-to-r from-emerald-600 to-blue-600
+    hover:from-emerald-700 hover:to-blue-700
+    dark:from-emerald-500 dark:to-blue-500
+    dark:hover:from-emerald-600 dark:hover:to-blue-600
+    text-white px-4 sm:px-6 md:px-12 py-4
+    text-sm sm:text-base md:text-lg font-semibold
+    shadow-md hover:shadow-lg
+    transition-all duration-300 ease-out
+    transform hover:scale-102
+    w-full max-w-full
+    group-hover/button:shadow-lg group-hover/button:shadow-emerald-500/20
+    dark:group-hover/button:shadow-emerald-400/30
+    group-hover/button:scale-103
+    group-hover/button:from-emerald-500 group-hover/button:to-blue-500
+    dark:group-hover/button:from-emerald-400 dark:group-hover/button:to-blue-400
+  "
+>
+
           <Send className="mr-2 sm:mr-3 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 flex-shrink-0 group-hover/button:animate-pulse" />
           <span className="truncate text-xs sm:text-sm md:text-base group-hover/button:font-bold transition-all duration-300">
             Open Email & Send Objection
