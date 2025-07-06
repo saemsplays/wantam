@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -84,7 +83,10 @@ export const TemplateViewer: React.FC = () => {
       setTemplate(data);
       
       // Initialize form with template data
-      setSubject(data.metadata?.subject || 'RE: MEMORANDUM OF OBJECTION TO THE FINANCE BILL 2025');
+      // Safely access metadata.subject with proper type checking
+      const metadata = data.metadata as any;
+      const defaultSubject = metadata?.subject || 'RE: MEMORANDUM OF OBJECTION TO THE FINANCE BILL 2025';
+      setSubject(defaultSubject);
       setMessageBody(data.body);
       
       // Increment view count
