@@ -79,7 +79,7 @@ export const TemplateCreator: React.FC<TemplateCreatorProps> = ({
       };
 
       const { data, error } = await supabase
-        .from('templates' as any)
+        .from('templates')
         .insert({
           title,
           body,
@@ -104,15 +104,16 @@ export const TemplateCreator: React.FC<TemplateCreatorProps> = ({
         return;
       }
 
-      const templateData = data as Template;
-      const url = `${window.location.origin}/template/${templateData.slug || templateData.id}`;
-      setShareableUrl(url);
-      setShowShareDialog(true);
+      if (data) {
+        const url = `${window.location.origin}/template/${data.slug || data.id}`;
+        setShareableUrl(url);
+        setShowShareDialog(true);
 
-      toast({
-        title: "Template Saved!",
-        description: "Your shareable template has been created successfully.",
-      });
+        toast({
+          title: "Template Saved!",
+          description: "Your shareable template has been created successfully.",
+        });
+      }
 
     } catch (error) {
       console.error('Error saving template:', error);

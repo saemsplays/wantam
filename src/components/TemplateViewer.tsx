@@ -53,7 +53,7 @@ export const TemplateViewer: React.FC = () => {
       
       // Try to fetch by slug first, then by ID
       let { data, error } = await supabase
-        .from('templates' as any)
+        .from('templates')
         .select('*')
         .eq('slug', templateId)
         .eq('is_public', true)
@@ -62,7 +62,7 @@ export const TemplateViewer: React.FC = () => {
       if (error && error.code === 'PGRST116') {
         // Not found by slug, try by ID
         const response = await supabase
-          .from('templates' as any)
+          .from('templates')
           .select('*')
           .eq('id', templateId)
           .eq('is_public', true)
@@ -81,21 +81,20 @@ export const TemplateViewer: React.FC = () => {
         return;
       }
 
-      const templateData = data as Template;
-      setTemplate(templateData);
+      setTemplate(data);
       
       // Initialize form with template data
-      setSubject(templateData.metadata?.subject || 'RE: MEMORANDUM OF OBJECTION TO THE FINANCE BILL 2025');
-      setMessageBody(templateData.body);
+      setSubject(data.metadata?.subject || 'RE: MEMORANDUM OF OBJECTION TO THE FINANCE BILL 2025');
+      setMessageBody(data.body);
       
       // Increment view count
-      await supabase.rpc('increment_template_views' as any, { template_id: templateData.id });
+      await supabase.rpc('increment_template_views', { template_id: data.id });
       
       // Update document title and meta tags for SEO
-      document.title = `${templateData.title} - CEKA Template`;
+      document.title = `${data.title} - CEKA Template`;
       
       // Add Open Graph meta tags
-      updateMetaTags(templateData);
+      updateMetaTags(data);
       
     } catch (error) {
       console.error('Error fetching template:', error);
@@ -144,7 +143,7 @@ export const TemplateViewer: React.FC = () => {
     try {
       // Increment template usage count
       if (template) {
-        await supabase.rpc('increment_template_usage' as any, { template_id: template.id });
+        await supabase.rpc('increment_template_usage', { template_id: template.id });
       }
 
       // Track email sent action

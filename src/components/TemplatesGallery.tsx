@@ -38,7 +38,7 @@ export const TemplatesGallery: React.FC<TemplatesGalleryProps> = ({ isOpen, onCl
     try {
       setLoading(true);
       const { data, error } = await supabase
-        .from('templates' as any)
+        .from('templates')
         .select('*')
         .eq('is_public', true)
         .order('created_at', { ascending: false })
