@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -132,11 +133,24 @@ export const TemplateViewer: React.FC = () => {
     updateOrCreateMeta('twitter:description', bodySnippet);
   };
 
+  const isDesktop = () => {
+    return !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  };
+
   const handleSendEmail = async () => {
     if (!userName.trim()) {
       toast({
         title: "Name Required",
         description: "Please enter your full name to complete the objection letter",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (!selectedRecipients.clerk && !selectedRecipients.financeCommittee) {
+      toast({
+        title: "Select Recipients",
+        description: "Please select at least one recipient",
         variant: "destructive"
       });
       return;
@@ -165,8 +179,23 @@ export const TemplateViewer: React.FC = () => {
       const personalizedMessage = messageBody.replace('[USER_NAME_PLACEHOLDER]', userName.trim());
       const encodedBody = encodeURIComponent(personalizedMessage);
 
-      const mailtoLink = `mailto:${to}?subject=${encodedSubject}&body=${encodedBody}`;
-      window.location.href = mailtoLink;
+      if (isDesktop()) {
+        const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&su=${encodedSubject}&body=${encodedBody}`;
+        const outlookUrl = `https://outlook.live.com/mail/0/deeplink/compose?to=${encodeURIComponent(to)}&subject=${encodedSubject}&body=${encodedBody}`;
+        
+        const userAgent = navigator.userAgent.toLowerCase();
+        
+        if (userAgent.includes('chrome') || userAgent.includes('edge')) {
+          window.open(gmailUrl, '_blank');
+        } else if (userAgent.includes('outlook') || userAgent.includes('office')) {
+          window.open(outlookUrl, '_blank');
+        } else {
+          window.location.href = `mailto:${to}?subject=${encodedSubject}&body=${encodedBody}`;
+        }
+      } else {
+        const mailtoLink = `mailto:${to}?subject=${encodedSubject}&body=${encodedBody}`;
+        window.location.href = mailtoLink;
+      }
 
       toast({
         title: "Opening Your Email App",
