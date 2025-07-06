@@ -214,7 +214,7 @@ Citizen of Kenya`);
     }
 
     try {
-      const { data, error } = await supabase
+      const { data, error } = await supabaseAdmin
         .from('email_templates')
         .insert({
           template_name: templateName,
@@ -226,28 +226,28 @@ Citizen of Kenya`);
         .select()
         .single();
 
-      if (data) {
-        toast({ title: "Template Saved", description: "Your template has been saved successfully" });
-        
-        // Generate and copy shareable link
-        const shareableLink = `${window.location.origin}${window.location.pathname}?template=${data.id}`;
-        navigator.clipboard.writeText(shareableLink);
-        toast({ title: "Link Copied!", description: "Shareable link copied to clipboard" });
+      if (error) throw error;
 
-        setIsTemplateCreatorOpen(false);
-        setTemplateName('');
-        fetchTemplates();
-      }
-    } catch (error) {
-      console.error('Error saving template:', error);
-      toast({
-        title: "Error",
-        description: "Failed to save template. Please try again.",
-        variant: "destructive"
-      });
-    }
-  };
-
+    // Generate and copy shareable link
+    const shareableLink = `${window.location.origin}${window.location.pathname}?template=${data.id}`;
+    navigator.clipboard.writeText(shareableLink);
+    
+    toast({ title: "Template Saved!", description: "Shareable link copied to clipboard" });
+    
+    setIsTemplateCreatorOpen(false);
+    setTemplateName('');
+    fetchTemplates();
+    
+  } catch (error) {
+    console.error('Error saving template:', error);
+    toast({
+      title: "Error",
+      description: "Failed to save template. Please try again.",
+      variant: "destructive"
+    });
+  }
+};
+  
   // Tour handlers
   const handleTourComplete = () => {
     setShowTour(false);
