@@ -9,7 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 interface Template {
   id: string;
-  slug: string;
+  slug: string | null;
   title: string;
   body: string;
   metadata: any;
@@ -38,7 +38,7 @@ export const TemplatesGallery: React.FC<TemplatesGalleryProps> = ({ isOpen, onCl
     try {
       setLoading(true);
       const { data, error } = await supabase
-        .from('templates')
+        .from('templates' as any)
         .select('*')
         .eq('is_public', true)
         .order('created_at', { ascending: false })

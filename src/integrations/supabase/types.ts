@@ -24,6 +24,48 @@ export type Database = {
         }
         Relationships: []
       }
+      templates: {
+        Row: {
+          body: string
+          created_at: string
+          created_by: string | null
+          id: string
+          is_public: boolean | null
+          metadata: Json | null
+          slug: string | null
+          title: string
+          updated_at: string
+          uses_count: number | null
+          views_count: number | null
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_public?: boolean | null
+          metadata?: Json | null
+          slug?: string | null
+          title: string
+          updated_at?: string
+          uses_count?: number | null
+          views_count?: number | null
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_public?: boolean | null
+          metadata?: Json | null
+          slug?: string | null
+          title?: string
+          updated_at?: string
+          uses_count?: number | null
+          views_count?: number | null
+        }
+        Relationships: []
+      }
       user_actions: {
         Row: {
           action_type: string
@@ -76,8 +118,20 @@ export type Database = {
       }
     }
     Functions: {
+      generate_slug: {
+        Args: { title_text: string }
+        Returns: string
+      }
       increment_action_count: {
         Args: { action: string }
+        Returns: undefined
+      }
+      increment_template_usage: {
+        Args: { template_id: string }
+        Returns: undefined
+      }
+      increment_template_views: {
+        Args: { template_id: string }
         Returns: undefined
       }
       increment_user_action: {

@@ -12,10 +12,14 @@ import { supabase } from "@/integrations/supabase/client";
 
 interface Template {
   id: string;
+  slug: string | null;
   title: string;
   body: string;
   metadata: any;
+  is_public: boolean;
+  created_by: string | null;
   created_at: string;
+  updated_at: string;
   views_count: number;
   uses_count: number;
 }
@@ -49,7 +53,7 @@ export const TemplateViewer: React.FC = () => {
       
       // Try to fetch by slug first, then by ID
       let { data, error } = await supabase
-        .from('templates')
+        .from('templates' as any)
         .select('*')
         .eq('slug', templateId)
         .eq('is_public', true)
@@ -58,7 +62,7 @@ export const TemplateViewer: React.FC = () => {
       if (error && error.code === 'PGRST116') {
         // Not found by slug, try by ID
         const response = await supabase
-          .from('templates')
+          .from('templates' as any)
           .select('*')
           .eq('id', templateId)
           .eq('is_public', true)
@@ -77,20 +81,21 @@ export const TemplateViewer: React.FC = () => {
         return;
       }
 
-      setTemplate(data);
+      const templateData = data as Template;
+      setTemplate(templateData);
       
       // Initialize form with template data
-      setSubject(data.metadata?.subject || 'RE: MEMORANDUM OF OBJECTION TO THE FINANCE BILL 2025');
-      setMessageBody(data.body);
+      setSubject(templateData.metadata?.subject || 'RE: MEMORANDUM OF OBJECTION TO THE FINANCE BILL 2025');
+      setMessageBody(templateData.body);
       
       // Increment view count
-      await supabase.rpc('increment_template_views', { template_id: data.id });
+      await supabase.rpc('increment_template_views' as any, { template_id: templateData.id });
       
       // Update document title and meta tags for SEO
-      document.title = `${data.title} - CEKA Template`;
+      document.title = `${templateData.title} - CEKA Template`;
       
       // Add Open Graph meta tags
-      updateMetaTags(data);
+      updateMetaTags(templateData);
       
     } catch (error) {
       console.error('Error fetching template:', error);
@@ -139,7 +144,7 @@ export const TemplateViewer: React.FC = () => {
     try {
       // Increment template usage count
       if (template) {
-        await supabase.rpc('increment_template_usage', { template_id: template.id });
+        await supabase.rpc('increment_template_usage' as any, { template_id: template.id });
       }
 
       // Track email sent action

@@ -10,6 +10,20 @@ import { Save, Copy, Eye, Share2, FileText } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
+interface Template {
+  id: string;
+  slug: string | null;
+  title: string;
+  body: string;
+  metadata: any;
+  is_public: boolean;
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+  views_count: number;
+  uses_count: number;
+}
+
 interface TemplateCreatorProps {
   isOpen: boolean;
   onClose: () => void;
@@ -65,7 +79,7 @@ export const TemplateCreator: React.FC<TemplateCreatorProps> = ({
       };
 
       const { data, error } = await supabase
-        .from('templates')
+        .from('templates' as any)
         .insert({
           title,
           body,
@@ -90,7 +104,8 @@ export const TemplateCreator: React.FC<TemplateCreatorProps> = ({
         return;
       }
 
-      const url = `${window.location.origin}/template/${data.slug || data.id}`;
+      const templateData = data as Template;
+      const url = `${window.location.origin}/template/${templateData.slug || templateData.id}`;
       setShareableUrl(url);
       setShowShareDialog(true);
 
