@@ -35,25 +35,31 @@ export const SimpleTour: React.FC<SimpleTourProps> = ({ isActive, onComplete, on
     {
       id: 'hero',
       title: 'Begin Your Guide',
-      description: 'Welcome! I am here to guide you through your submission. Shall we?',
+      description: 'Welcome, fellow citizen! I am here to guide you through your submission. Shall we?',
       targetId: 'hero'
     },
     {
       id: 'chad',
-      title: 'Finance Bill GPT + Download',
-      description: 'Understand how the Constitution protects you + ask questions on the Finance Bill GPT',
+      title: 'Change.Org + Download',
+      description: 'View other petitions + download our app & WANTAM on the go!',
       targetId: 'chad'
+    },
+    {
+      id: 'templates',
+      title: 'View Email Templates',
+      description: 'We\'ve made it simple for you to choose a template on the go. Peek around or simply create one.',
+      targetId: 'details'
     },
     {
       id: 'details',
       title: 'Enter Your Details',
-      description: 'Add a name to personalize your objection letter. You\'re free to use a pseudonym or initials.',
+      description: 'Add a name to personalize your template letter. You\'re free to use a pseudonym or initials.',
       targetId: 'details'
     },
     {
       id: 'recipients',
       title: 'Confirm Recipients',
-      description: 'In this case, they\'ve been ticked for you',
+      description: 'Confirm to whom this is being sent. In this case, they\'ve been ticked for you',
       targetId: 'recipients'
     },
     {
