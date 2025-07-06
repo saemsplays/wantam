@@ -204,29 +204,30 @@ Citizen of Kenya`);
   };
 
   const saveTemplate = async () => {
-    if (!templateName.trim()) {
-      toast({
-        title: "Template Name Required",
-        description: "Please provide a name for your template",
-        variant: "destructive"
-      });
-      return;
-    }
+  if (!templateName.trim()) {
+    toast({
+      title: "Template Name Required",
+      description: "Please provide a name for your template",
+      variant: "destructive"
+    });
+    return;
+  }
 
-    try {
-      const { data, error } = await supabase
-        .from('email_templates')
-        .insert({
-          template_name: templateName,
-          recipients: selectedRecipients,
-          subject,
-          message_body: messageBody,
-          user_name: userName
-        })
-        .select()
-        .single();
+  try {
+    // Use the regular supabase client instead of supabaseAdmin
+    const { data, error } = await supabase
+      .from('email_templates')
+      .insert({
+        template_name: templateName,
+        recipients: selectedRecipients,
+        subject,
+        message_body: messageBody,
+        user_name: userName
+      })
+      .select()
+      .single();
 
-      if (error) throw error;
+    if (error) throw error;
 
     // Generate and copy shareable link
     const shareableLink = `${window.location.origin}${window.location.pathname}?template=${data.id}`;
