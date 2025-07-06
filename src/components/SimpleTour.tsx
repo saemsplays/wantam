@@ -48,7 +48,7 @@ export const SimpleTour: React.FC<SimpleTourProps> = ({ isActive, onComplete, on
       id: 'templates',
       title: 'View Email Templates',
       description: 'We\'ve made it simple for you to choose a template on the go. Peek around or simply create one.',
-      targetId: 'details'
+      targetId: 'templates'
     },
     {
       id: 'details',
