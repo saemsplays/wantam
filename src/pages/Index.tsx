@@ -97,6 +97,7 @@ Citizen of Kenya`);
   // Section definitions
   const sections = [
     { id: 'hero', title: 'Introduction', position: 21.52 },
+    {id: 'templates', title: 'Templates', position: 40.75 },
     { id: 'details', title: 'Your Details', position: 44 },
     { id: 'recipients', title: 'Send To', position: 53 },
     { id: 'subject', title: 'Email Subject', position: 60 },
