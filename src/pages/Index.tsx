@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { 
   Send, Mail, FileText, CheckCircle, User, AlertTriangle, Shield, Scale, Users, Play, 
   RotateCcw, ArrowUpRight, Home, Archive, Settings, HelpCircle, Lightbulb, Heart, Flag, 
-  ExternalLink, Radio, Save, FolderOpen, Share2, FolderSearch 
+  ExternalLink, Radio, Save, FolderOpen, Share2, FolderSearch, Plus, X, Edit2, Trash2 
 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
