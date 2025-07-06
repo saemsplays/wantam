@@ -44,12 +44,12 @@ export const SimpleTour: React.FC<SimpleTourProps> = ({ isActive, onComplete, on
       description: 'View other petitions + download our app & WANTAM on the go!',
       targetId: 'chad'
     },
-    {
+    {/*{
       id: 'templates',
       title: 'View Email Templates',
       description: 'We\'ve made it simple for you to choose a template on the go. Peek around or simply create one.',
       targetId: 'templates'
-    },
+    }, */}
     {
       id: 'details',
       title: 'Enter Your Details',
