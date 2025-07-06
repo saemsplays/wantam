@@ -416,11 +416,11 @@ Citizen of Kenya`);
         />
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="flex items-center space-x-4 text-2xl sm:text-4xl md:text-6xl font-bold">
-            <span className="text-red-600">Reject</span>
+            <span className="text-red-600">Siri Ni</span>
             <div className="px-4 sm:px-6 md:px-8 bg-gradient-to-r from-green-600 to-red-600 dark:from-green-500 dark:to-red-500 text-white overflow-hidden py-2 sm:py-3 md:py-4 justify-center rounded-lg">
               <RotatingText
-                texts={["lies", "killings","dictatorship", "anti-privacy", "torture", "Finance Bill 2025"]}
-                durations={[2000, 3000, 2000, 2000, 2000, 5000]}
+                texts={["kuwa organised", "kuwa tribeless","numbers", "kuinject", "kupiga kelele", "Twende Saba Saba"]}
+                durations={[3000, 3000, 5000, 3000, 3000, 7000]}
                 staggerFrom="last"
                 initial={{ y: "100%" }}
                 animate={{ y: 0 }}
