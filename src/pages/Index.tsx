@@ -366,7 +366,7 @@ Citizen of Kenya`);
       <SimpleTour isActive={showTour} onComplete={handleTourComplete} />
       <ScrollProgressTracker activeSection={activeSection} sections={sections} />
       
-      <BillsSidebar />
+      {/* <BillsSidebar /> */}
       <InteractiveCountWidget />
       <DonationWidget />
       <EmergencyReportingSystem isOpen={isReportingOpen} onClose={() => setIsReportingOpen(false)} />
