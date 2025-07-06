@@ -93,6 +93,9 @@ Citizen of Kenya`);
   const [isTemplateBrowserOpen, setIsTemplateBrowserOpen] = useState(false);
   const [templates, setTemplates] = useState<any[]>([]);
   const [templateName, setTemplateName] = useState('');
+  const [customEmails, setCustomEmails] = useState([]);
+  const [newEmailInput, setNewEmailInput] = useState('');
+  const [isAddingEmail, setIsAddingEmail] = useState(false);
 
   // Section definitions
   const sections = [
@@ -274,11 +277,41 @@ Citizen of Kenya`);
     const emails: string[] = [];
     if (selectedRecipients.clerk) emails.push(recipients.clerk.email);
     if (selectedRecipients.financeCommittee) emails.push(recipients.financeCommittee.email);
+    customEmails.forEach(email => emails.push(email.address));
     return emails;
   };
 
   const isDesktop = () => !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
+  const addCustomEmail = () => {
+  if (!newEmailInput.trim()) return;
+  
+  // Basic email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(newEmailInput)) {
+    toast({
+      title: "Invalid Email",
+      description: "Please enter a valid email address",
+      variant: "destructive"
+    });
+    return;
+  }
+  
+  const newEmail = {
+    id: Date.now(),
+    address: newEmailInput.trim(),
+    name: newEmailInput.trim()
+  };
+  
+  setCustomEmails(prev => [...prev, newEmail]);
+  setNewEmailInput('');
+  setIsAddingEmail(false);
+};
+
+const removeCustomEmail = (emailId) => {
+  setCustomEmails(prev => prev.filter(email => email.id !== emailId));
+};
+  
   const handleSendEmail = async () => {
     if (!userName.trim()) {
       toast({
@@ -696,63 +729,143 @@ Citizen of Kenya`);
 
         {/* Recipients Section */}
         <section id="recipients" className="transition-all duration-700">
-          <Card className="group dark:bg-gray-800 dark:border-gray-700 hover:shadow-lg hover:shadow-emerald-500/10 dark:hover:shadow-emerald-400/20 hover:border-emerald-300 dark:hover:border-emerald-500 transition-all duration-300 ease-out hover:scale-[1.005]">
-            <CardHeader className="group-hover:bg-emerald-50/30 dark:group-hover:bg-emerald-900/20 transition-colors duration-300 rounded-t-lg">
-              <CardTitle className="flex items-center gap-3">
-                <div className="bg-emerald-600 dark:bg-emerald-500 p-2 rounded-lg group-hover:bg-emerald-700 dark:group-hover:bg-emerald-400 group-hover:shadow-md transition-all duration-300 group-hover:scale-105">
-                  <Mail className="h-5 w-5 text-white transition-transform duration-300 group-hover:rotate-12" />
-                </div>
-                <span className="text-gray-900 dark:text-white group-hover:text-emerald-900 dark:group-hover:text-emerald-100 transition-colors duration-300">
-                  Send To
-                </span>
-              </CardTitle>
-              <p className="text-gray-600 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors duration-300">
-                Select who should receive your objection letter
-              </p>
-            </CardHeader>
-            <CardContent className="group-hover:bg-gradient-to-br group-hover:from-emerald-50/10 group-hover:to-transparent dark:group-hover:from-emerald-800/5 dark:group-hover:to-transparent transition-all duration-300">
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="flex items-start space-x-3 p-4 border-2 border-gray-200 dark:border-gray-600 rounded-lg hover:border-emerald-300 dark:hover:border-emerald-500 hover:bg-emerald-50/30 dark:hover:bg-emerald-900/20 hover:shadow-md hover:shadow-emerald-500/10 dark:hover:shadow-emerald-400/20 transition-all duration-300 hover:scale-[1.02] group/item">
-                    <Checkbox
-                      id="clerk"
-                      checked={selectedRecipients.clerk}
-                      onCheckedChange={(checked) => handleRecipientChange('clerk', checked as boolean)}
-                      className="mt-1 group-hover/item:border-emerald-400 transition-colors duration-300"
-                    />
-                    <Label htmlFor="clerk" className="flex-1 cursor-pointer">
-                      <div className="font-semibold text-gray-900 dark:text-white group-hover/item:text-emerald-900 dark:group-hover/item:text-emerald-100 transition-colors duration-300">
-                        {recipients.clerk.name}
-                      </div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400 group-hover/item:text-gray-700 dark:group-hover/item:text-gray-300 transition-colors duration-300">
-                        {recipients.clerk.email}
-                      </div>
-                      <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-1 group-hover/item:text-emerald-700 dark:group-hover/item:text-emerald-300 group-hover/item:font-medium transition-all duration-300">
-                        ✓ Recommended
-                      </div>
-                    </Label>
-                    <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-emerald-400/0 via-emerald-400/5 to-emerald-400/0 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+          <Card className="group bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/30 dark:to-red-900/30 border-2 border-orange-200 dark:border-orange-700 hover:shadow-xl hover:shadow-orange-500/20 dark:hover:shadow-orange-400/30 hover:border-orange-300 dark:hover:border-orange-500 transition-all duration-300 ease-out hover:scale-[1.005] hover:from-orange-100 hover:to-red-100 dark:hover:from-orange-900/40 dark:hover:to-red-900/40">
+            <CardContent className="pt-6 group-hover:bg-gradient-to-br group-hover:from-white/10 group-hover:to-transparent dark:group-hover:from-white/5 dark:group-hover:to-transparent transition-all duration-300 rounded-lg">
+              <div className="space-y-6">
+                <div className="group-hover:transform group-hover:scale-[1.02] transition-transform duration-300">
+                  <div className="flex items-center mb-2">
+                    <Mail className="mr-2 h-5 w-5 text-orange-600 dark:text-orange-400" />
+                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                      Send To
+                    </h3>
                   </div>
-                  
-                  <div className="flex items-start space-x-3 p-4 border-2 border-gray-200 dark:border-gray-600 rounded-lg hover:border-emerald-300 dark:hover:border-emerald-500 hover:bg-emerald-50/30 dark:hover:bg-emerald-900/20 hover:shadow-md hover:shadow-emerald-500/10 dark:hover:shadow-emerald-400/20 transition-all duration-300 hover:scale-[1.02] group/item relative">
-                    <Checkbox
-                      id="financeCommittee"
-                      checked={selectedRecipients.financeCommittee}
-                      onCheckedChange={(checked) => handleRecipientChange('financeCommittee', checked as boolean)}
-                      className="mt-1 group-hover/item:border-emerald-400 transition-colors duration-300"
-                    />
-                    <Label htmlFor="financeCommittee" className="flex-1 cursor-pointer">
-                      <div className="font-semibold text-gray-900 dark:text-white group-hover/item:text-emerald-900 dark:group-hover/item:text-emerald-100 transition-colors duration-300">
-                        {recipients.financeCommittee.name}
+                  <p className="text-gray-600 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors duration-300">
+                    Select who should receive your objection letter
+                  </p>
+                </div>
+                
+                <div className="space-y-4">
+                  {/* Default Recipients */}
+                  <div className="space-y-3">
+                    <div className="flex items-center space-x-3 p-3 rounded-lg border-2 border-orange-100 dark:border-orange-800 group/item hover:border-orange-200 dark:hover:border-orange-600 hover:bg-orange-50/50 dark:hover:bg-orange-900/20 transition-all duration-300 group-hover/item:shadow-md">
+                      <Checkbox
+                        id="clerk"
+                        checked={selectedRecipients.clerk}
+                        onCheckedChange={(checked) => handleRecipientChange('clerk', checked as boolean)}
+                        className="mt-1 group-hover/item:border-emerald-400 transition-colors duration-300"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between">
+                          <label htmlFor="clerk" className="text-sm font-medium text-gray-900 dark:text-white cursor-pointer group-hover/item:text-orange-900 dark:group-hover/item:text-orange-100 transition-colors duration-300">
+                            {recipients.clerk.name}
+                          </label>
+                        </div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400 truncate group-hover/item:text-orange-700 dark:group-hover/item:text-orange-300 transition-colors duration-300">
+                          {recipients.clerk.email}
+                        </div>
+                        <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-1 group-hover/item:text-emerald-700 dark:group-hover/item:text-emerald-300 transition-colors duration-300">
+                          ✓ Recommended
+                        </div>
                       </div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400 group-hover/item:text-gray-700 dark:group-hover/item:text-gray-300 transition-colors duration-300">
-                        {recipients.financeCommittee.email}
+                    </div>
+                    
+                    <div className="flex items-center space-x-3 p-3 rounded-lg border-2 border-orange-100 dark:border-orange-800 group/item hover:border-orange-200 dark:hover:border-orange-600 hover:bg-orange-50/50 dark:hover:bg-orange-900/20 transition-all duration-300 group-hover/item:shadow-md">
+                      <Checkbox
+                        id="financeCommittee"
+                        checked={selectedRecipients.financeCommittee}
+                        onCheckedChange={(checked) => handleRecipientChange('financeCommittee', checked as boolean)}
+                        className="mt-1 group-hover/item:border-emerald-400 transition-colors duration-300"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between">
+                          <label htmlFor="financeCommittee" className="text-sm font-medium text-gray-900 dark:text-white cursor-pointer group-hover/item:text-orange-900 dark:group-hover/item:text-orange-100 transition-colors duration-300">
+                            {recipients.financeCommittee.name}
+                          </label>
+                        </div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400 truncate group-hover/item:text-orange-700 dark:group-hover/item:text-orange-300 transition-colors duration-300">
+                          {recipients.financeCommittee.email}
+                        </div>
+                        <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-1 group-hover/item:text-emerald-700 dark:group-hover/item:text-emerald-300 transition-colors duration-300">
+                          ✓ Recommended
+                        </div>
                       </div>
-                      <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-1 group-hover/item:text-emerald-700 dark:group-hover/item:text-emerald-300 group-hover/item:font-medium transition-all duration-300">
-                        ✓ Recommended
+                    </div>
+                  </div>
+
+                  {/* Custom Recipients */}
+                  {customEmails.length > 0 && (
+                    <div className="space-y-3">
+                      <div className="text-sm font-medium text-gray-700 dark:text-gray-300 border-t pt-3">
+                        Custom Recipients
                       </div>
-                    </Label>
-                    <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-emerald-400/0 via-emerald-400/5 to-emerald-400/0 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                      {customEmails.map((email) => (
+                        <div key={email.id} className="flex items-center space-x-3 p-3 rounded-lg border-2 border-blue-100 dark:border-blue-800 group/item hover:border-blue-200 dark:hover:border-blue-600 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 transition-all duration-300">
+                          <Mail className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                          <div className="flex-1 min-w-0">
+                            <div className="text-sm font-medium text-gray-900 dark:text-white">
+                              {email.name}
+                            </div>
+                            <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                              {email.address}
+                            </div>
+                          </div>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => removeCustomEmail(email.id)}
+                            className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-900/20"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Add Custom Email */}
+                  <div className="border-t pt-4">
+                    {!isAddingEmail ? (
+                      <Button
+                        variant="outline"
+                        onClick={() => setIsAddingEmail(true)}
+                        className="w-full border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
+                      >
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Custom Email Address
+                      </Button>
+                    ) : (
+                      <div className="space-y-3">
+                        <div className="flex gap-2">
+                          <Input
+                            placeholder="Enter email address"
+                            value={newEmailInput}
+                            onChange={(e) => setNewEmailInput(e.target.value)}
+                            onKeyPress={(e) => e.key === 'Enter' && addCustomEmail()}
+                            className="flex-1"
+                          />
+                          <Button
+                            onClick={addCustomEmail}
+                            size="sm"
+                            className="bg-blue-600 hover:bg-blue-700 text-white"
+                          >
+                            <Plus className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            onClick={() => {
+                              setIsAddingEmail(false);
+                              setNewEmailInput('');
+                            }}
+                            variant="outline"
+                            size="sm"
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          Add additional recipients like MPs, senators, or other officials
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
