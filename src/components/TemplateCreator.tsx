@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -86,7 +85,7 @@ export const TemplateCreator: React.FC<TemplateCreatorProps> = ({
           slug,
           metadata,
           is_public: isPublic,
-          created_by: user?.id
+          created_by: user?.id || null // Set to null for anonymous users
         })
         .select()
         .single();
