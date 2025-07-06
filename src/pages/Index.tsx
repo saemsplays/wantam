@@ -214,7 +214,7 @@ Citizen of Kenya`);
     }
 
     try {
-      const { data, error } = await supabaseAdmin
+      const { data, error } = await supabase
         .from('email_templates')
         .insert({
           template_name: templateName,
