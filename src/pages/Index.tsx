@@ -27,6 +27,7 @@ import { ExternalRadioWindow } from '../components/ExternalRadioWindow';
 import { ShareButton } from '../components/ShareButton';
 import { BillsDockPopup } from '../components/BillsDockPopup';
 import { Home as HomeIcon, Archive as ArchiveIcon, Settings as SettingsIcon, HelpCircle as HelpCircleIcon, Lightbulb as LightbulbIcon, Heart as HeartIcon, Flag as FlagIcon, ExternalLink as ExternalLinkIcon, Radio as RadioIcon, FileText as FileTextIcon, Users as UsersIcon } from "lucide-react";
+import { TemplateCreator } from '../components/TemplateCreator';
 
 const Index = () => {
   const [userName, setUserName] = useState('');
@@ -89,6 +90,9 @@ Citizen of Kenya`);
   // Bills dock popup state
   const [billsDockOpen, setBillsDockOpen] = useState(false);
   const [billsDockOrigin, setBillsDockOrigin] = useState<HTMLElement | null>(null);
+
+  // Template Creator modal state
+  const [isTemplateCreatorOpen, setIsTemplateCreatorOpen] = useState(false);
 
   // Section definitions with updated percentages including Introduction
   const sections = [
@@ -339,6 +343,11 @@ Citizen of Kenya`);
         }
       }
     },
+    {
+      icon: <FileTextIcon size={18} />,
+      label: 'Template',
+      onClick: () => setIsTemplateCreatorOpen(true)
+    }
   ];
 
   return (
@@ -387,6 +396,16 @@ Citizen of Kenya`);
       <ScrollToTop />
 
       <BillsFAB />
+
+      <TemplateCreator 
+        isOpen={isTemplateCreatorOpen}
+        onClose={() => setIsTemplateCreatorOpen(false)}
+        initialData={{
+          title: 'Finance Bill 2025 Objection Template',
+          body: messageBody,
+          subject: subject
+        }}
+      />
 
       <section className="h-screen relative overflow-hidden">
         <Aurora
@@ -844,17 +863,26 @@ Citizen of Kenya`);
         <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-emerald-400/0 via-emerald-400/3 to-emerald-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
       </div>
       
-      <div className="group/button">
+      <div className="group/button flex flex-col sm:flex-row gap-3 justify-center">
         <Button
-  onClick={handleSendEmail}
-  size="lg"
-  className="bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 dark:from-emerald-500 dark:to-blue-500 dark:hover:from-emerald-600 dark:hover:to-blue-600 text-white px-4 sm:px-6 md:px-12 py-4 text-sm sm:text-base md:text-lg font-semibold shadow-lg transition-all duration-300 ease-out transform hover:scale-[1.02] w-full max-w-full group-hover/button:shadow-xl group-hover/button:shadow-emerald-500/20 dark:group-hover/button:shadow-emerald-400/25 group-hover/button:scale-[1.03]"
->
-
+          onClick={handleSendEmail}
+          size="lg"
+          className="bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 dark:from-emerald-500 dark:to-blue-500 dark:hover:from-emerald-600 dark:hover:to-blue-600 text-white px-4 sm:px-6 md:px-12 py-4 text-sm sm:text-base md:text-lg font-semibold shadow-lg transition-all duration-300 ease-out transform hover:scale-[1.02] group-hover/button:shadow-xl group-hover/button:shadow-emerald-500/20 dark:group-hover/button:shadow-emerald-400/25 group-hover/button:scale-[1.03]"
+        >
           <Send className="mr-2 sm:mr-3 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 flex-shrink-0 group-hover/button:animate-pulse" />
           <span className="truncate text-xs sm:text-sm md:text-base group-hover/button:font-bold transition-all duration-300">
             Open Email & Send Objection
           </span>
+        </Button>
+        
+        <Button
+          onClick={() => setIsTemplateCreatorOpen(true)}
+          variant="outline"
+          size="lg"
+          className="border-emerald-300 text-emerald-700 hover:bg-emerald-50 hover:border-emerald-400 dark:border-emerald-600 dark:text-emerald-300 dark:hover:bg-emerald-900/20 px-4 sm:px-6 py-4 text-sm sm:text-base font-semibold transition-all duration-300"
+        >
+          <FileText className="mr-2 h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+          <span className="truncate">Save as Template</span>
         </Button>
       </div>
       

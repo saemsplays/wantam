@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -10,6 +9,7 @@ import TaxBill2025 from "./pages/TaxBill2025";
 import InvestmentBill2025 from "./pages/InvestmentBill2025";
 import DigitalEconomyBill2025 from "./pages/DigitalEconomyBill2025";
 import NotFound from "./pages/NotFound";
+import { TemplateViewer } from "./components/TemplateViewer";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +21,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/template/:templateId" element={<TemplateViewer />} />
           <Route path="/budget-2025" element={<BudgetBill2025 />} />
           <Route path="/tax-2025" element={<TaxBill2025 />} />
           <Route path="/investment-2025" element={<InvestmentBill2025 />} />
