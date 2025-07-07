@@ -151,7 +151,11 @@ Citizen of Kenya`);
         .limit(1);
       
       if (response.data?.[0]) {
-        setUserCount(response.data[0]);
+        // Fix: Convert emails_sent to emailsSent for state compatibility
+        setUserCount({
+          viewers: response.data[0].viewers,
+          emailsSent: response.data[0].emails_sent
+        });
       }
     } catch (error) {
       console.error('Error fetching counts:', error);
@@ -182,7 +186,16 @@ Citizen of Kenya`);
       
       if (data) {
         setUserName(data.user_name || '');
-        setSelectedRecipients(data.recipients);
+        // Fix: Safely parse recipients JSON with fallback
+        try {
+          const parsedRecipients = typeof data.recipients === 'string' 
+            ? JSON.parse(data.recipients) 
+            : data.recipients;
+          setSelectedRecipients(parsedRecipients || { clerk: false, financeCommittee: false });
+        } catch (parseError) {
+          console.error('Error parsing recipients:', parseError);
+          setSelectedRecipients({ clerk: false, financeCommittee: false });
+        }
         setSubject(data.subject);
         setMessageBody(data.message_body);
         
@@ -398,7 +411,11 @@ const removeCustomEmail = (emailId) => {
       <DarkModeToggle />
       <ShareButton />
       
-      <SimpleTour isActive={showTour} onComplete={handleTourComplete} />
+      <SimpleTour 
+        isActive={showTour} 
+        onComplete={handleTourComplete} 
+        onSkip={handleTourComplete}
+      />
       <ScrollProgressTracker activeSection={activeSection} sections={sections} />
       
       {/* <BillsSidebar /> */}
