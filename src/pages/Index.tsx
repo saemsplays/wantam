@@ -37,9 +37,8 @@ const Index = () => {
   // User input states
   const [userName, setUserName] = useState('');
   const [selectedRecipients, setSelectedRecipients] = useState({
-    clerk: false,
-    financeCommittee: false,
-    allianceGhs: false
+    clerk: true,
+    financeCommittee: true
   });
   const [subject, setSubject] = useState(
     'RE: MEMORANDUM OF OBJECTION TO THE FINANCE BILL 2025 (NATIONAL ASSEMBLY BILLS NO. 19 OF 2025)'
@@ -100,8 +99,8 @@ Citizen of Kenya`);
 
   // Section definitions
   const sections = [
-    { id: 'hero', title: 'Introduction', position: 22 },
-    {id: 'templates', title: 'Templates', position: 41},
+    { id: 'hero', title: 'Introduction', position: 21.52 },
+    {id: 'templates', title: 'Templates', position: 40.75 },
     { id: 'details', title: 'Your Details', position: 44 },
     { id: 'recipients', title: 'Send To', position: 53 },
     { id: 'subject', title: 'Email Subject', position: 60 },
@@ -192,10 +191,10 @@ Citizen of Kenya`);
           const parsedRecipients = typeof data.recipients === 'string' 
             ? JSON.parse(data.recipients) 
             : data.recipients;
-          setSelectedRecipients(parsedRecipients || { clerk: false, financeCommittee: false, allianceGhs: false });
+          setSelectedRecipients(parsedRecipients || { clerk: false, financeCommittee: false });
         } catch (parseError) {
           console.error('Error parsing recipients:', parseError);
-          setSelectedRecipients({ clerk: false, financeCommittee: false, allianceGhs: false });
+          setSelectedRecipients({ clerk: false, financeCommittee: false });
         }
         setSubject(data.subject);
         setMessageBody(data.message_body);
@@ -280,8 +279,7 @@ Citizen of Kenya`);
   // Email sending logic
   const recipients = {
     clerk: { name: "Clerk of the National Assembly", email: "cna@parliament.go.ke" },
-    financeCommittee: { name: "Finance Committee", email: "financecommitteena@parliament.go.ke" },
-    allianceGhs: { name: "Alliance Girls High School", email: "info@alliancegirlshigh.sc.ke" },
+    financeCommittee: { name: "Finance Committee", email: "financecommitteena@parliament.go.ke" }
   };
 
   const handleRecipientChange = (recipient: string, checked: boolean) => {
@@ -292,7 +290,6 @@ Citizen of Kenya`);
     const emails: string[] = [];
     if (selectedRecipients.clerk) emails.push(recipients.clerk.email);
     if (selectedRecipients.financeCommittee) emails.push(recipients.financeCommittee.email);
-    if (selectedRecipients.allianceGhs) emails.push(recipients.allianceGhs.email);
     customEmails.forEach(email => emails.push(email.address));
     return emails;
   };
@@ -814,29 +811,6 @@ const removeCustomEmail = (emailId) => {
                       </div>
                     </div>
                   </div>
-
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-3 p-3 rounded-lg border-2 border-orange-100 dark:border-orange-800 group/item hover:border-orange-200 dark:hover:border-orange-600 hover:bg-orange-50/50 dark:hover:bg-orange-900/20 transition-all duration-300 group-hover/item:shadow-md">
-                      <Checkbox
-                        id="allianceGhs"
-                        checked={selectedRecipients.allianceGhs}
-                        onCheckedChange={(checked) => handleRecipientChange('allianceGhs', checked as boolean)}
-                        className="mt-1 group-hover/item:border-emerald-400 transition-colors duration-300"
-                      />
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between">
-                          <label htmlFor="allianceGhs" className="text-sm font-medium text-gray-900 dark:text-white cursor-pointer group-hover/item:text-orange-900 dark:group-hover/item:text-orange-100 transition-colors duration-300">
-                            {recipients.allianceGhs.name}
-                          </label>
-                        </div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400 truncate group-hover/item:text-orange-700 dark:group-hover/item:text-orange-300 transition-colors duration-300">
-                          {recipients.allianceGhs.email}
-                        </div>
-                        <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-1 group-hover/item:text-emerald-700 dark:group-hover/item:text-emerald-300 transition-colors duration-300">
-                          ✓ Recommended
-                        </div>
-                      </div>
-                    </div>
 
                   {/* Custom Recipients */}
                   {customEmails.length > 0 && (
