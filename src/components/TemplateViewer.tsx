@@ -41,6 +41,13 @@ interface CustomEmail {
   name: string;
 }
 
+interface DefaultRecipient {
+  id: string;
+  name: string;
+  email: string;
+  recommended: boolean;
+}
+
 export const TemplateViewer: React.FC = () => {
   const { templateId } = useParams<{ templateId: string }>();
   const navigate = useNavigate();
@@ -53,7 +60,7 @@ export const TemplateViewer: React.FC = () => {
   const [userName, setUserName] = useState('');
   const [subject, setSubject] = useState('');
   const [messageBody, setMessageBody] = useState('');
-  const [selectedRecipients, setSelectedRecipients] = useState({
+  const [selectedRecipients, setSelectedRecipients] = useState<{[key: string]: boolean}>({
     clerk: false,
     financeCommittee: false
   });
@@ -70,6 +77,20 @@ export const TemplateViewer: React.FC = () => {
     'VAT on essential goods (Art 43 violation)',
     'Digital lending tax expansion (Art 27 violation)',
     'Privacy rights erosion (Art 31 violation)'
+  ]);
+  const [defaultRecipients, setDefaultRecipients] = useState<DefaultRecipient[]>([
+    {
+      id: 'clerk',
+      name: 'Clerk of the National Assembly',
+      email: 'cna@parliament.go.ke',
+      recommended: true
+    },
+    {
+      id: 'financeCommittee',
+      name: 'Finance Committee',
+      email: 'financecommitteena@parliament.go.ke',
+      recommended: true
+    }
   ]);
 
   const [customEmails, setCustomEmails] = useState<CustomEmail[]>([]);
@@ -140,6 +161,17 @@ export const TemplateViewer: React.FC = () => {
           'Privacy rights erosion (Art 31 violation)'
         ]);
       }
+
+      // Load default recipients from metadata if available
+      if (metadata?.defaultRecipients) {
+        setDefaultRecipients(metadata.defaultRecipients);
+        // Initialize selected recipients based on loaded default recipients
+        const initialSelected: {[key: string]: boolean} = {};
+        metadata.defaultRecipients.forEach((recipient: DefaultRecipient) => {
+          initialSelected[recipient.id] = false;
+        });
+        setSelectedRecipients(initialSelected);
+      }
       
       // Increment view count
       await supabase.rpc('increment_template_views', { template_id: data.id });
@@ -206,18 +238,18 @@ export const TemplateViewer: React.FC = () => {
   };
 
   const getSelectedRecipientEmails = () => {
-    const recipients = {
-      clerk: { email: "cna@parliament.go.ke" },
-      financeCommittee: { email: "financecommitteena@parliament.go.ke" }
-    };
-
     const emails = [];
-    if (selectedRecipients.clerk) emails.push(recipients.clerk.email);
-    if (selectedRecipients.financeCommittee) emails.push(recipients.financeCommittee.email);
+    
+    // Add default recipients that are selected
+    defaultRecipients.forEach(recipient => {
+      if (selectedRecipients[recipient.id]) {
+        emails.push(recipient.email);
+      }
+    });
     
     // Add verified emails that are selected
     verifiedEmails.forEach(email => {
-      if (selectedRecipients[`verified_${email.id}` as keyof typeof selectedRecipients]) {
+      if (selectedRecipients[`verified_${email.id}`]) {
         emails.push(email.email_address);
       }
     });
@@ -259,7 +291,14 @@ export const TemplateViewer: React.FC = () => {
     setSelectedRecipients(prev => ({ 
       ...prev, 
       [`verified_${emailId}`]: checked 
-    } as any));
+    }));
+  };
+
+  const handleRecipientChange = (recipientId: string, checked: boolean) => {
+    setSelectedRecipients(prev => ({
+      ...prev,
+      [recipientId]: checked
+    }));
   };
 
   const handleSendEmail = async () => {
@@ -460,37 +499,26 @@ export const TemplateViewer: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                <div className="flex items-start space-x-3 p-3 border rounded-lg">
-                  <Checkbox
-                    id="clerk"
-                    checked={selectedRecipients.clerk}
-                    onCheckedChange={(checked) => setSelectedRecipients(prev => ({ ...prev, clerk: !!checked }))}
-                  />
-                  <Label htmlFor="clerk" className="flex-1 cursor-pointer">
-                    <div className="font-semibold">Clerk of the National Assembly</div>
-                    <div className="text-sm text-gray-600">cna@parliament.go.ke</div>
-                    <div className="text-xs text-blue-600 flex items-center gap-1 mt-1">
-                      <CheckCircle className="h-3 w-3" />
-                      Recommended
-                    </div>
-                  </Label>
-                </div>
-                
-                <div className="flex items-start space-x-3 p-3 border rounded-lg">
-                  <Checkbox
-                    id="financeCommittee"
-                    checked={selectedRecipients.financeCommittee}
-                    onCheckedChange={(checked) => setSelectedRecipients(prev => ({ ...prev, financeCommittee: !!checked }))}
-                  />
-                  <Label htmlFor="financeCommittee" className="flex-1 cursor-pointer">
-                    <div className="font-semibold">Finance Committee</div>
-                    <div className="text-sm text-gray-600">financecommitteena@parliament.go.ke</div>
-                    <div className="text-xs text-blue-600 flex items-center gap-1 mt-1">
-                      <CheckCircle className="h-3 w-3" />
-                      Recommended
-                    </div>
-                  </Label>
-                </div>
+                {/* Default Recipients */}
+                {defaultRecipients.map((recipient) => (
+                  <div key={recipient.id} className="flex items-start space-x-3 p-3 border rounded-lg">
+                    <Checkbox
+                      id={recipient.id}
+                      checked={selectedRecipients[recipient.id] || false}
+                      onCheckedChange={(checked) => handleRecipientChange(recipient.id, !!checked)}
+                    />
+                    <Label htmlFor={recipient.id} className="flex-1 cursor-pointer">
+                      <div className="font-semibold">{recipient.name}</div>
+                      <div className="text-sm text-gray-600">{recipient.email}</div>
+                      {recipient.recommended && (
+                        <div className="text-xs text-blue-600 flex items-center gap-1 mt-1">
+                          <CheckCircle className="h-3 w-3" />
+                          Recommended
+                        </div>
+                      )}
+                    </Label>
+                  </div>
+                ))}
 
                 {/* Verified Emails Section */}
                 {verifiedEmails.length > 0 && (
@@ -504,7 +532,7 @@ export const TemplateViewer: React.FC = () => {
                         <div key={email.id} className="flex items-start space-x-3 p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 group/item hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors duration-300">
                           <Checkbox
                             id={`verified-${email.id}`}
-                            checked={selectedRecipients[`verified_${email.id}` as keyof typeof selectedRecipients] || false}
+                            checked={selectedRecipients[`verified_${email.id}`] || false}
                             onCheckedChange={(checked) => handleVerifiedEmailChange(email.id, !!checked)}
                             className="mt-1 group-hover/item:border-blue-400 transition-colors duration-300"
                           />

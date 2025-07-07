@@ -65,6 +65,22 @@ export const TemplateCreator: React.FC<TemplateCreatorProps> = ({
   const [newObjection, setNewObjection] = useState('');
   const [isAddingObjection, setIsAddingObjection] = useState(false);
 
+  // Default recipients configuration
+  const [defaultRecipients, setDefaultRecipients] = useState([
+    {
+      id: 'clerk',
+      name: 'Clerk of the National Assembly',
+      email: 'cna@parliament.go.ke',
+      recommended: true
+    },
+    {
+      id: 'financeCommittee', 
+      name: 'Finance Committee',
+      email: 'financecommitteena@parliament.go.ke',
+      recommended: true
+    }
+  ]);
+
   const generateSlug = (titleText: string) => {
     return titleText
       .toLowerCase()
@@ -113,7 +129,8 @@ export const TemplateCreator: React.FC<TemplateCreatorProps> = ({
           letterDescription,
           keyObjectionsTitle,
           keyObjections
-        }
+        },
+        defaultRecipients
       };
 
       const { data, error } = await supabase
@@ -125,7 +142,7 @@ export const TemplateCreator: React.FC<TemplateCreatorProps> = ({
           metadata,
           is_public: isPublic,
           created_by: user?.id || null,
-          is_verified: false // New templates start as unverified
+          is_verified: false
         })
         .select()
         .single();
