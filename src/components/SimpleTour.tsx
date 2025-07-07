@@ -8,21 +8,21 @@ interface TourStep {
   title: string;
   description: string;
   targetId: string;
-  position?: number; // Added position property
+  position?: number;
 }
 
 interface SimpleTourProps {
   isActive: boolean;
   onComplete: () => void;
   onSkip: () => void;
-  sections: { id: string; position: number }[]; // Added sections prop
+  sections: { id: string; position: number }[];
 }
 
 export const SimpleTour: React.FC<SimpleTourProps> = ({ 
   isActive, 
   onComplete, 
   onSkip,
-  sections 
+  sections = [] // Add default value
 }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
@@ -34,7 +34,7 @@ export const SimpleTour: React.FC<SimpleTourProps> = ({
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Create tour steps with positions from sections
+  // Fixed: Add null check for sections
   const tourSteps: TourStep[] = useMemo(() => {
     const baseSteps = [
       {
@@ -87,16 +87,15 @@ export const SimpleTour: React.FC<SimpleTourProps> = ({
       }
     ];
 
-    // Merge positions from sections prop
+    // FIX: Handle undefined sections
     return baseSteps.map(step => ({
       ...step,
-      position: sections.find(s => s.id === step.id)?.position
+      position: sections?.find(s => s.id === step.id)?.position
     }));
   }, [sections]);
 
   const currentStepData = tourSteps[currentStep];
 
-  // Scroll handler using position percentage
   const scrollToPosition = (position?: number) => {
     if (position !== undefined) {
       const y = (position / 100) * document.documentElement.scrollHeight;
