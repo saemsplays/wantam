@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Send, ArrowLeft, Eye, Share2, FileText, User, CheckCircle, Mail, Plus, X, Trash2 } from "lucide-react";
+import { Send, ArrowLeft, Eye, Share2, FileText, User, CheckCircle, Mail, Plus, X, Trash2, Shield, AlertTriangle } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -23,6 +23,7 @@ interface Template {
   updated_at: string;
   views_count: number;
   uses_count: number;
+  is_verified?: boolean;
 }
 
 interface VerifiedEmail {
@@ -57,7 +58,19 @@ export const TemplateViewer: React.FC = () => {
     financeCommittee: false
   });
 
-  // New state variables for custom recipients
+  // Dynamic template sections
+  const [recipientsTitle, setRecipientsTitle] = useState('Send To');
+  const [recipientsDescription, setRecipientsDescription] = useState('Select who should receive your objection letter');
+  const [subjectTitle, setSubjectTitle] = useState('Email Subject');
+  const [subjectDescription, setSubjectDescription] = useState('The subject line for your objection email');
+  const [letterTitle, setLetterTitle] = useState('Your Objection Letter');
+  const [letterDescription, setLetterDescription] = useState('Review and edit your formal objection letter. The letter cites specific constitutional violations and legal grounds.');
+  const [keyObjections, setKeyObjections] = useState([
+    'VAT on essential goods (Art 43 violation)',
+    'Digital lending tax expansion (Art 27 violation)',
+    'Privacy rights erosion (Art 31 violation)'
+  ]);
+
   const [customEmails, setCustomEmails] = useState<CustomEmail[]>([]);
   const [newEmailInput, setNewEmailInput] = useState('');
   const [isAddingEmail, setIsAddingEmail] = useState(false);
@@ -105,12 +118,26 @@ export const TemplateViewer: React.FC = () => {
 
       setTemplate(data);
       
-      // Initialize form with template data
-      // Safely access metadata.subject with proper type checking
+      // Initialize form with template data including dynamic sections
       const metadata = data.metadata as any;
       const defaultSubject = metadata?.subject || 'RE: MEMORANDUM OF OBJECTION TO THE FINANCE BILL 2025';
       setSubject(defaultSubject);
       setMessageBody(data.body);
+      
+      // Load dynamic sections from metadata
+      if (metadata?.sections) {
+        setRecipientsTitle(metadata.sections.recipientsTitle || 'Send To');
+        setRecipientsDescription(metadata.sections.recipientsDescription || 'Select who should receive your objection letter');
+        setSubjectTitle(metadata.sections.subjectTitle || 'Email Subject');
+        setSubjectDescription(metadata.sections.subjectDescription || 'The subject line for your objection email');
+        setLetterTitle(metadata.sections.letterTitle || 'Your Objection Letter');
+        setLetterDescription(metadata.sections.letterDescription || 'Review and edit your formal objection letter. The letter cites specific constitutional violations and legal grounds.');
+        setKeyObjections(metadata.sections.keyObjections || [
+          'VAT on essential goods (Art 43 violation)',
+          'Digital lending tax expansion (Art 27 violation)',
+          'Privacy rights erosion (Art 31 violation)'
+        ]);
+      }
       
       // Increment view count
       await supabase.rpc('increment_template_views', { template_id: data.id });
@@ -354,7 +381,20 @@ export const TemplateViewer: React.FC = () => {
                   <FileText className="h-6 w-6 text-white" />
                 </div>
                 <div className="flex-1">
-                  <h1 className="text-2xl font-bold text-gray-900 mb-2">{template.title}</h1>
+                  <div className="flex items-center gap-3 mb-2">
+                    <h1 className="text-2xl font-bold text-gray-900">{template.title}</h1>
+                    {template.is_verified ? (
+                      <div className="flex items-center gap-1 bg-blue-100 px-2 py-1 rounded-full">
+                        <Shield className="h-4 w-4 text-blue-600" />
+                        <span className="text-xs font-medium text-blue-600">Verified</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-1 bg-yellow-100 px-2 py-1 rounded-full">
+                        <AlertTriangle className="h-4 w-4 text-yellow-600" />
+                        <span className="text-xs font-medium text-yellow-600">Unverified</span>
+                      </div>
+                    )}
+                  </div>
                   <div className="flex items-center gap-4 text-sm text-gray-600">
                     <div className="flex items-center gap-1">
                       <Eye className="h-4 w-4" />
@@ -410,10 +450,11 @@ export const TemplateViewer: React.FC = () => {
             </CardContent>
           </Card>
 
-          {/* Recipients */}
+          {/* Recipients - Now Dynamic */}
           <Card>
             <CardHeader>
-              <CardTitle>Send To</CardTitle>
+              <CardTitle>{recipientsTitle}</CardTitle>
+              <p className="text-sm text-gray-600">{recipientsDescription}</p>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
@@ -426,6 +467,10 @@ export const TemplateViewer: React.FC = () => {
                   <Label htmlFor="clerk" className="flex-1 cursor-pointer">
                     <div className="font-semibold">Clerk of the National Assembly</div>
                     <div className="text-sm text-gray-600">cna@parliament.go.ke</div>
+                    <div className="text-xs text-blue-600 flex items-center gap-1 mt-1">
+                      <CheckCircle className="h-3 w-3" />
+                      Recommended
+                    </div>
                   </Label>
                 </div>
                 
@@ -436,8 +481,12 @@ export const TemplateViewer: React.FC = () => {
                     onCheckedChange={(checked) => setSelectedRecipients(prev => ({ ...prev, financeCommittee: !!checked }))}
                   />
                   <Label htmlFor="financeCommittee" className="flex-1 cursor-pointer">
-                    <div className="font-semibold">Finance Committee of the National Assembly</div>
+                    <div className="font-semibold">Finance Committee</div>
                     <div className="text-sm text-gray-600">financecommitteena@parliament.go.ke</div>
+                    <div className="text-xs text-blue-600 flex items-center gap-1 mt-1">
+                      <CheckCircle className="h-3 w-3" />
+                      Recommended
+                    </div>
                   </Label>
                 </div>
 
@@ -485,7 +534,7 @@ export const TemplateViewer: React.FC = () => {
                   <div className="flex items-center justify-between mb-3">
                     <h4 className="text-sm font-medium text-gray-900 dark:text-white flex items-center gap-2">
                       <Mail className="h-4 w-4 text-green-500" />
-                      Custom Email Addresses
+                      Add Custom Email Address
                     </h4>
                     <Button
                       onClick={() => setIsAddingEmail(true)}
@@ -558,10 +607,11 @@ export const TemplateViewer: React.FC = () => {
             </CardContent>
           </Card>
 
-          {/* Subject */}
+          {/* Subject - Now Dynamic */}
           <Card>
             <CardHeader>
-              <CardTitle>Email Subject</CardTitle>
+              <CardTitle>{subjectTitle}</CardTitle>
+              <p className="text-sm text-gray-600">{subjectDescription}</p>
             </CardHeader>
             <CardContent>
               <Input
@@ -572,13 +622,26 @@ export const TemplateViewer: React.FC = () => {
             </CardContent>
           </Card>
 
-          {/* Message Body */}
+          {/* Message Body - Now Dynamic */}
           <Card>
             <CardHeader>
-              <CardTitle>Your Message</CardTitle>
-              <p className="text-sm text-gray-600">
-                Customize this template message as needed. Your name will be automatically inserted where [USER_NAME_PLACEHOLDER] appears.
-              </p>
+              <CardTitle>{letterTitle}</CardTitle>
+              <div className="space-y-2">
+                <p className="text-sm text-gray-600">{letterDescription}</p>
+                {keyObjections.length > 0 && (
+                  <div className="bg-blue-50 p-3 rounded-lg">
+                    <h4 className="text-sm font-semibold text-blue-900 mb-2">Key Objections Covered</h4>
+                    <ul className="space-y-1">
+                      {keyObjections.map((objection, index) => (
+                        <li key={index} className="text-sm text-blue-800 flex items-start gap-2">
+                          <span className="text-blue-600 mt-1">•</span>
+                          {objection}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
             </CardHeader>
             <CardContent>
               <Textarea

@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Save, Copy, Eye, Share2, FileText } from "lucide-react";
+import { Save, Copy, Eye, Share2, FileText, Plus, X, Shield } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -21,6 +21,7 @@ interface Template {
   updated_at: string;
   views_count: number;
   uses_count: number;
+  is_verified?: boolean;
 }
 
 interface TemplateCreatorProps {
@@ -47,12 +48,38 @@ export const TemplateCreator: React.FC<TemplateCreatorProps> = ({
   const [showShareDialog, setShowShareDialog] = useState(false);
   const [shareableUrl, setShareableUrl] = useState('');
 
+  // Dynamic sections
+  const [recipientsTitle, setRecipientsTitle] = useState('Send To');
+  const [recipientsDescription, setRecipientsDescription] = useState('Select who should receive your objection letter');
+  const [subjectTitle, setSubjectTitle] = useState('Email Subject');
+  const [subjectDescription, setSubjectDescription] = useState('The subject line for your objection email');
+  const [letterTitle, setLetterTitle] = useState('Your Objection Letter');
+  const [letterDescription, setLetterDescription] = useState('Review and edit your formal objection letter. The letter cites specific constitutional violations and legal grounds.');
+  const [keyObjections, setKeyObjections] = useState([
+    'VAT on essential goods (Art 43 violation)',
+    'Digital lending tax expansion (Art 27 violation)',
+    'Privacy rights erosion (Art 31 violation)'
+  ]);
+  const [newObjection, setNewObjection] = useState('');
+  const [isAddingObjection, setIsAddingObjection] = useState(false);
+
   const generateSlug = (titleText: string) => {
     return titleText
       .toLowerCase()
       .replace(/[^a-zA-Z0-9\s-]/g, '')
       .replace(/\s+/g, '-')
       .substring(0, 50);
+  };
+
+  const addObjection = () => {
+    if (!newObjection.trim()) return;
+    setKeyObjections(prev => [...prev, newObjection.trim()]);
+    setNewObjection('');
+    setIsAddingObjection(false);
+  };
+
+  const removeObjection = (index: number) => {
+    setKeyObjections(prev => prev.filter((_, i) => i !== index));
   };
 
   const handleSaveTemplate = async () => {
@@ -74,7 +101,16 @@ export const TemplateCreator: React.FC<TemplateCreatorProps> = ({
       const metadata = {
         subject: subject || '',
         tags: ['finance-bill', 'objection'],
-        originalApp: 'civiceducationke'
+        originalApp: 'civiceducationke',
+        sections: {
+          recipientsTitle,
+          recipientsDescription,
+          subjectTitle,
+          subjectDescription,
+          letterTitle,
+          letterDescription,
+          keyObjections
+        }
       };
 
       const { data, error } = await supabase
@@ -85,13 +121,14 @@ export const TemplateCreator: React.FC<TemplateCreatorProps> = ({
           slug,
           metadata,
           is_public: isPublic,
-          created_by: user?.id || null // Set to null for anonymous users
+          created_by: user?.id || null,
+          is_verified: false // New templates start as unverified
         })
         .select()
         .single();
 
       if (error) {
-        if (error.code === '23505') { // Unique constraint violation
+        if (error.code === '23505') {
           toast({
             title: "URL Already Taken",
             description: "This URL slug is already in use. Please choose a different one.",
@@ -153,7 +190,7 @@ export const TemplateCreator: React.FC<TemplateCreatorProps> = ({
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <FileText className="h-5 w-5" />
@@ -205,6 +242,147 @@ export const TemplateCreator: React.FC<TemplateCreatorProps> = ({
               </CardContent>
             </Card>
 
+            {/* Dynamic Sections Configuration */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Section Configuration</CardTitle>
+                <p className="text-sm text-gray-600">Customize the titles and descriptions for each section</p>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Recipients Section */}
+                <div className="space-y-3">
+                  <h4 className="font-medium text-gray-900">Recipients Section</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="recipientsTitle">Section Title</Label>
+                      <Input
+                        id="recipientsTitle"
+                        value={recipientsTitle}
+                        onChange={(e) => setRecipientsTitle(e.target.value)}
+                        className="mt-1"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="recipientsDescription">Description</Label>
+                      <Input
+                        id="recipientsDescription"
+                        value={recipientsDescription}
+                        onChange={(e) => setRecipientsDescription(e.target.value)}
+                        className="mt-1"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Subject Section */}
+                <div className="space-y-3 pt-4 border-t">
+                  <h4 className="font-medium text-gray-900">Subject Section</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="subjectTitle">Section Title</Label>
+                      <Input
+                        id="subjectTitle"
+                        value={subjectTitle}
+                        onChange={(e) => setSubjectTitle(e.target.value)}
+                        className="mt-1"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="subjectDescription">Description</Label>
+                      <Input
+                        id="subjectDescription"
+                        value={subjectDescription}
+                        onChange={(e) => setSubjectDescription(e.target.value)}
+                        className="mt-1"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Letter Section */}
+                <div className="space-y-3 pt-4 border-t">
+                  <h4 className="font-medium text-gray-900">Letter Section</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="letterTitle">Section Title</Label>
+                      <Input
+                        id="letterTitle"
+                        value={letterTitle}
+                        onChange={(e) => setLetterTitle(e.target.value)}
+                        className="mt-1"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="letterDescription">Description</Label>
+                      <Input
+                        id="letterDescription"
+                        value={letterDescription}
+                        onChange={(e) => setLetterDescription(e.target.value)}
+                        className="mt-1"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Key Objections */}
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <Label>Key Objections</Label>
+                      <Button
+                        onClick={() => setIsAddingObjection(true)}
+                        size="sm"
+                        variant="outline"
+                        className="text-xs"
+                      >
+                        <Plus className="h-3 w-3 mr-1" />
+                        Add Objection
+                      </Button>
+                    </div>
+
+                    {isAddingObjection && (
+                      <div className="flex gap-2">
+                        <Input
+                          placeholder="Enter new objection"
+                          value={newObjection}
+                          onChange={(e) => setNewObjection(e.target.value)}
+                          className="flex-1"
+                          onKeyPress={(e) => e.key === 'Enter' && addObjection()}
+                        />
+                        <Button onClick={addObjection} size="sm">
+                          <Plus className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          onClick={() => {
+                            setIsAddingObjection(false);
+                            setNewObjection('');
+                          }} 
+                          size="sm" 
+                          variant="outline"
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    )}
+
+                    <div className="space-y-2">
+                      {keyObjections.map((objection, index) => (
+                        <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
+                          <span className="text-sm">{objection}</span>
+                          <Button
+                            onClick={() => removeObjection(index)}
+                            size="sm"
+                            variant="ghost"
+                            className="h-6 w-6 p-0 text-red-500 hover:text-red-600"
+                          >
+                            <X className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Template Content</CardTitle>
@@ -225,15 +403,21 @@ export const TemplateCreator: React.FC<TemplateCreatorProps> = ({
             </Card>
 
             <div className="flex justify-between items-center">
-              <div className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  id="isPublic"
-                  checked={isPublic}
-                  onChange={(e) => setIsPublic(e.target.checked)}
-                  className="rounded"
-                />
-                <Label htmlFor="isPublic">Make this template publicly accessible</Label>
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="isPublic"
+                    checked={isPublic}
+                    onChange={(e) => setIsPublic(e.target.checked)}
+                    className="rounded"
+                  />
+                  <Label htmlFor="isPublic">Make this template publicly accessible</Label>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <Shield className="h-4 w-4 text-yellow-500" />
+                  <span>Templates start as unverified and require admin approval</span>
+                </div>
               </div>
 
               <div className="flex space-x-3">
