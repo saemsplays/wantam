@@ -65,7 +65,6 @@ export const TemplateViewer: React.FC = () => {
   const [subjectDescription, setSubjectDescription] = useState('The subject line for your objection email');
   const [letterTitle, setLetterTitle] = useState('Your Objection Letter');
   const [letterDescription, setLetterDescription] = useState('Review and edit your formal objection letter. The letter cites specific constitutional violations and legal grounds.');
-  const [keyObjectionsTitle, setKeyObjectionsTitle] = useState('Key Objections Covered');
   const [keyObjections, setKeyObjections] = useState([
     'VAT on essential goods (Art 43 violation)',
     'Digital lending tax expansion (Art 27 violation)',
@@ -133,7 +132,6 @@ export const TemplateViewer: React.FC = () => {
         setSubjectDescription(metadata.sections.subjectDescription || 'The subject line for your objection email');
         setLetterTitle(metadata.sections.letterTitle || 'Your Objection Letter');
         setLetterDescription(metadata.sections.letterDescription || 'Review and edit your formal objection letter. The letter cites specific constitutional violations and legal grounds.');
-        setKeyObjectionsTitle(metadata.sections.keyObjectionsTitle || 'Key Objections Covered');
         setKeyObjections(metadata.sections.keyObjections || [
           'VAT on essential goods (Art 43 violation)',
           'Digital lending tax expansion (Art 27 violation)',
@@ -632,7 +630,7 @@ export const TemplateViewer: React.FC = () => {
                 <p className="text-sm text-gray-600">{letterDescription}</p>
                 {keyObjections.length > 0 && (
                   <div className="bg-blue-50 p-3 rounded-lg">
-                    <h4 className="text-sm font-semibold text-blue-900 mb-2">{keyObjectionsTitle}</h4>
+                    <h4 className="text-sm font-semibold text-blue-900 mb-2">Key Objections Covered</h4>
                     <ul className="space-y-1">
                       {keyObjections.map((objection, index) => (
                         <li key={index} className="text-sm text-blue-800 flex items-start gap-2">

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -56,7 +55,6 @@ export const TemplateCreator: React.FC<TemplateCreatorProps> = ({
   const [subjectDescription, setSubjectDescription] = useState('The subject line for your objection email');
   const [letterTitle, setLetterTitle] = useState('Your Objection Letter');
   const [letterDescription, setLetterDescription] = useState('Review and edit your formal objection letter. The letter cites specific constitutional violations and legal grounds.');
-  const [keyObjectionsTitle, setKeyObjectionsTitle] = useState('Key Objections Covered');
   const [keyObjections, setKeyObjections] = useState([
     'VAT on essential goods (Art 43 violation)',
     'Digital lending tax expansion (Art 27 violation)',
@@ -111,7 +109,6 @@ export const TemplateCreator: React.FC<TemplateCreatorProps> = ({
           subjectDescription,
           letterTitle,
           letterDescription,
-          keyObjectionsTitle,
           keyObjections
         }
       };
@@ -202,7 +199,6 @@ export const TemplateCreator: React.FC<TemplateCreatorProps> = ({
           </DialogHeader>
 
           <div className="space-y-6">
-            {/* Template Details Card */}
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Template Details</CardTitle>
@@ -330,21 +326,12 @@ export const TemplateCreator: React.FC<TemplateCreatorProps> = ({
                   {/* Key Objections */}
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <div className="flex-1 mr-4">
-                        <Label htmlFor="keyObjectionsTitle">Key Objections Section Title</Label>
-                        <Input
-                          id="keyObjectionsTitle"
-                          value={keyObjectionsTitle}
-                          onChange={(e) => setKeyObjectionsTitle(e.target.value)}
-                          className="mt-1"
-                          placeholder="e.g., Key Objections Covered"
-                        />
-                      </div>
+                      <Label>Key Objections</Label>
                       <Button
                         onClick={() => setIsAddingObjection(true)}
                         size="sm"
                         variant="outline"
-                        className="text-xs self-end"
+                        className="text-xs"
                       >
                         <Plus className="h-3 w-3 mr-1" />
                         Add Objection
@@ -396,7 +383,6 @@ export const TemplateCreator: React.FC<TemplateCreatorProps> = ({
               </CardContent>
             </Card>
 
-            {/* Template Content Card */}
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Template Content</CardTitle>
@@ -416,7 +402,6 @@ export const TemplateCreator: React.FC<TemplateCreatorProps> = ({
               </CardContent>
             </Card>
 
-            {/* Footer with actions */}
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-4">
                 <div className="flex items-center space-x-2">
@@ -453,7 +438,6 @@ export const TemplateCreator: React.FC<TemplateCreatorProps> = ({
         </DialogContent>
       </Dialog>
 
-      {/* Share Dialog */}
       <Dialog open={showShareDialog} onOpenChange={setShowShareDialog}>
         <DialogContent>
           <DialogHeader>
