@@ -86,10 +86,10 @@ const SplashScreen = () => {
               className="space-y-4"
             >
               <h1 className="text-3xl font-bold bg-gradient-to-r from-red-600 to-green-600 bg-clip-text text-transparent">
-                The #RejectFinanceBill App
+                The WANTAM App
               </h1>
               <p className="text-lg text-gray-600 dark:text-gray-300 max-w-sm">
-                Amplify Your Voice
+                Create. Share. Mobilize. Together.
               </p>
               
               <div className="flex justify-center space-x-4 mt-6">
