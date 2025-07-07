@@ -567,9 +567,9 @@ const removeCustomEmail = (emailId) => {
               <Lightbulb className="h-5 w-5" />
               <span>Community Templates</span>
             </div>
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
               Browse & Share Templates
-            </h2>
+            </h1>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               Discover templates created by others, or share your own with the community
             </p>
