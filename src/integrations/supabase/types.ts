@@ -24,6 +24,42 @@ export type Database = {
         }
         Relationships: []
       }
+      email_templates: {
+        Row: {
+          created_at: string | null
+          id: string
+          message_body: string
+          recipients: Json
+          subject: string
+          template_name: string
+          updated_at: string | null
+          use_count: number | null
+          user_name: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          message_body: string
+          recipients: Json
+          subject: string
+          template_name: string
+          updated_at?: string | null
+          use_count?: number | null
+          user_name?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          message_body?: string
+          recipients?: Json
+          subject?: string
+          template_name?: string
+          updated_at?: string | null
+          use_count?: number | null
+          user_name?: string | null
+        }
+        Relationships: []
+      }
       templates: {
         Row: {
           body: string
@@ -102,6 +138,36 @@ export type Database = {
           id?: number
           last_updated?: string
           viewers?: number
+        }
+        Relationships: []
+      }
+      verified_emails: {
+        Row: {
+          category: string | null
+          created_at: string
+          display_name: string
+          email_address: string
+          id: number
+          is_verified: boolean
+          trust_score: number
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          display_name: string
+          email_address: string
+          id?: never
+          is_verified?: boolean
+          trust_score?: number
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          display_name?: string
+          email_address?: string
+          id?: never
+          is_verified?: boolean
+          trust_score?: number
         }
         Relationships: []
       }

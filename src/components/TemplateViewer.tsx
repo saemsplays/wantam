@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Send, ArrowLeft, Eye, Share2, FileText, User } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Send, ArrowLeft, Eye, Share2, FileText, User, CheckCircle, Mail, Plus, X, Trash2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -24,6 +25,21 @@ interface Template {
   uses_count: number;
 }
 
+interface VerifiedEmail {
+  id: number;
+  email_address: string;
+  display_name: string;
+  trust_score: number;
+  is_verified: boolean;
+  category: string;
+}
+
+interface CustomEmail {
+  id: number;
+  address: string;
+  name: string;
+}
+
 export const TemplateViewer: React.FC = () => {
   const { templateId } = useParams<{ templateId: string }>();
   const navigate = useNavigate();
@@ -37,9 +53,15 @@ export const TemplateViewer: React.FC = () => {
   const [subject, setSubject] = useState('');
   const [messageBody, setMessageBody] = useState('');
   const [selectedRecipients, setSelectedRecipients] = useState({
-    clerk: true,
-    financeCommittee: true
+    clerk: false,
+    financeCommittee: false
   });
+
+  // New state variables for custom recipients
+  const [customEmails, setCustomEmails] = useState<CustomEmail[]>([]);
+  const [newEmailInput, setNewEmailInput] = useState('');
+  const [isAddingEmail, setIsAddingEmail] = useState(false);
+  const [verifiedEmails, setVerifiedEmails] = useState<VerifiedEmail[]>([]);
 
   useEffect(() => {
     if (templateId) {
@@ -99,11 +121,28 @@ export const TemplateViewer: React.FC = () => {
       // Add Open Graph meta tags
       updateMetaTags(data);
       
+      // Fetch verified emails
+      await fetchVerifiedEmails();
+      
     } catch (error) {
       console.error('Error fetching template:', error);
       setError('Template not found or is private');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchVerifiedEmails = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('verified_emails')
+        .select('*')
+        .eq('is_verified', true)
+        .order('trust_score', { ascending: false });
+      
+      if (!error && data) setVerifiedEmails(data);
+    } catch (error) {
+      console.error('Error fetching verified emails:', error);
     }
   };
 
@@ -137,6 +176,63 @@ export const TemplateViewer: React.FC = () => {
     return !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   };
 
+  const getSelectedRecipientEmails = () => {
+    const recipients = {
+      clerk: { email: "cna@parliament.go.ke" },
+      financeCommittee: { email: "financecommitteena@parliament.go.ke" }
+    };
+
+    const emails = [];
+    if (selectedRecipients.clerk) emails.push(recipients.clerk.email);
+    if (selectedRecipients.financeCommittee) emails.push(recipients.financeCommittee.email);
+    
+    // Add verified emails that are selected
+    verifiedEmails.forEach(email => {
+      if (selectedRecipients[`verified_${email.id}` as keyof typeof selectedRecipients]) {
+        emails.push(email.email_address);
+      }
+    });
+    
+    // Add custom emails
+    customEmails.forEach(email => emails.push(email.address));
+    return emails;
+  };
+
+  const addCustomEmail = () => {
+    if (!newEmailInput.trim()) return;
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(newEmailInput)) {
+      toast({
+        title: "Invalid Email",
+        description: "Please enter a valid email address",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    const newEmail = {
+      id: Date.now(),
+      address: newEmailInput.trim(),
+      name: newEmailInput.trim()
+    };
+    
+    setCustomEmails(prev => [...prev, newEmail]);
+    setNewEmailInput('');
+    setIsAddingEmail(false);
+  };
+
+  const removeCustomEmail = (emailId: number) => {
+    setCustomEmails(prev => prev.filter(email => email.id !== emailId));
+  };
+
+  const handleVerifiedEmailChange = (emailId: number, checked: boolean) => {
+    setSelectedRecipients(prev => ({ 
+      ...prev, 
+      [`verified_${emailId}`]: checked 
+    } as any));
+  };
+
   const handleSendEmail = async () => {
     if (!userName.trim()) {
       toast({
@@ -147,10 +243,11 @@ export const TemplateViewer: React.FC = () => {
       return;
     }
 
-    if (!selectedRecipients.clerk && !selectedRecipients.financeCommittee) {
+    const totalSelectedEmails = getSelectedRecipientEmails().length;
+    if (totalSelectedEmails === 0) {
       toast({
         title: "Select Recipients",
-        description: "Please select at least one recipient",
+        description: "Please select at least one recipient or add a custom email address",
         variant: "destructive"
       });
       return;
@@ -165,15 +262,7 @@ export const TemplateViewer: React.FC = () => {
       // Track email sent action
       await supabase.rpc('increment_user_action', { action_type_param: 'email_sent' });
 
-      const recipients = {
-        clerk: { email: "cna@parliament.go.ke" },
-        financeCommittee: { email: "financecommitteena@parliament.go.ke" }
-      };
-
-      const selectedEmails: string[] = [];
-      if (selectedRecipients.clerk) selectedEmails.push(recipients.clerk.email);
-      if (selectedRecipients.financeCommittee) selectedEmails.push(recipients.financeCommittee.email);
-
+      const selectedEmails = getSelectedRecipientEmails();
       const to = selectedEmails.join(',');
       const encodedSubject = encodeURIComponent(subject);
       const personalizedMessage = messageBody.replace('[USER_NAME_PLACEHOLDER]', userName.trim());
@@ -329,12 +418,10 @@ export const TemplateViewer: React.FC = () => {
             <CardContent>
               <div className="space-y-3">
                 <div className="flex items-start space-x-3 p-3 border rounded-lg">
-                  <input
-                    type="checkbox"
+                  <Checkbox
                     id="clerk"
                     checked={selectedRecipients.clerk}
-                    onChange={(e) => setSelectedRecipients(prev => ({ ...prev, clerk: e.target.checked }))}
-                    className="mt-1"
+                    onCheckedChange={(checked) => setSelectedRecipients(prev => ({ ...prev, clerk: !!checked }))}
                   />
                   <Label htmlFor="clerk" className="flex-1 cursor-pointer">
                     <div className="font-semibold">Clerk of the National Assembly</div>
@@ -343,17 +430,129 @@ export const TemplateViewer: React.FC = () => {
                 </div>
                 
                 <div className="flex items-start space-x-3 p-3 border rounded-lg">
-                  <input
-                    type="checkbox"
+                  <Checkbox
                     id="financeCommittee"
                     checked={selectedRecipients.financeCommittee}
-                    onChange={(e) => setSelectedRecipients(prev => ({ ...prev, financeCommittee: e.target.checked }))}
-                    className="mt-1"
+                    onCheckedChange={(checked) => setSelectedRecipients(prev => ({ ...prev, financeCommittee: !!checked }))}
                   />
                   <Label htmlFor="financeCommittee" className="flex-1 cursor-pointer">
                     <div className="font-semibold">Finance Committee of the National Assembly</div>
                     <div className="text-sm text-gray-600">financecommitteena@parliament.go.ke</div>
                   </Label>
+                </div>
+
+                {/* Verified Emails Section */}
+                {verifiedEmails.length > 0 && (
+                  <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                    <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-blue-500" />
+                      Verified Email Addresses
+                    </h4>
+                    <div className="space-y-3">
+                      {verifiedEmails.map((email) => (
+                        <div key={email.id} className="flex items-start space-x-3 p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 group/item hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors duration-300">
+                          <Checkbox
+                            id={`verified-${email.id}`}
+                            checked={selectedRecipients[`verified_${email.id}` as keyof typeof selectedRecipients] || false}
+                            onCheckedChange={(checked) => handleVerifiedEmailChange(email.id, !!checked)}
+                            className="mt-1 group-hover/item:border-blue-400 transition-colors duration-300"
+                          />
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2">
+                              <label htmlFor={`verified-${email.id}`} className="text-sm font-medium text-gray-900 dark:text-white cursor-pointer group-hover/item:text-blue-900 dark:group-hover/item:text-blue-100 transition-colors duration-300">
+                                {email.display_name}
+                              </label>
+                              <div className="flex items-center gap-1">
+                                <CheckCircle className="h-3 w-3 text-blue-500" />
+                                <span className="text-xs text-blue-600 dark:text-blue-400">Verified</span>
+                              </div>
+                            </div>
+                            <div className="text-xs text-gray-600 dark:text-gray-400 group-hover/item:text-blue-700 dark:group-hover/item:text-blue-300 transition-colors duration-300">
+                              {email.email_address}
+                            </div>
+                            <div className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                              Trust Score: {email.trust_score}/100
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Custom Emails Section */}
+                <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="text-sm font-medium text-gray-900 dark:text-white flex items-center gap-2">
+                      <Mail className="h-4 w-4 text-green-500" />
+                      Custom Email Addresses
+                    </h4>
+                    <Button
+                      onClick={() => setIsAddingEmail(true)}
+                      size="sm"
+                      variant="outline"
+                      className="text-xs"
+                    >
+                      <Plus className="h-3 w-3 mr-1" />
+                      Add Email
+                    </Button>
+                  </div>
+                  
+                  {/* Add Email Input */}
+                  {isAddingEmail && (
+                    <div className="mb-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                      <div className="flex gap-2">
+                        <Input
+                          placeholder="Enter email address"
+                          value={newEmailInput}
+                          onChange={(e) => setNewEmailInput(e.target.value)}
+                          className="flex-1"
+                          onKeyPress={(e) => e.key === 'Enter' && addCustomEmail()}
+                        />
+                        <Button onClick={addCustomEmail} size="sm">
+                          <Plus className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          onClick={() => {
+                            setIsAddingEmail(false);
+                            setNewEmailInput('');
+                          }} 
+                          size="sm" 
+                          variant="outline"
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Custom Emails List */}
+                  {customEmails.length > 0 && (
+                    <div className="space-y-2">
+                      {customEmails.map((email) => (
+                        <div key={email.id} className="flex items-center justify-between p-2 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-700">
+                          <div className="flex items-center gap-2">
+                            <Mail className="h-4 w-4 text-green-500" />
+                            <span className="text-sm text-gray-900 dark:text-white">{email.address}</span>
+                          </div>
+                          <Button
+                            onClick={() => removeCustomEmail(email.id)}
+                            size="sm"
+                            variant="ghost"
+                            className="h-6 w-6 p-0 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  
+                  {customEmails.length === 0 && !isAddingEmail && (
+                    <p className="text-sm text-gray-500 dark:text-gray-400 italic">
+                      No custom email addresses added yet
+                    </p>
+                  )}
                 </div>
               </div>
             </CardContent>
