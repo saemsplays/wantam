@@ -423,9 +423,9 @@ const removeCustomEmail = (emailId) => {
       <DonationWidget />
       <EmergencyReportingSystem isOpen={isReportingOpen} onClose={() => setIsReportingOpen(false)} />
       <ExternalRadioWindow isOpen={isRadioOpen} onClose={() => setIsRadioOpen(false)} />
-      {/* <BillsDockPopup isOpen={billsDockOpen} onClose={() => setBillsDockOpen(false)} originElement={billsDockOrigin} /> */}
+      <BillsDockPopup isOpen={billsDockOpen} onClose={() => setBillsDockOpen(false)} originElement={billsDockOrigin} />
       <ScrollToTop />
-      <BillsFAB />
+      {/* <BillsFAB /> */}
 
       {/* Hero Section */}
       <section className="h-screen relative overflow-hidden">
