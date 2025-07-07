@@ -568,7 +568,10 @@ const removeCustomEmail = (emailId) => {
               <span>Community Templates</span>
             </div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
-              Browse & Share Templates
+              Browse & Share {' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-green-600 dark:from-red-400 dark:to-green-400">
+                Templates
+              </span>
             </h1>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               Discover templates created by others, or share your own with the community
