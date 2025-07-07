@@ -543,7 +543,7 @@ const removeCustomEmail = (emailId) => {
                         </p>
                         <button onClick={() => {
                           const link = document.createElement('a');
-                          link.href = "https://juzqumvamllubshomuge.supabase.co/storage/v1/object/sign/apps/Signed%20APK%20-%20Prod%20Ready/RFB254%20by%20CEKA.apk?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8wZThlZDg5OC05N2JkLTRhNmEtYjUwZS0zMTU5M2U4NmMwOTIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBzL1NpZ25lZCBBUEsgLSBQcm9kIFJlYWR5L1JGQjI1NCBieSBDRUtBLmFwayIsImlhdCI6MTc0OTA2Mjg3OSwiZXhwIjoxNzgwNTk4ODc5fQ.qS2msdBAlUVLX6XYBwNe7ErBYiRyEqZIterdv1Gjo1M";
+                          link.href = "https://juzqumvamllubshomuge.supabase.co/storage/v1/object/sign/apps/Signed%20APK%20-%20Prod%20Ready/The%20WANTAM%20App.apk?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8wZThlZDg5OC05N2JkLTRhNmEtYjUwZS0zMTU5M2U4NmMwOTIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBzL1NpZ25lZCBBUEsgLSBQcm9kIFJlYWR5L1RoZSBXQU5UQU0gQXBwLmFwayIsImlhdCI6MTc1MTg1NzM2MywiZXhwIjoxNzgzMzkzMzYzfQ.-XqD9z1IhTHJVyw_oPVxZktxLz-UgYlW1XyYJLOHxI4";
                           link.download = "WANTAM.apk";
                           link.click();
                         }} className="inline-flex items-center gap-2 px-4 py-2 bg-white text-gray-900 hover:bg-white/90 rounded-lg text-sm font-medium transition-colors">
