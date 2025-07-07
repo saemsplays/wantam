@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
@@ -8,105 +9,89 @@ interface TourStep {
   title: string;
   description: string;
   targetId: string;
-  position?: number;
 }
 
 interface SimpleTourProps {
   isActive: boolean;
   onComplete: () => void;
   onSkip: () => void;
-  sections: { id: string; position: number }[];
 }
 
-export const SimpleTour: React.FC<SimpleTourProps> = ({ 
-  isActive, 
-  onComplete, 
-  onSkip,
-  sections = [] // Add default value
-}) => {
+export const SimpleTour: React.FC<SimpleTourProps> = ({ isActive, onComplete, onSkip }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Fixed: Add null check for sections
-  const tourSteps: TourStep[] = useMemo(() => {
-    const baseSteps = [
-      {
-        id: 'hero',
-        title: 'Begin Your Guide',
-        description: 'Welcome, fellow citizen! I am here to guide you through your submission. Shall we?',
-        targetId: 'hero'
-      },
-      {
-        id: 'chad',
-        title: 'Change.Org + Download',
-        description: 'View other petitions + download our app & WANTAM on the go!',
-        targetId: 'chad'
-      },
-      {
-        id: 'templates',
-        title: 'View Email Templates',
-        description: 'We\'ve made it simple for you to choose a template on the go. Peek around or simply create one.',
-        targetId: 'templates'
-      },
-      {
-        id: 'details',
-        title: 'Enter Your Details',
-        description: 'Add a name to personalize your template letter. You\'re free to use a pseudonym or initials.',
-        targetId: 'details'
-      },
-      {
-        id: 'recipients',
-        title: 'Confirm Recipients',
-        description: 'Confirm to whom this is being sent. In this case, they\'ve been ticked for you',
-        targetId: 'recipients'
-      },
-      {
-        id: 'subject',
-        title: 'Email Subject',
-        description: 'Review and customize your email subject line',
-        targetId: 'subject'
-      },
-      {
-        id: 'letter',
-        title: 'Review Your Letter',
-        description: 'Examine and edit if needed',
-        targetId: 'letter'
-      },
-      {
-        id: 'send',
-        title: 'Send Your Objection',
-        description: 'You\'ll be redirected to your email app. Hit send and you\'re done!',
-        targetId: 'send'
-      }
-    ];
-
-    // FIX: Handle undefined sections
-    return baseSteps.map(step => ({
-      ...step,
-      position: sections?.find(s => s.id === step.id)?.position
-    }));
-  }, [sections]);
+  const tourSteps: TourStep[] = [
+    {
+      id: 'hero',
+      title: 'Begin Your Guide',
+      description: 'Welcome, fellow citizen! I am here to guide you through your submission. Shall we?',
+      targetId: 'hero'
+    },
+    {
+      id: 'chad',
+      title: 'Change.Org + Download',
+      description: 'View other petitions + download our app & WANTAM on the go!',
+      targetId: 'chad'
+    },
+    {
+      id: 'templates',
+      title: 'View Email Templates',
+      description: 'We\'ve made it simple for you to choose a template on the go. Peek around or simply create one.',
+      targetId: 'templates'
+    },
+    {
+      id: 'details',
+      title: 'Enter Your Details',
+      description: 'Add a name to personalize your template letter. You\'re free to use a pseudonym or initials.',
+      targetId: 'details'
+    },
+    {
+      id: 'recipients',
+      title: 'Confirm Recipients',
+      description: 'Confirm to whom this is being sent. In this case, they\'ve been ticked for you',
+      targetId: 'recipients'
+    },
+    {
+      id: 'subject',
+      title: 'Email Subject',
+      description: 'Review and customize your email subject line',
+      targetId: 'subject'
+    },
+    {
+      id: 'letter',
+      title: 'Review Your Letter',
+      description: 'Examine and edit if needed',
+      targetId: 'letter'
+    },
+    {
+      id: 'send',
+      title: 'Send Your Objection',
+      description: 'You\'ll be redirected to your email app. Hit send and you\'re done!',
+      targetId: 'send'
+    }
+  ];
 
   const currentStepData = tourSteps[currentStep];
-
-  const scrollToPosition = (position?: number) => {
-    if (position !== undefined) {
-      const y = (position / 100) * document.documentElement.scrollHeight;
-      window.scrollTo({ top: y, behavior: 'smooth' });
-    }
-  };
 
   const handleNext = () => {
     if (currentStep < tourSteps.length - 1) {
       setCurrentStep(prev => prev + 1);
-      scrollToPosition(tourSteps[currentStep + 1].position);
+      const nextStep = tourSteps[currentStep + 1];
+      const element = document.getElementById(nextStep.targetId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
     } else {
       onComplete();
     }
@@ -115,13 +100,22 @@ export const SimpleTour: React.FC<SimpleTourProps> = ({
   const handlePrev = () => {
     if (currentStep > 0) {
       setCurrentStep(prev => prev - 1);
-      scrollToPosition(tourSteps[currentStep - 1].position);
+      const prevStep = tourSteps[currentStep - 1];
+      const element = document.getElementById(prevStep.targetId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
     }
   };
 
   useEffect(() => {
     if (isActive && currentStepData) {
-      scrollToPosition(currentStepData.position);
+      const element = document.getElementById(currentStepData.targetId);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+      }
     }
   }, [isActive, currentStepData]);
 
@@ -129,11 +123,15 @@ export const SimpleTour: React.FC<SimpleTourProps> = ({
 
   return (
     <>
+      {/* Overlay */}
       <div className="fixed inset-0 bg-black bg-opacity-40 z-[60]" onClick={onSkip} />
+
+      {/* Tour Card */}
       <div
-        className={`fixed z-[61] w-full max-w-sm mx-4 md:max-w-md ${
-          isMobile ? 'left-1/2 bottom-4 -translate-x-1/2' : 'top-4 right-4'
-        }`}
+        className={`
+          fixed z-[61] w-full max-w-sm mx-4 md:max-w-md
+          ${isMobile ? 'left-1/2 bottom-4 -translate-x-1/2' : 'top-4 right-4'}
+        `}
         style={isMobile ? { transform: 'translateX(-50%) scale(0.95)' } : {}}
       >
         <Card className="shadow-2xl border-2 border-blue-500">

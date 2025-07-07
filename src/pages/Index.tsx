@@ -942,20 +942,20 @@ const removeCustomEmail = (emailId) => {
               <div className="space-y-4">
                 <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border-2 border-gray-200 dark:border-gray-600 group-hover:border-indigo-300 dark:group-hover:border-indigo-500 group-hover:shadow-md group-hover:shadow-indigo-500/10 dark:group-hover:shadow-indigo-400/20 transition-all duration-300 group-hover:scale-[1.005] relative">
                   <h4 className="font-semibold text-gray-900 dark:text-white mb-3 group-hover:text-indigo-900 dark:group-hover:text-indigo-100 transition-colors duration-300">
-                    Template Guidance & Helpful Prompts
+                    Key Objections Covered
                   </h4>
                   <div className="space-y-2 text-sm text-gray-700 dark:text-gray-300 group-hover:text-gray-800 dark:group-hover:text-gray-200 transition-colors duration-300">
                     <div className="flex items-center space-x-2 group/item">
                       <span className="text-red-500 dark:text-red-400 group-hover/item:text-red-600 dark:group-hover/item:text-red-300 transition-colors duration-300">•</span>
-                      <span className="group-hover/item:font-medium transition-all duration-300">Start with a clear subject line that states your purpose.</span>
+                      <span className="group-hover/item:font-medium transition-all duration-300">VAT on essential goods (Art 43 violation)</span>
                     </div>
                     <div className="flex items-center space-x-2 group/item">
                       <span className="text-red-500 dark:text-red-400 group-hover/item:text-red-600 dark:group-hover/item:text-red-300 transition-colors duration-300">•</span>
-                      <span className="group-hover/item:font-medium transition-all duration-300">Summarize any background or evidence supporting your concerns.</span>
+                      <span className="group-hover/item:font-medium transition-all duration-300">Digital lending tax expansion (Art 27 violation)</span>
                     </div>
                     <div className="flex items-center space-x-2 group/item">
                       <span className="text-red-500 dark:text-red-400 group-hover/item:text-red-600 dark:group-hover/item:text-red-300 transition-colors duration-300">•</span>
-                      <span className="group-hover/item:font-medium transition-all duration-300">List the actions you are requesting from the recipient.</span>
+                      <span className="group-hover/item:font-medium transition-all duration-300">Privacy rights erosion (Art 31 violation)</span>
                     </div>
                   </div>
                   <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-indigo-400/0 via-indigo-400/5 to-indigo-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
