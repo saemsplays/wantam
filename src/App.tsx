@@ -12,7 +12,7 @@ import TaxBill2025 from "./pages/TaxBill2025";
 import BudgetBill2025 from "./pages/BudgetBill2025";
 import InvestmentBill2025 from "./pages/InvestmentBill2025";
 import DigitalEconomyBill2025 from "./pages/DigitalEconomyBill2025";
-import ScrollToTop from "./components/ScrollToTop";
+import { ScrollToTop } from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
