@@ -1,17 +1,26 @@
-// hooks/useScrollVisibility.ts
+
 import { useState, useEffect } from 'react';
 
-export const useScrollVisibility = (threshold = 300) => {
+export const useScrollVisibility = (threshold: number = 300) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsVisible(window.scrollY > threshold);
+    const toggleVisibility = () => {
+      if (window.pageYOffset > threshold) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
     };
 
-    handleScroll(); // Ensure it runs at mount
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    // Check initial scroll position
+    toggleVisibility();
+
+    window.addEventListener('scroll', toggleVisibility);
+
+    return () => {
+      window.removeEventListener('scroll', toggleVisibility);
+    };
   }, [threshold]);
 
   return isVisible;
